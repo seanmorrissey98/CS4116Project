@@ -1,7 +1,3 @@
-<?php 
-session_start();
-include 'connection.php';
-?>
 <!DOCTYPE html>
 <html>
 
@@ -37,44 +33,29 @@ include 'connection.php';
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
                         <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                    </form><span class="navbar-text"> </span><a class="btn btn-light action-button" role="button" href="signup.html">Sign Up</a></div>
+                    </form><span class="navbar-text"> <a class="login" href="#">Log Out</a></span></div>
             </div>
         </nav>
     </div>
     <div class="login-dark" style="background-image: url(&quot;assets/img/couple.jpg&quot;);">
-        <form method="post" action="login.php">
+        <form method="post">
             <h2 class="sr-only">Login Form</h2>
-            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-            <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"></div>
-            <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div><a class="forgot" href="#">Forgot your email or password?</a></form>
-            <?php 
-if ( !isset($_POST['email'], $_POST['password']) ) {
-	exit('Please fill both the username and password fields!');
-}
-if ($stmt = $con->prepare('SELECT user_id, password FROM user WHERE email = ?')) {
-	$stmt->bind_param('s', $_POST['email']);
-	$stmt->execute();
-	$stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($user_id, $password);
-        $stmt->fetch();
-            //Need to verify password using whatever hash method we use
-            if ($_POST['password'] == $password) {
-            session_regenerate_id();
-            $_SESSION['loggedin'] = TRUE;
-            $_SESSION['name'] = $_POST['email'];
-            $_SESSION['user_id'] = $user_id;
-            header("Location: info.php");
-        } else {
-            echo 'Incorrect password!';
-        }
-    } else {
-        echo 'Incorrect username!';
-    }
-	$stmt->close();
-}
-?>
+            <div class="illustration"><i class="icon ion-ios-person"></i></div>
+            <div class="form-group"><input class="form-control" type="text" placeholder="First Name" name="firstname"><input class="form-control" type="text" placeholder="Surname" name="surname"></div>
+            <ul class="list-group" style="background-color: #1e2833;">
+                <li class="list-group-item" style="background-color: #1e2833;">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="color: rgb(171,109,109);">Smoker</label></div>
+                </li>
+                <li class="list-group-item" style="background-color: #1e2833;">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>
+                </li>
+                <li class="list-group-item" style="background-color: #1e2833;">
+                    <div class="dropdown"><button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Dropdown </button>
+                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
+                    </div>
+                </li>
+            </ul>
+            <div class="form-group"><a class="btn btn-primary btn-block" role="button" href="#">Submit</a></div><a class="forgot" href="#">Forgot your email or password?</a></form>
     </div>
     <div class="footer-basic">
         <footer>
