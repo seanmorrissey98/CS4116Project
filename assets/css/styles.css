@@ -1,0 +1,146 @@
+#blocked-users {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+}
+
+#matched-users {
+  font-size: 20px;
+  padding: 10px;
+  font-weight: 600;
+}
+
+#discover-main {
+}
+
+#message-header {
+  padding: 10px;
+  text-align: center;
+}
+
+#first-person {
+  padding: 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #1f2021;
+  border-radius: 10px;
+}
+
+#first-person-image {
+  width: 100%;
+}
+
+#first-person-name {
+  text-align: left;
+  background-color: #f7f9fc;
+}
+
+#latest-message {
+  text-align: start;
+  margin-top: 30px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#second-person {
+  padding: 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #1f2021;
+  border-radius: 10px;
+}
+
+#search-users {
+  padding: 16px;
+  bottom: 0;
+  position: absolute;
+  width: calc(100% - 30px);
+  margin: 0 -15px 0 -15px;
+}
+
+#search {
+  right: 0;
+  width: calc(100% - 70px);
+}
+
+#search-icon {
+  font-size: 50px;
+  padding-left: 20px;
+  vertical-align: bottom;
+}
+
+#header-name {
+  text-align: center;
+}
+
+#messaging-header {
+  padding: 15px;
+  width: 100%;
+  margin-left: 0px;
+}
+
+#matched-on {
+  margin-top: 10px;
+}
+
+#messaging-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#message {
+  width: 100%;
+  font-size: 25px;
+  border: 1px solid rgba(128,128,128,0.38);
+  padding: 10px 15px;
+}
+
+#send-message {
+  color: #fc0377;
+}
+
+#icon-span {
+  position: fixed;
+  right: 10px;
+  font-size: 42px;
+}
+
+.message-bubble {
+  max-width: 60%;
+  margin: 15px;
+  padding: 15px;
+}
+
+.messaging-bubble h2 {
+}
+
+.messaging h2 {
+}
+
+.message-bubble h2 {
+  padding: 8px;
+  background-color: #cccccc;
+  border-radius: 8px;
+  font-weight: initial;
+}
+
+.message-bubble .message-bubble-right h2 {
+  float: right;
+  background-color: rgb(2,2,228);
+}
+
+.message-bubble .message-bubble-right {
+  background-color: #4c99f4;
+  color: white;
+}
+
+@media (min-width: 1200px) {
+  .discover-people-sizing {
+    padding: 0 100px;
+  }
+}
+

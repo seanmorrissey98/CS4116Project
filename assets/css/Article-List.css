@@ -71,3 +71,190 @@
   opacity: 1;
 }
 
+.nav-item {
+}
+
+#messages-nav {
+}
+
+#discover-nav {
+  width: 100%;
+}
+
+#discover-navbar {
+  background-image: linear-gradient(to right, #fc0303, #fc0377);
+}
+
+.navbar-light .navbar-toggler {
+}
+
+@media (max-width: 960px) {
+  nav ul {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
+  nav select {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 576px) {
+  #discover-link {
+    visibility: visible;
+  }
+}
+
+#discover-conatainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#new-person {
+  max-height: 65%;
+  max-width: 40%;
+  background-color: #184e8e;
+  height: 610px;
+  width: 320px;
+}
+
+#new-person {
+}
+
+#ban-user {
+  max-width: 100%;
+  width: 75px;
+  background-color: #fc0303;
+  height: 40px;
+  margin-top: 100px;
+}
+
+#ban-user {
+  background-image: linear-gradient(to right, #fc0303, #fc0377);
+  float: center;
+}
+
+@media (min-width: 300px) {
+  #new-people-section {
+    padding-top: 30px;
+  }
+}
+
+.rounded.float-left {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+#button-left {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-size: cover;
+  border: none;
+}
+
+#button-right {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  border: none;
+}
+
+#user-name {
+  padding-top: 10px;
+  display: inline-block;
+}
+
+#user-age {
+  display: inline-block;
+  padding-left: 15px;
+}
+
+#user-bio {
+  margin-top: -20px;
+}
+
+#discover-people {
+}
+
+#like-dislike-buttons {
+}
+
+#like-dislike {
+  border: none;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+}
+
+#discover-people {
+  padding-bottom: 15px;
+  padding-top: 30px;
+}
+
+#like-button {
+  height: 50px;
+  width: 70px;
+  background-color: #fc0377;
+  margin-right: 5%;
+  float: right;
+  border: none;
+  box-shadow: 2px 2px #cccccc;
+}
+
+#dislike-button {
+  width: 70px;
+  height: 50px;
+  background-color: #fc0303;
+  margin-left: 5%;
+  float: left;
+  box-shadow: 2px 2px #cccccc;
+  border: none;
+}
+
+#ban-user-section {
+}
+
+#dislike-span {
+  padding: 2px 12px;
+}
+
+#report-user {
+  background-size: cover;
+  padding: 0;
+  border: none;
+}
+
+#report {
+  background: url("../../assets/img/thumb_down-24px.svg");
+  padding: 2px 12px;
+}
+
+#discover-wrapper {
+  width: 100%;
+}
+
+#matched-users a::after {
+  border: 2px black;
+}
+
+.messsaging-buttons {
+  background-color: rgba(255,255,255,0);
+  color: rgb(0,0,0);
+}
+
+.message-links {
+  font-size: 50px;
+}
+

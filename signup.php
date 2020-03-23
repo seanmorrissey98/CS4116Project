@@ -1,3 +1,9 @@
+<?php
+	if (isset($_COOKIE['email'])) {
+		header("Location: /info.php");
+		exit;
+	}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -48,6 +54,10 @@
                 <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
                 <div class="form-group"><input class="form-control" type="password" name="password-repeat" placeholder="Password (repeat)"></div>
 				<?php
+					if (isset($_COOKIE['enterinfo'])) {
+						print "<h4 class=\"text-center\">{$_COOKIE['enterinfo']}</h4>";
+						setcookie("enterinfo",0,time()-100);
+					}
 					if (isset($_POST['submitted'])) {
 						if ( $_POST['email'] == "" or $_POST['password'] == "" or $_POST['password-repeat'] == "" ) {
 							print "<h4 class=\"text-center\">One or more fields empty, please try again.</h4>";
@@ -56,7 +66,10 @@
 							print "<h4 class=\"text-center\">Please check the checkbox.</h4>";
 						}
 						if ( $_POST['email'] !== "" and isset($_POST['agreed']) and $_POST['password'] == $_POST['password-repeat']) {
-							header("Location: /info.html");
+							//Need to create a cookie for password and email so we can get it from the next page
+							setcookie("email",$_POST['email'],time()+3600);
+							setcookie("password",$_POST['password'],time()+3600);
+							header("Location: /info.php");
 							exit;
 						}
 					}
