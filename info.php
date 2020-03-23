@@ -19,11 +19,32 @@
 			if($_FILES["user-image"]["name"] !== "")
 			{
 				//Uploading a profile picture
-				$check = getimagesize($_FILES["user-image"]["tmp_name"]);
-				if($check !== false) {
-					setcookie("error_message","File is an image - {$check["mime"]}",time()+3600);
-				} else {
-					setcookie("error_message","File is not an image.",time()+3600);
+				if ( $_POST['firstname'] !== "" or $_POST['surname'] !== "" or $_POST['age'] !== "" or $_POST['description'] !== "") {
+					$check = getimagesize($_FILES["user-image"]["tmp_name"]);
+					if($check !== false) {
+						$upload_image=$_FILES["user-image"]["name"];
+						//NEED TO CHANGE THIS PATH ON EACH INDEPENDENT MACHINE AND HIVE
+						$folder="C:\wamp64\www\user_images\\";
+						move_uploaded_file($_FILES["user-image"]["tmp_name"], "$folder".$_FILES["user-image"]["name"]);
+						include "localDBConnection.php";
+						$sql = "INSERT INTO `User` (`first_name`, `last_name`, `email`, `password`, `user_type`) VALUES ('{$_POST['firstname']}', '{$_POST['surname']}', '{$_COOKIE['email']}', '{$_COOKIE['password']}', 'user')";
+						$result = $con->query($sql);
+						if( $_POST['smoker'] == "Yes") {
+							$smoker = 1;
+						} else {
+							$smoker = 0;
+						}
+						$sql = "SELECT user_id FROM User WHERE email=\"{$_COOKIE['email']}\"";
+						$result = $con->query($sql);
+						while($row = $result->fetch_assoc()){
+							$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Photo`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '{$upload_image}', '0', '{$_POST['description']}', '{$_POST['drinker']}', '{$smoker}', '0')";
+							$result_two = $con->query($sql);
+						}
+						$con->close();
+						goToNextPage();
+					} else {
+						setcookie("error_message","File is not an image or is too big.",time()+60);
+					}
 				}
 			} else {
 				//not uploading a profile picture
