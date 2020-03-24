@@ -1,6 +1,101 @@
-<?php 
+<?php
+// Initialize the session
 session_start();
-include 'connection.php';
+
+if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+    header("Location: adminDashboard.php");
+}
+
+if(isset($_SESSION["loggedIn"])&& $_SESSION["loggedIn"] == true ){
+    header("location: info.php");
+    exit;
+}
+
+// Include config file
+require_once "connection.php";
+
+// Define variables and initialize with empty values
+$email = $password = "";
+$email_err = $password_err = "";
+
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    // Check if email is empty
+    if(empty(trim($_POST["email"]))){
+        $email_err = "Please enter email.";
+    } else{
+        $email = trim($_POST["email"]);
+    }
+
+    // Check if password is empty
+    if(empty(trim($_POST["password"]))){
+        $password_err = "Please enter your password.";
+    } else{
+        $password = trim($_POST["password"]);
+    }
+
+    // Validate credentials
+    if(empty($email_err) && empty($password_err)){
+        // Prepare a select statement
+        $sql = "SELECT user_id, first_name, last_name, email, password, user_type FROM user WHERE email = ?";
+
+        if($stmt = mysqli_prepare($con, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $param_email);
+
+            // Set parameters
+            $param_email = $email;
+
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                // Store result
+                mysqli_stmt_store_result($stmt);
+
+                // Check if email exists, if yes then verify password
+                if(mysqli_stmt_num_rows($stmt) == 1){
+                    // Bind result variables
+                    mysqli_stmt_bind_result($stmt, $user_id, $first_name, $last_name, $email, $hashed_password, $user_type);
+                    if(mysqli_stmt_fetch($stmt)){
+                        if($_POST["password"] == $hashed_password){
+                            // Password is correct, so start a new session
+                            session_start();
+
+                            // Store data in session variables
+                            $_SESSION["user_id"] = $user_id;
+                            $_SESSION["first_name"] = $first_name;
+                            $_SESSION["last_name"] = $last_name;
+                            $_SESSION["email"] = $email;
+
+                            if ($user_type == "administrator") {
+                                $_SESSION["adminLoggedIn"] = true;
+                                header("Location: adminDashboard.php");
+                            } else {
+                                $_SESSION["loggedIn"] = true;
+                            header("location: info.php");
+                            }
+
+                        } else{
+                            // Display an error message if password is not valid
+                            $password_err = "The password you entered was not valid.";
+                        }
+                    }
+                } else{
+                    // Display an error message if email doesn't exist
+                    $email_err = "No account found with that email.";
+                }
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
+
+    // Close connection
+    mysqli_close($con);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,33 +143,7 @@ include 'connection.php';
             <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"></div>
             <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
             <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div><a class="forgot" href="#">Forgot your email or password?</a></form>
-            <?php 
-if ( !isset($_POST['email'], $_POST['password']) ) {
-	exit('Please fill both the username and password fields!');
-}
-if ($stmt = $con->prepare('SELECT user_id, password FROM user WHERE email = ?')) {
-	$stmt->bind_param('s', $_POST['email']);
-	$stmt->execute();
-	$stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($user_id, $password);
-        $stmt->fetch();
-            //Need to verify password using whatever hash method we use
-            if ($_POST['password'] == $password) {
-            session_regenerate_id();
-            $_SESSION['loggedin'] = TRUE;
-            $_SESSION['name'] = $_POST['email'];
-            $_SESSION['user_id'] = $user_id;
-            header("Location: info.php");
-        } else {
-            echo 'Incorrect password!';
-        }
-    } else {
-        echo 'Incorrect username!';
-    }
-	$stmt->close();
-}
-?>
+
     </div>
     <div class="footer-basic">
         <footer>
