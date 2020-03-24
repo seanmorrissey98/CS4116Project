@@ -2,7 +2,13 @@
 function populateUserTable() {
     require_once "connection.php";
     $sql = "SELECT email, first_name, last_name, date_joined from user";
-
+    $result = mysqli_query($con, $sql);
+    if (mysqli_num_rows($result) > 0) {
+    // output data of each row
+    while($row = mysqli_fetch_assoc($result)) {
+        echo "<tr><td>" . $row["email"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["date_joined"] . "</td></tr>";
+    }
+}
 }
 ?>
 
