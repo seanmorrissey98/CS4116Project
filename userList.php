@@ -1,7 +1,22 @@
 <?php 
+session_start();
 function populateUserTable() {
-    require_once "connection.php";
-    $sql = "SELECT email, first_name, last_name, date_joined from user";
+    include "localDBConnection.php";
+    $sql = "SELECT email, first_name, last_name, date_joined from User";
+    $result = mysqli_query($con, $sql);
+    if (mysqli_num_rows($result) > 0) {
+    // output data of each row
+    while($row = mysqli_fetch_assoc($result)) {
+        echo "<tr><td>" . $row["email"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["date_joined"] . "</td></tr>";
+    }
+}
+
+
+}
+function searchUserTable() {
+    $search = $_GET["userSearch"];
+    include "localDBConnection.php";
+    $sql = "SELECT email, first_name, last_name, date_joined from User WHERE email LIKE '$search%'";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
@@ -10,6 +25,14 @@ function populateUserTable() {
     }
 }
 }
+function logout()
+{
+    $_SESSION = array();
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -45,23 +68,28 @@ function populateUserTable() {
 
 <body>
     <div>
-        <div class="header-blue">
-            <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="#">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse"
-                        id="navcol-1">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
-                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                                <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
-                            </li>
-                        </ul>
-                        <form class="form-inline mr-auto" target="_self">
-                            <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                        </form><span class="navbar-text"> <a class="login" href="login.html">Log In</a></span><a class="btn btn-light action-button" role="button" href="signup.html">Sign Up</a></div>
-                </div>
-            </nav>
-        </div>
+    <div class="header-blue" style="background-color: rgb(195,12,23);">
+        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+            <div class="container-fluid"><a class="navbar-brand" href="#">Company Name</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse"
+                    id="navcol-1">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
+                        </li>
+                    </ul>
+                    <form class="form-inline mr-auto" target="_self">
+                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
+                    </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
+                    <?php
+                    if (isset($_GET["logout"])) {
+                        logout();
+                    }
+                    ?>
+                    </span></div>
+            </div>
+        </nav>
     </div>
     <div>
         <div class="container">
@@ -69,8 +97,14 @@ function populateUserTable() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">User List</h4>
-                            <p class="card-text"></p>
+                            <h4 class="card-title">User List</h4>  
+                            <form action="userList.php" method="get">
+                                    <input type="search" name="userSearch" placeholder="Search Users">
+                                    <input type="submit" value="Search">
+
+
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -86,8 +120,12 @@ function populateUserTable() {
                                     <th>Last Name</th>
                                     <th>Date Joined</th>
                                 </tr>
-                            <?php
-                                populateUserTable();
+                            <?php                            
+                                if (isset($_GET["userSearch"])) {
+                                    searchUserTable($_GET["userSearch"]);
+                                } else {
+                                    populateUserTable();                                    
+                                }
                              ?>
                             </thead>
                             <tbody></tbody>
