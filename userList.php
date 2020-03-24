@@ -1,38 +1,11 @@
-<?php
-session_start();
-if (!isset($_SESSION["adminLoggedIn"])) {
-    header("Location: login.php");
-    exit;
-}
+<?php 
+function populateUserTable() {
+    require_once "connection.php";
+    $sql = "SELECT email, first_name, last_name, date_joined from user";
 
-
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-}
-function getTotalUserCount() {
-    include "connection.php";
-    $sql = "SELECT * FROM user";
-    $result = mysqli_query($con, $sql);
-    echo mysqli_num_rows($result);
-}
-
-function getTotalBannedUserCount() {
-    include "connection.php";
-    $sql = "SELECT * FROM banned";
-    $result = mysqli_query($con, $sql);
-    echo mysqli_num_rows($result);
-}
-
-function getTotalConnectionCount() {
-    include "connection.php";
-    $sql = "SELECT * FROM connection";
-    $result = mysqli_query($con, $sql);
-    echo mysqli_num_rows($result);
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -66,11 +39,11 @@ function getTotalConnectionCount() {
 
 <body>
     <div>
-        <div class="header-blue" style="background-color: rgb(195,12,23);">
+        <div class="header-blue">
             <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="#">Company Name</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="container-fluid"><a class="navbar-brand" href="#">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse"
-                         id="navcol-1">
+                        id="navcol-1">
                         <ul class="nav navbar-nav">
                             <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
                             <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
@@ -79,13 +52,7 @@ function getTotalConnectionCount() {
                         </ul>
                         <form class="form-inline mr-auto" target="_self">
                             <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                        </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
-                    <?php
-                    if (isset($_GET["logout"])) {
-                        logout();
-                    }
-                    ?>
-                    </span></div>
+                        </form><span class="navbar-text"> <a class="login" href="login.html">Log In</a></span><a class="btn btn-light action-button" role="button" href="signup.html">Sign Up</a></div>
                 </div>
             </nav>
         </div>
@@ -96,40 +63,29 @@ function getTotalConnectionCount() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Admin Dashboard</h4>
-                            <p class="card-text">Welcome <?php echo $_SESSION["first_name"];?></p><a class="card-link" href="#">Inbox</a><a class="card-link" href="#">Option 2</a></div>
+                            <h4 class="card-title">User List</h4>
+                            <p class="card-text"></p>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Total Users</h4>
-                            <p class="card-text"><?php getTotalUserCount()?></p><a class="card-link" href="userList.php">Link</a><a class="card-link" href="#"></a></div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Banned Users</h4>
-                            <p class="card-text"><?php getTotalBannedUserCount()?></p><a class="card-link" href="#">Link</a><a class="card-link" href="#"></a></div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Reported Users</h4>
-                            <h6 class="text-muted card-subtitle mb-2"></h6>
-                            <p class="card-text">22</p><a class="card-link" href="#">Link</a><a class="card-link" href="#"></a></div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Connections</h4>
-                            <h6 class="text-muted card-subtitle mb-2"></h6>
-                            <p class="card-text"><?php getTotalConnectionCount()?></p><a class="card-link" href="#">Link</a><a class="card-link" href="#"></a></div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Date Joined</th>
+                                </tr>
+                            <?php
+                                populateUserTable();
+                             ?>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
