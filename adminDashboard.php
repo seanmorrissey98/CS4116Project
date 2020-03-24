@@ -14,21 +14,21 @@ function logout()
 }
 function getTotalUserCount() {
     include "connection.php";
-    $sql = "SELECT * FROM user";
+    $sql = "SELECT * FROM User";
     $result = mysqli_query($con, $sql);
     echo mysqli_num_rows($result);
 }
 
 function getTotalBannedUserCount() {
     include "connection.php";
-    $sql = "SELECT * FROM banned";
+    $sql = "SELECT * FROM Banned";
     $result = mysqli_query($con, $sql);
     echo mysqli_num_rows($result);
 }
 
 function getTotalConnectionCount() {
     include "connection.php";
-    $sql = "SELECT * FROM connection";
+    $sql = "SELECT * FROM Connection";
     $result = mysqli_query($con, $sql);
     echo mysqli_num_rows($result);
 }
