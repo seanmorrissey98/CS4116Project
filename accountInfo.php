@@ -1,5 +1,12 @@
 <?php
 session_start();
+function logout()
+{
+    $_SESSION = array();
+    session_destroy();
+    header("Location: index.html");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,18 +54,22 @@ $availInterests=getAvailInterests();
 ?>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="#">Profile</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="/discover.php">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">More Links </a>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="/discover.php">Discover</a><a class="dropdown-item" role="presentation" href="/interests.php">My Interests</a><a class="dropdown-item" role="presentation" href="/messaging.html">Messages</a></div>
                         </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                    </form><span class="navbar-text"> </span><a class="btn btn-light action-button" role="button" href="signup.php">Sign Up</a></div>
+                    </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
+					<?php
+                    if (isset($_GET["logout"])) {
+                        logout();
+                    }
+                    ?>
+					</span></div>
             </div>
         </nav>
     </div>
@@ -142,6 +153,14 @@ $availInterests=getAvailInterests();
 		}
 	?>
     </div>
+	<script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+    <script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
+    <script src="assets/js/Profile-Edit-Form.js"></script>
+    <script src="assets/js/Range-selector---slider.js"></script>
 </body>
 
 </html>

@@ -5,12 +5,6 @@ require_once "connection.php";
 // Initialize the session
 session_start();
 
-// Test data, to be replaced with $_SESSION data from login.php to get current user data
-$_SESSION["user_id"] = 5;
-$_SESSION["first_name"] = "Test";
-$_SESSION["last_name"] = "Boi";
-$_SESSION["email"] = "testyboi@gmail.com";
-
 $user_id = $_SESSION["user_id"];
 
 // Iniialize array for database pull
@@ -88,8 +82,8 @@ if (mysqli_num_rows($result) != 0) {
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav">
                     <li class="nav-item" role="presentation" id="messaging-link"><a class="nav-link" id="messaging-nav" href="messaging.html" style="font-size: 20px;color: #ffffff;">Messages</a></li>
-                    <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active" id="discover-nav-1" href="discover.html" style="font-size: 20px;color: #ffffff;">Discover</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="accountinfo.html" style="color: #ffffff;">Profile</a></li>
+                    <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active" id="discover-nav-1" href="discover.php" style="font-size: 20px;color: #ffffff;">Discover</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="accountInfo.php" style="color: #ffffff;">Profile</a></li>
                 </ul>
         </div>
         </div>

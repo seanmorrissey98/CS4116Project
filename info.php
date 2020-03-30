@@ -4,21 +4,21 @@ function logout()
 {
     $_SESSION = array();
     session_destroy();
-    header("Location: login.php");
+    header("Location: index.html");
     exit;
 }
 ?>
 <?php
 	if (!isset($_COOKIE['email'])) {
 		setcookie("enterinfo","Please enter an email and password first.",time()+3600);
-		header("Location: /cs4116/17222761/signup.php");
+		header("Location: signup.php");
 		exit;
 	}
 	function goToNextPage() {
 		setcookie("email",0,time()-3600);
 		setcookie("password",0,time()-3600);
 		setcookie("error_message",0,time()-3600);
-		header("Location: /cs4116/17222761/accountInfo.html");
+		header("Location: interests.php");
 		exit;
 	}
 	if (isset($_POST['submit-info'])) {
@@ -36,7 +36,7 @@ function logout()
 						//NEED TO CHANGE THIS PATH ON EACH INDEPENDENT MACHINE AND HIVE
 						$folder="/var/www/html/cs4116/17222761/user_images/";
 						move_uploaded_file($_FILES["user-image"]["tmp_name"], "$folder".$_FILES["user-image"]["name"]);
-						include "localDBConnection.php";
+						include "connection.php";
 						$sql = "INSERT INTO `User` (`first_name`, `last_name`, `email`, `password`, `user_type`) VALUES ('{$_POST['firstname']}', '{$_POST['surname']}', '{$_COOKIE['email']}', '{$_COOKIE['password']}', 'user')";
 						$result = $con->query($sql);
 						if( $_POST['smoker'] == "Yes") {
@@ -52,6 +52,10 @@ function logout()
 							setcookie("user_id",$row['user_id'],time()+3600);
 						}
 						$con->close();
+						$_SESSION["user_id"] = $_COOKIE['user_id'];
+                        $_SESSION["first_name"] = $_POST['firstname'];
+                        $_SESSION["last_name"] = $_POST['surname'];
+                        $_SESSION["email"] = $_COOKIE['email'];
 						goToNextPage();
 					} else {
 						setcookie("error_message","File is not an image or is too big.",time()+60);
@@ -60,7 +64,7 @@ function logout()
 			} else {
 				//not uploading a profile picture
 				if ( $_POST['firstname'] !== "" or $_POST['surname'] !== "" or $_POST['age'] !== "" or $_POST['description'] !== "") {
-					include "localDBConnection.php";
+					include "connection.php";
 					$sql = "INSERT INTO `User` (`first_name`, `last_name`, `email`, `password`, `user_type`) VALUES ('{$_POST['firstname']}', '{$_POST['surname']}', '{$_COOKIE['email']}', '{$_COOKIE['password']}', 'user')";
 					$result = $con->query($sql);
 					if( $_POST['smoker'] == "Yes") {
@@ -76,6 +80,10 @@ function logout()
 						setcookie("user_id",$row['user_id'],time()+3600);
 					}
 					$con->close();
+					$_SESSION["user_id"] = $_COOKIE['user_id'];
+                    $_SESSION["first_name"] = $_POST['firstname'];
+                    $_SESSION["last_name"] = $_POST['surname'];
+                    $_SESSION["email"] = $_COOKIE['email'];
 					goToNextPage();
 				}
 			}
@@ -111,17 +119,12 @@ function logout()
 <body>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="#">Company Name</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
-                        </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
                     </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
 					<?php
                     if (isset($_GET["logout"])) {
@@ -186,7 +189,7 @@ function logout()
                 <li class="list-inline-item"><a href="#">Terms</a></li>
                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
             </ul>
-            <p class="copyright">Company Name © 2017</p>
+            <p class="copyright">Limerick Lovers © 2020</p>
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>

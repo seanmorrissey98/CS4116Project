@@ -7,7 +7,7 @@ if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
 }
 
 if(isset($_SESSION["loggedIn"])&& $_SESSION["loggedIn"] == true ){
-    header("location: info.php");
+    header("location: /discover.php");
     exit;
 }
 
@@ -38,7 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($email_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT user_id, first_name, last_name, email, password, user_type FROM user WHERE email = ?";
+        $sql = "SELECT user_id, first_name, last_name, email, password, user_type FROM User WHERE email = ?";
 
         if($stmt = mysqli_prepare($con, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -72,7 +72,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 header("Location: adminDashboard.php");
                             } else {
                                 $_SESSION["loggedIn"] = true;
-                            header("location: info.php");
+                            header("location: discover.php");
                             }
 
                         } else{

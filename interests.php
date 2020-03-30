@@ -1,5 +1,12 @@
 <?php
 	session_start();
+function logout()
+{
+    $_SESSION = array();
+    session_destroy();
+    header("Location: index.html");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,18 +42,22 @@
 <body>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="#">Company Name</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="/discover.php">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
+                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">More Links </a>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="/discover.php">Discover</a><a class="dropdown-item" role="presentation" href="/accountInfo.php">Account Info</a><a class="dropdown-item" role="presentation" href="/messaging.html">Messages</a></div>
                         </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                    </form><span class="navbar-text"> <a class="login" href="#">Log Out</a></span></div>
+                    </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
+					<?php
+                    if (isset($_GET["logout"])) {
+                        logout();
+                    }
+                    ?>
+					</span></div>
             </div>
         </nav>
     </div>
@@ -61,7 +72,7 @@
 					<div class="col-sm-6 col-md-4 item"><img class="img-fluid" src="assets/img/People%20Playing%20Basketball%20On%20Basketball%20Court.jpg">
 						<h3 class="name">Remove Your Current Interests</h3>
 						<?php
-							include "localDBConnection.php";
+							include "connection.php";
 							$sql = "SELECT interest_id FROM Interests WHERE user_id=\"{$_SESSION['user_id']}\"";
 							$results = $con->query($sql);
 							if($results->num_rows === 0)
@@ -118,7 +129,7 @@
 			<?php
 				if (isset($_POST['submit-info'])) {
 					if($no_interests==false) {
-						include "localDBConnection.php";
+						include "connection.php";
 						for ($i=0;$i<count($interest_ids);$i++)
 						{
 							$val = "already-";
@@ -141,7 +152,7 @@
 							}
 						}
 					} else {
-						include "localDBConnection.php";
+						include "connection.php";
 						$sql = "SELECT * FROM `Available Interests`";
 						$results = $con->query($sql);
 						$not_selected=$results->num_rows;
@@ -172,7 +183,7 @@
                 <li class="list-inline-item"><a href="#">Terms</a></li>
                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
             </ul>
-            <p class="copyright">Company Name © 2017</p>
+            <p class="copyright">Limerick Lovers © 2020</p>
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>
