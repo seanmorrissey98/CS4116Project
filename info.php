@@ -39,7 +39,9 @@ function logout()
 						include "connection.php";
 						$sql = "INSERT INTO `User` (`first_name`, `last_name`, `email`, `password`, `user_type`) VALUES ('{$_POST['firstname']}', '{$_POST['surname']}', '{$_COOKIE['email']}', '{$_COOKIE['password']}', 'user')";
 						$result = $con->query($sql);
-						if( $_POST['smoker'] == "Yes") {
+						$smoker=0;
+						$drinker=trim($_POST['drinker']);
+						if( trim($_POST['smoker']) == "Yes") {
 							$smoker = 1;
 						} else {
 							$smoker = 0;
@@ -48,7 +50,7 @@ function logout()
 						$result = $con->query($sql);
 						session_start();
 						while($row = $result->fetch_assoc()){
-							$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Photo`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '{$upload_image}', '0', '{$_POST['description']}', '{$_POST['drinker']}', '{$smoker}', '0')";
+							$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Photo`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '{$upload_image}', '0', '{$_POST['description']}', '{$drinker}', '{$smoker}', '0')";
 							$result_two = $con->query($sql);
 							setcookie("user_id",$row['user_id'],time()+3600);
 							$_SESSION["user_id"] = $row['user_id'];
@@ -68,7 +70,8 @@ function logout()
 					include "connection.php";
 					$sql = "INSERT INTO `User` (`first_name`, `last_name`, `email`, `password`, `user_type`) VALUES ('{$_POST['firstname']}', '{$_POST['surname']}', '{$_COOKIE['email']}', '{$_COOKIE['password']}', 'user')";
 					$result = $con->query($sql);
-					if( $_POST['smoker'] == "Yes") {
+					$drinker=trim($_POST['drinker']);
+					if( trim($_POST['smoker']) == "yes") {
 						$smoker = 1;
 					} else {
 						$smoker = 0;
@@ -77,7 +80,7 @@ function logout()
 					$result = $con->query($sql);
 					session_start();
 					while($row = $result->fetch_assoc()){
-						$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '0', '{$_POST['description']}', '{$_POST['drinker']}', '{$smoker}', '0')";
+						$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '0', '{$_POST['description']}', '{$drinker}', '{$smoker}', '0')";
 						$result_two = $con->query($sql);
 						setcookie("user_id",$row['user_id'],time()+3600);
 						$_SESSION["user_id"] = $row['user_id'];
@@ -161,8 +164,8 @@ function logout()
 				<label class="form-check-label" for="drinker-list">Drinker: </label>
 				<select name="drinker" id="drinker-list" class="custom-select">
 					<option value="constantly">Constantly</option>
-					<option value="most-days">Most days</option>
-					<option value="social-drinker">Social Drinker</option>
+					<option value="Most days">Most days</option>
+					<option value="Social Drinker">Social Drinker</option>
 					<option value="no">No</option>
 				</select>
 				<br>
