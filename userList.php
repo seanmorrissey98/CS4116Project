@@ -7,7 +7,10 @@ function populateUserTable() {
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
-        echo "<tr><td>" . $row["email"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["date_joined"] . "</td></tr>";
+        echo "<tr><td><a href='#'>" . $row["email"] . "</a></td>
+            <td><a href='#'>" . $row["first_name"] . "</a></td>
+            <td><a href='#'>" . $row["last_name"] . "</a></td>
+            <td>" . $row["date_joined"] . "</td></tr>";
     }
 }
 
@@ -16,12 +19,15 @@ function populateUserTable() {
 function searchUserTable() {
     $search = $_GET["userSearch"];
     include "localDBConnection.php";
-    $sql = "SELECT email, first_name, last_name, date_joined from User WHERE email LIKE '$search%'";
+    $sql = "SELECT email, first_name, last_name, date_joined from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
-        echo "<tr><td>" . $row["email"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["date_joined"] . "</td></tr>";
+        echo "<tr><td><a href='#'>" . $row["email"] . "</a></td>
+        <td><a href='#'>" . $row["first_name"] . "</a></td>
+        <td><a href='#'>" . $row["last_name"] . "</a></td>
+        <td>" . $row["date_joined"] . "</td></tr>";
     }
 }
 }
