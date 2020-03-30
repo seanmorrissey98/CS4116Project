@@ -146,7 +146,6 @@ function logout()
 							$val .= (string)$interest_id2[$j];
 							if(isset($_POST[$val]))
 							{
-								print "<h4 class=\"text-center\">INSERT INTO `Interests` (`user_id`, `interest_id`) VALUES ('{$_SESSION['user_id']}', '{$interest_id2[$j]}')</h4>";
 								$sql = "INSERT INTO `Interests` (`user_id`, `interest_id`) VALUES ('{$_SESSION['user_id']}', '{$interest_id2[$j]}')";
 								$results = $con->query($sql);
 							}
@@ -162,7 +161,6 @@ function logout()
 							$val .= (string)$j;
 							if(isset($_POST[$val]))
 							{
-								print "<h4 class=\"text-center\">INSERT INTO `Interests` (`user_id`, `interest_id`) VALUES ('{$_SESSION['user_id']}', '{$j}')</h4>";
 								$sql = "INSERT INTO `Interests` (`user_id`, `interest_id`) VALUES ('{$_SESSION['user_id']}', '{$j}')";
 								$results = $con->query($sql);
 							}

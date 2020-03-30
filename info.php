@@ -46,13 +46,14 @@ function logout()
 						}
 						$sql = "SELECT user_id FROM User WHERE email=\"{$_COOKIE['email']}\"";
 						$result = $con->query($sql);
+						session_start();
 						while($row = $result->fetch_assoc()){
 							$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Photo`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '{$upload_image}', '0', '{$_POST['description']}', '{$_POST['drinker']}', '{$smoker}', '0')";
 							$result_two = $con->query($sql);
 							setcookie("user_id",$row['user_id'],time()+3600);
+							$_SESSION["user_id"] = $row['user_id'];
 						}
 						$con->close();
-						$_SESSION["user_id"] = $_COOKIE['user_id'];
                         $_SESSION["first_name"] = $_POST['firstname'];
                         $_SESSION["last_name"] = $_POST['surname'];
                         $_SESSION["email"] = $_COOKIE['email'];
@@ -74,13 +75,14 @@ function logout()
 					}
 					$sql = "SELECT user_id FROM User WHERE email=\"{$_COOKIE['email']}\"";
 					$result = $con->query($sql);
+					session_start();
 					while($row = $result->fetch_assoc()){
 						$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '0', '{$_POST['description']}', '{$_POST['drinker']}', '{$smoker}', '0')";
 						$result_two = $con->query($sql);
 						setcookie("user_id",$row['user_id'],time()+3600);
+						$_SESSION["user_id"] = $row['user_id'];
 					}
 					$con->close();
-					$_SESSION["user_id"] = $_COOKIE['user_id'];
                     $_SESSION["first_name"] = $_POST['firstname'];
                     $_SESSION["last_name"] = $_POST['surname'];
                     $_SESSION["email"] = $_COOKIE['email'];
