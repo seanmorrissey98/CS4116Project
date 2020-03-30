@@ -36,7 +36,7 @@ if (isset($_POST['reportText']) && $tableName === 'Reports') {
 if ($con->query($sql) === TRUE) {
     echo "New record created successfully";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $sql . "<br>" . $con->error;
 }
 
 // Return to discover page
