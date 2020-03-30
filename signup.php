@@ -29,18 +29,14 @@
     <div>
         <div class="header-blue">
             <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="#">Company Name</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="container-fluid"><a class="navbar-brand" href="/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse"
                         id="navcol-1">
                         <ul class="nav navbar-nav">
-                            <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
-                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                                <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
-                            </li>
+                           
                         </ul>
                         <form class="form-inline mr-auto" target="_self">
-                            <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                        </form><span class="navbar-text"> <a class="login" href="login.html">Log In</a></span></div>
+                        </form><span class="navbar-text"> <a class="login" href="login.php">Log In</a></span></div>
                 </div>
             </nav>
         </div>
@@ -77,7 +73,7 @@
                 <div class="form-group">
                     <div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="agreed">I agree to the license terms.</label></div>
                 </div>
-                <div class="form-group"><input class="btn btn-primary btn-block" type="submit" value="Sign Up" name="submitted"></div><a class="already" href="login.html">You already have an account? Login here.</a></form>
+                <div class="form-group"><input class="btn btn-primary btn-block" type="submit" value="Sign Up" name="submitted"></div><a class="already" href="login.php">You already have an account? Login here.</a></form>
         </div>
     </div>
     <div class="footer-basic">
@@ -90,7 +86,7 @@
                 <li class="list-inline-item"><a href="#">Terms</a></li>
                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
             </ul>
-            <p class="copyright">Company Name © 2017</p>
+            <p class="copyright">Limerick Lovers © 2020</p>
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>

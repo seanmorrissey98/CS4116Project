@@ -121,20 +121,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="#">Company Name</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                    id="navcol-1">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Link</a></li>
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
-                        </li>
-                    </ul>
-                    <form class="form-inline mr-auto" target="_self">
-                        <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                    </form><span class="navbar-text"> </span><a class="btn btn-light action-button" role="button" href="signup.html">Sign Up</a></div>
-            </div>
-        </nav>
+                <div class="container-fluid"><a class="navbar-brand" href="/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse"
+                        id="navcol-1">
+                        <ul class="nav navbar-nav">
+                        </ul>
+                        <form class="form-inline mr-auto" target="_self">
+                        </form><a class="btn btn-light action-button" role="button" href="signup.php">Sign Up</a></div>
+                </div>
+            </nav>
     </div>
     <div class="login-dark" style="background-image: url(&quot;assets/img/couple.jpg&quot;);">
         <form method="post" action="login.php">
@@ -155,7 +150,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <li class="list-inline-item"><a href="#">Terms</a></li>
                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
             </ul>
-            <p class="copyright">Company Name © 2017</p>
+            <p class="copyright">Limerick Lovers © 2020</p>
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>
