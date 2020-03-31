@@ -7,6 +7,8 @@ function logout()
     header("Location: index.html");
     exit;
 }
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,18 +50,29 @@ function logout()
 <body>
 	<?php
 require('functions.php');
+if (isset($_GET["user_account_id"])) {
+$other_user=true;    
+$var_profile_user=$_GET["user_account_id"];
+    $usersBio = getUsersBio($var_profile_user);
+    $users=getUser($var_profile_user);
+    $availInterests=getAvailInterests();
+    $genderPref = getUserGenderPreference($var_profile_user);
+} else {
+    $other_user=false;
 $usersBio=getUsersBio($_SESSION['user_id']);
 $users=getUser($_SESSION['user_id']);
 $availInterests=getAvailInterests();
+$genderPref=getUserGenderPreference($_SESSION["user_id"]);
+}
 ?>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="/discover.php">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="discover.php">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">
                         <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">More Links </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="/discover.php">Discover</a><a class="dropdown-item" role="presentation" href="/interests.php">My Interests</a><a class="dropdown-item" role="presentation" href="/messaging.html">Messages</a></div>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="discover.php">Discover</a><a class="dropdown-item" role="presentation" href="interests.php">My Interests</a><a class="dropdown-item" role="presentation" href="messaging.html">Messages</a></div>
                         </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
@@ -110,7 +123,10 @@ $availInterests=getAvailInterests();
 					<div>
 					<br>
 					</div>
-					<a class="btn btn-primary form-btn"  role="button" href="interests.php">Edit Hobbies</a>
+                    <?php if (!$other_user) {
+                    echo '<a class="btn btn-primary form-btn"  role="button" href="interests.php">Edit Hobbies</a>';
+                    }
+                    ?>
                     <div class="form-row">
                         <div class="col-sm-12 col-md-6">
                         </div>
@@ -121,11 +137,13 @@ $availInterests=getAvailInterests();
                     <div class="form-row">
 					<div class="col-sm-12 col-md-6">
                         </div>
-						<div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-6">
 						        <div class="form-group"><label>Gender Preferences: &nbsp</label><label id="labelness"></label></div>
                             <div>
-						</div>
-                        <div>
+                        </div>
+                        <?php 
+                        if (!$other_user) {
+                        echo '<div>
                             <div>
 							<form name="formid">
 								<select id="GENDERPREF" name="GENDERPREF" onchange="getPref()">
@@ -136,12 +154,18 @@ $availInterests=getAvailInterests();
 								</select>
 								</form>
                                 </div>
-                       </div>
+                       </div>';
+                        } else {
+                            echo '<p>' . getUserGenderPreference($var_profile_user) . "</p>";
+                        }
+                       ?>
 					   </div>
-                        <div class="col-md-12 content-right"><button class="btn btn-primary form-btn" name="submit" type="submit">SAVE </button><button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>
-                    </div>
-					<?php 
-					?>
+                        <?php
+                        if (!$other_user) {
+                            echo '<div class="col-md-12 content-right"><button class="btn btn-primary form-btn" name="submit" type="submit">SAVE </button><button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>';
+                        }
+                        ?>
+                        </div>
                 </div>
             </div>
         </form>

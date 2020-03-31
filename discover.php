@@ -187,7 +187,10 @@ if (isset($_POST['submit1'])) {
                             </div>
                             <!-- Add $_SESSION match data into discover card for name, age and description -->
                             <div style="margin: 0 -15px 0 -15px;padding: 0 15px 0 15px;background-color: #f7f9fc;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;">
-                                <h1 id="match-name" style="width: auto;"><?php if(isset($_SESSION["match_name"])) echo $_SESSION["match_name"];?></h1>
+                                <h1 id="match-name" style="width: auto;"><?php if(isset($_SESSION["match_name"])) {
+                                    $user_account_id=$_SESSION["match_id"];
+                                    echo "<a href='accountInfo.php?user_account_id=$user_account_id'>" . $_SESSION["match_name"] . "</a>";
+                                }?></h1>
                                 <h1 id="match-age" style="font-size: 26px;"><?php if(isset($_SESSION["match_age"])) echo $_SESSION["match_age"];?></h1>
                                 <p id="match-bio" style="font-size: 14px;"><br><?php if(isset($_SESSION["match_description"])) echo $_SESSION["match_description"];?><br><br></p>
                             </div>
