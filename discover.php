@@ -157,8 +157,6 @@ if ((isset($_POST['submit1']))) {
         if (mysqli_num_rows($result) != 0) {
 
         foreach ($result as $value) {
-            echo implode("",$value);
-            echo '<br>';
             if (empty($value['Photo'])) {
                 $match_photo = 'NULL';
             } else {
