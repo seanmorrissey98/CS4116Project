@@ -13,13 +13,6 @@ $twig = new Environment($loader);
 
 // Initialize the session
 session_start();
-
-// Test Data
-$_SESSION["user_id"] = 5;
-$_SESSION["first_name"] = "Test";
-$_SESSION["last_name"] = "Boi";
-$_SESSION["email"] = "testyboi@gmail.com";
-
 $user_id = $_SESSION["user_id"];
 
 // Iniialize array for database pull
@@ -114,20 +107,58 @@ if (!$out_of_matches) {
                 <form method="post">
                     <input type="text" placeholder="Search.." name="search">
                     <button type="submit" name="submit1"><i class="fa fa-search"></i></button>
+                    <input type="checkbox" id="nonsmoker" name="nonsmoker" value="nonsmoker">
+                    <label for="nonsmoker" style="color: #ffffff;"> Non-Smoker</label>
+                    <input type="checkbox" id="nondrinker" name="nondrinker" value="nondrinker">
+                    <label for="nondrinker"style="color: #ffffff;"> Non-Drinker</label>
                     <button type="reset" value="Reset">Reset</button>
                     <button type="cancel" value="Cancel">Cancel</button>
+
                 </form>
             </ul>
         </div>
     </div>
 </nav>
 <?php
-if (isset($_POST['submit1'])) {
+if ((isset($_POST['submit1']))) {
+    if ((isset($_POST['nonsmoker'])) && (isset($_POST['nondrinker']))) {
+        if ($_POST['search']){
+        $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.first_name='$_POST[search]' or User.last_name='$_POST[search]' or Age='$_POST[search]' and Profile.Smoker=0 and Profile.Drinker='no'";
+        }
+        else{
+            $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING Profile.Smoker=0 and Profile.Drinker='no'";
+
+        }
+    }
+    elseif((isset($_POST['nonsmoker'])) && !(isset($_POST['nondrinker']))){
+        if ($_POST['search']){
+            $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.first_name='$_POST[search]' or User.last_name='$_POST[search]' or Age='$_POST[search]' and Profile.Smoker=0";
+
+            }
+            else{
+                $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING Profile.Smoker=0";
+
+            }
+    }
+    elseif((isset($_POST['nondrinker'])) && !(isset($_POST['nonsmoker']))){
+        if ($_POST['search']){
+            $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.first_name='$_POST[search]' or User.last_name='$_POST[search]' or Age='$_POST[search]' and Profile.Drinker='no'";
+
+            }
+            else{
+                $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING Profile.Drinker='no'";
+
+            }
+    }
+    else{
     $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.first_name='$_POST[search]' or User.last_name='$_POST[search]' or Age='$_POST[search]'";
+    }
     $result = mysqli_query($con, $sql);
-    if (mysqli_num_rows($result) != 0) {
+        if (mysqli_num_rows($result) != 0) {
 
         foreach ($result as $value) {
+            echo implode("",$value);
+            echo '<br>';
             if (empty($value['Photo'])) {
                 $match_photo = 'NULL';
             } else {
@@ -147,7 +178,7 @@ if (isset($_POST['submit1'])) {
         $match_photo = 'NULL';
         // Load match data into Session array
         $_SESSION["match_id"] = "NULL";
-        $_SESSION["match_name"] = "NULL";
+        $_SESSION["match_name"] = "USER NOT FOUND";
         $_SESSION["match_age"] = "NULL";
         $_SESSION["match_description"] = "NULL";
         $_SESSION["match_gender"] = NULL;
