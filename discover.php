@@ -93,35 +93,89 @@ if (!$out_of_matches) {
 </head>
 
 <body style="background-color: rgb(255,255,255);height: 100% !important;">
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean" id="discover-navbar">
-        <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon" style="opacity: 1;filter: brightness(200%) hue-rotate(0deg) invert(100%);"></span></button>
-            <div
+<nav class="navbar navbar-light navbar-expand-md navigation-clean" id="discover-navbar">
+    <div class="container">
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                    class="navbar-toggler-icon"
+                    style="opacity: 1;filter: brightness(200%) hue-rotate(0deg) invert(100%);"></span></button>
+        <div
                 class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav">
-                    <li class="nav-item" role="presentation" id="messaging-link"><a class="nav-link" id="messaging-nav" href="messaging.html" style="color: #ffffff;">Messages</a></li>
-                    <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active" id="discover-nav-1" href="discover.php" style="color: #ffffff;">Discover</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="accountInfo.php" style="color: #ffffff;">Profile</a></li>
-                </ul>
+            <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav">
+                <li class="nav-item" role="presentation" id="messaging-link"><a class="nav-link" id="messaging-nav"
+                                                                                href="messaging.html"
+                                                                                style="color: #ffffff;">Messages</a>
+                </li>
+                <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active"
+                                                                                 id="discover-nav-1" href="discover.php"
+                                                                                 style="color: #ffffff;">Discover</a>
+                </li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="accountInfo.php"
+                                                            style="color: #ffffff;">Profile</a></li>
+                <form method="post">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit" name="submit1"><i class="fa fa-search"></i></button>
+                    <button type="reset" value="Reset">Reset</button>
+                    <button type="cancel" value="Cancel">Cancel</button>
+                </form>
+            </ul>
         </div>
-        </div>
-    </nav>
-    <div id="new-people-section" class="container-fluid" style="background-color: rgba(223,232,238,0);padding: 0;height: calc(100% - 84px);">
-        <div class="row" style="margin-right: 0;height: 100%;">
-            <div class="col col-xl-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
-                <div id="messaging" class="container-fluid" style="padding-right: 0;">
-                    <header id="message-header" style="background-color: #f7f9fc; margin-bottom: 1rem;"><p id="matched-users" style="margin: -0.7rem;">Matches</p></header>
-                    <div class="container-fluid">
-                        <div class="row">
+    </div>
+</nav>
+<?php
+if (isset($_POST['submit1'])) {
+    $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.first_name='$_POST[search]' or User.last_name='$_POST[search]' or Age='$_POST[search]'";
+    $result = mysqli_query($con, $sql);
+    if (mysqli_num_rows($result) != 0) {
+
+        foreach ($result as $value) {
+            if (empty($value['Photo'])) {
+                $match_photo = 'NULL';
+            } else {
+                $match_photo = $value['Photo'];
+            }
+
+            // Load match data into Session array
+            $_SESSION["match_id"] = $value['user_id'];
+            $_SESSION["match_name"] = $value['first_name'] . " " . $value['last_name'];
+            $_SESSION["match_age"] = $value['Age'];
+            $_SESSION["match_description"] = $value['Description'];
+            $_SESSION["match_gender"] = $value['Gender'];
+            $_SESSION["match_drinker"] = $value['Drinker'];
+            $_SESSION["match_smoker"] = $value['Smoker'];
+        }
+    } else {
+        $match_photo = 'NULL';
+        // Load match data into Session array
+        $_SESSION["match_id"] = "NULL";
+        $_SESSION["match_name"] = "NULL";
+        $_SESSION["match_age"] = "NULL";
+        $_SESSION["match_description"] = "NULL";
+        $_SESSION["match_gender"] = NULL;
+        $_SESSION["match_drinker"] = NULL;
+        $_SESSION["match_smoker"] = NULL;
+    }
+}
+?>
+<div id="new-people-section" class="container-fluid"
+     style="background-color: rgba(223,232,238,0);padding: 0;height: calc(100% - 84px);">
+    <div class="row" style="margin-right: 0;height: 100%;">
+        <div class="col col-xl-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
+            <div id="messaging" class="container-fluid" style="padding-right: 0;">
+                <header id="message-header" style="background-color: #f7f9fc; margin-bottom: 1rem;"><p
+                            id="matched-users" style="margin: -0.7rem;">Matches</p></header>
+                <div class="container-fluid">
+                    <div class="row">
                         <!-- Templating -->
                         <?php echo $matched_cards; ?>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center" style="<?php if (!$no_matches) echo " display:none;"; ?>">
-                        <p>Start liking to get matches!</p>
                     </div>
                 </div>
+                <div class="row justify-content-center" style="<?php if (!$no_matches) echo " display:none;"; ?>">
+                    <p>Start liking to get matches!</p>
+                </div>
             </div>
-            <div class="col col-xl-9 col-md-8 col-xs-12" id="discover-main" style="background-color: rgba(221,221,221,0.19);padding: 0 !important;height: 100%;<?php if ($out_of_matches) echo " display:none;"; ?>">
+        </div>
+        <div class="col col-xl-9 col-md-8 col-xs-12" id="discover-main"
+             style="background-color: rgba(221,221,221,0.19);padding: 0 !important;height: 100%;<?php if ($out_of_matches) echo " display:none;"; ?>">
                 <div class="container d-block d-block" id="discover-people" style="height: auto;/*background-color: #f7f9fc;*/padding-bottom: 0;">
                     <div class="col-xl-6 offset-xl-3 col-md-8 offset-md-2 col-xs-10 offset-xs-1">
                         <div id="discover-wrapper" class="discover-people-sizing">
