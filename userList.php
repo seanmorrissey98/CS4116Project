@@ -3,15 +3,19 @@ session_start();
 function populateUserTable() {
     // include "localDBConnection.php";
     include "connection.php";
-    $sql = "SELECT email, first_name, last_name, date_joined from User";
+    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
-        echo "<tr><td><a href='#'>" . $row["email"] . "</a></td>
-            <td><a href='#'>" . $row["first_name"] . "</a></td>
-            <td><a href='#'>" . $row["last_name"] . "</a></td>
-            <td>" . $row["date_joined"] . "</td></tr>";
+        $user_account_id = $row["user_id"];
+        echo "<tr>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
+        <td><a href='#'>" . $row["email"] . "</a></td>
+        <td><a href='#'>" . $row["first_name"] . "</a></td>
+        <td><a href='#'>" . $row["last_name"] . "</a></td>
+        <td>" . $row["date_joined"] . "</td>
+        </tr>";
     }
 }
 
@@ -21,15 +25,19 @@ function searchUserTable() {
     $search = $_GET["userSearch"];
     include "connection.php";
     // include "localDBConnection.php";
-    $sql = "SELECT email, first_name, last_name, date_joined from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
+    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
-        echo "<tr><td><a href='#'>" . $row["email"] . "</a></td>
+        $user_account_id = $row["user_id"];
+        echo "<tr>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
+        <td><a href='#'>" . $row["email"] . "</a></td>
         <td><a href='#'>" . $row["first_name"] . "</a></td>
         <td><a href='#'>" . $row["last_name"] . "</a></td>
-        <td>" . $row["date_joined"] . "</td></tr>";
+        <td>" . $row["date_joined"] . "</td>
+        </tr>";
     }
 }
 }
@@ -121,6 +129,7 @@ function logout()
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Email</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
