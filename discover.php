@@ -27,7 +27,7 @@ $matchdata = array();
 $matched_data = array();
 
 // Pull 1 row from database from like where matches not in dislike, like and report pages
-$sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.user_id != '$user_id' order by last_name LIMIT 1";
+$sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.user_id != '$user_id' LIMIT 1";
 $matchesSql = "SELECT User.user_id, first_name, Photo FROM Likes INNER JOIN User ON Likes.liked_user_id = User.user_id LEFT JOIN Profile ON Likes.liked_user_id = Profile.user_id WHERE Likes.user_id = $user_id";
 $result = mysqli_query($con, $sql);
 $match_result = mysqli_query($con, $matchesSql);
@@ -71,8 +71,7 @@ if (!$out_of_matches) {
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Actor">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <script src="https://kit.fontawesome.com/6a9548b3b1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/fonts/material-icons.min.css">
     <link rel="stylesheet" href="assets/css/Article-List.css">
     <link rel="stylesheet" href="assets/css/Footer-Basic.css">
@@ -90,127 +89,189 @@ if (!$out_of_matches) {
     <link rel="stylesheet" href="assets/css/Profile-Edit-Form.css">
     <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/checkbox-nice.css">
+    <link rel="stylesheet" href="assets/css/scrollbar.css">
 </head>
 
 <body style="background-color: rgb(255,255,255);height: 100% !important;">
 <nav class="navbar navbar-light navbar-expand-md navigation-clean" id="discover-navbar">
-    <div class="container">
-        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                    class="navbar-toggler-icon"
-                    style="opacity: 1;filter: brightness(200%) hue-rotate(0deg) invert(100%);"></span></button>
-        <div
-                class="collapse navbar-collapse" id="navcol-1">
-            <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav">
-                <li class="nav-item" role="presentation" id="messaging-link"><a class="nav-link" id="messaging-nav"
-                                                                                href="messaging.html"
-                                                                                style="color: #ffffff;">Messages</a>
+    <div class="container-fluid">
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon" style="opacity: 1;filter: brightness(200%) hue-rotate(0deg) invert(100%);"></span></button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav" style="padding: 0 80px;">
+                <li class="nav-item" role="presentation" id="messaging-link">
+                    <a class="nav-link" id="messaging-nav" href="messaging.html" style="color: #ffffff;">Messages</a>
                 </li>
-                <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active"
-                                                                                 id="discover-nav-1" href="discover.php"
-                                                                                 style="color: #ffffff;">Discover</a>
+                <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active" id="discover-nav-1" href="discover.php" style="color: #ffffff;">Discover</a>
                 </li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="accountInfo.php"
-                                                            style="color: #ffffff;">Profile</a></li>
-                <form method="post">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit" name="submit1"><i class="fa fa-search"></i></button>
-                    <button type="reset" value="Reset">Reset</button>
-                    <button type="cancel" value="Cancel">Cancel</button>
-                </form>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="accountInfo.php" style="color: #ffffff;">Profile</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item" role="presentation"><a id="advanced-search" class="nav-link" href="#" style="color: #ffffff;"> <i class="fas fa-search"></i></a></li>
+                <li class="nav-item" role="presentation"><a id="hide-advanced-search" class="nav-link" href="#" style="color: #ffffff; display: none;"> <i class="fas fa-search-minus"></i></a></li>
             </ul>
         </div>
     </div>
 </nav>
-<?php
-if (isset($_POST['submit1'])) {
-    $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id  LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.first_name='$_POST[search]' or User.last_name='$_POST[search]' or Age='$_POST[search]'";
-    $result = mysqli_query($con, $sql);
-    if (mysqli_num_rows($result) != 0) {
-
-        foreach ($result as $value) {
-            if (empty($value['Photo'])) {
-                $match_photo = 'NULL';
-            } else {
-                $match_photo = $value['Photo'];
-            }
-
-            // Load match data into Session array
-            $_SESSION["match_id"] = $value['user_id'];
-            $_SESSION["match_name"] = $value['first_name'] . " " . $value['last_name'];
-            $_SESSION["match_age"] = $value['Age'];
-            $_SESSION["match_description"] = $value['Description'];
-            $_SESSION["match_gender"] = $value['Gender'];
-            $_SESSION["match_drinker"] = $value['Drinker'];
-            $_SESSION["match_smoker"] = $value['Smoker'];
-        }
-    } else {
-        $match_photo = 'NULL';
-        // Load match data into Session array
-        $_SESSION["match_id"] = "NULL";
-        $_SESSION["match_name"] = "NULL";
-        $_SESSION["match_age"] = "NULL";
-        $_SESSION["match_description"] = "NULL";
-        $_SESSION["match_gender"] = NULL;
-        $_SESSION["match_drinker"] = NULL;
-        $_SESSION["match_smoker"] = NULL;
-    }
-}
-?>
-<div id="new-people-section" class="container-fluid"
-     style="background-color: rgba(223,232,238,0);padding: 0;height: calc(100% - 84px);">
+<div id="new-people-section" class="container-fluid" style="background-color: rgba(223,232,238,0);padding: 0;height: calc(100% - 84px);">
     <div class="row" style="margin-right: 0;height: 100%;">
         <div class="col col-xl-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
             <div id="messaging" class="container-fluid" style="padding-right: 0;">
-                <header id="message-header" style="background-color: #f7f9fc; margin-bottom: 1rem;"><p
-                            id="matched-users" style="margin: -0.7rem;">Matches</p></header>
-                <div class="container-fluid">
+                <header id="message-header" style="background-color: #f7f9fc;">
+                    <p id="matched-users" style="margin: -0.7rem;">Matches</p>
+                </header>
+                <div class="container-fluid sidebar-scrollable">
                     <div class="row">
                         <!-- Templating -->
                         <?php echo $matched_cards; ?>
                     </div>
-                </div>
-                <div class="row justify-content-center" style="<?php if (!$no_matches) echo " display:none;"; ?>">
-                    <p>Start liking to get matches!</p>
-                </div>
-            </div>
-        </div>
-        <div class="col col-xl-9 col-md-8 col-xs-12" id="discover-main"
-             style="background-color: rgba(221,221,221,0.19);padding: 0 !important;height: 100%;<?php if ($out_of_matches) echo " display:none;"; ?>">
-                <div class="container d-block d-block" id="discover-people" style="height: auto;/*background-color: #f7f9fc;*/padding-bottom: 0;">
-                    <div class="col-xl-6 offset-xl-3 col-md-8 offset-md-2 col-xs-10 offset-xs-1">
-                        <div id="discover-wrapper" class="discover-people-sizing">
-                            <div class="row" id="match-photos">
-                                <div class="col" id="image" style="padding: 0;"><img class="rounded float-left" src="assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm.jpg" width="320px" style="float: none !important;position: relative;"><button class="btn btn-primary" id="button-left" type="button" style="background-image: url(&quot;assets/img/keyboard_arrow_left-24px.svg&quot;);width: 70px;height: 90px;background-color: rgba(255,255,255,0.1);background-size: contain;background-repeat: no-repeat;"></button>
-                                    <button
-                                        class="btn btn-primary" id="button-right" type="button" style="background-image: url(&quot;assets/img/keyboard_arrow_right-24px.svg&quot;);width: 70px;height: 90px;background-color: rgba(255,255,255,0.09);background-repeat: no-repeat;background-size: contain;"></button>
-                                </div>
-                            </div>
-                            <!-- Add $_SESSION match data into discover card for name, age and description -->
-                            <div style="margin: 0 -15px 0 -15px;padding: 0 15px 0 15px;background-color: #f7f9fc;border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;">
-                                <h1 id="match-name" style="width: auto;"><?php if(isset($_SESSION["match_name"])) echo $_SESSION["match_name"];?></h1>
-                                <h1 id="match-age" style="font-size: 26px;"><?php if(isset($_SESSION["match_age"])) echo $_SESSION["match_age"];?></h1>
-                                <p id="match-bio" style="font-size: 14px;"><br><?php if(isset($_SESSION["match_description"])) echo $_SESSION["match_description"];?><br><br></p>
-                            </div>
-                            <div class="text-center d-block" id="like-dislike-buttons" style="width: 100%;text-align: center;">
-                                <form id="dislikeform" action="sendDiscoverToDB.php" method="post">
-                                    <Button name="dislike-button" class="btn btn-primary" data-bs-hover-animate="pulse" id="dislike-button" type="submit"><span id="dislike-span" style="background: url(&quot;assets/img/thumb_down-24px.svg&quot;);padding: 2px 12px;"></span></Button>
-                                    <button name="like-button" class="btn btn-primary" data-bs-hover-animate="pulse" id="like-button" type="submit"><span style="background: url(&quot;assets/img/thumb_up-24px.svg&quot;);padding: 2px 12px;"></span></button>
-                                </form>
-                                <button class="btn btn-primary" id="report-user" type="button" data-toggle="modal" data-target="#reportModal" style="color: rgba(255,255,255,0);background-color: rgba(0,123,255,0);background-image: url(&quot;assets/img/report-24px.svg&quot;);width: 30px;height: 30px;background-size: cover;background-repeat: no-repeat;border: none;/*float: left;*/margin-top: 12px;/*margin-left: 12px;*/" alt="'Report'"></button>
-                            </div>
-                        </div>
+                    <div class="row h-100 justify-content-center align-items-center" style="<?php if (!$no_matches) echo " display:none;"; ?>">
+                        <p>Start liking to get matches!</p>
                     </div>
                 </div>
             </div>
-            <div class="col col-xl-9 col-md-8 col-xs-12 h-100" id="discover-out-of-matches" style="background-color: rgba(221,221,221,0.19);padding: 0 !important;height: 100%;<?php if (!$out_of_matches) echo " display:none;"; ?>">
-                <div class="row h-100 justify-content-center align-items-center" style="margin: 0;">
-                    <p>No people in your area.</p>
+        </div>
+        <div class="col" id="discover-main" style="background-color: rgba(221,221,221,0.19);padding: 0 !important;height: 100%;<?php if ($out_of_matches) echo " display:none;"; ?>">
+            <div class="container row justify-content-center" id="discover-people" style="height: auto; padding-bottom: 0; margin: 0; padding-top: 50px;">
+                <div id="discover-wrapper" class="discover-people-sizing" style="max-width: 500px;">
+                    <div style="border: 2px solid #6e6f70; border-radius: 20px; overflow: hidden; box-shadow: 3px 4px #38373726">
+                        <div class="" id="match-photos">
+                            <div class="col" id="image" style="padding: 0;">
+                                <img id="match-photo" class="rounded float-left" src="assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm.jpg" width="320px" style="float: none !important;position: relative;">
+                                <button class="btn btn-primary" id="button-left" type="button"
+                                        style="background-image: url(&quot;assets/img/keyboard_arrow_left-24px.svg&quot;);width: 70px;height: 90px;background-color: rgba(255,255,255,0.1);background-size: contain;background-repeat: no-repeat;"></button>
+                                <button class="btn btn-primary" id="button-right" type="button"
+                                        style="background-image: url(&quot;assets/img/keyboard_arrow_right-24px.svg&quot;);width: 70px;height: 90px;background-color: rgba(255,255,255,0.09);background-repeat: no-repeat;background-size: contain;"></button>
+                            </div>
+                        </div>
+                        <!-- Add $_SESSION match data into discover card for name, age and description -->
+                        <div style="background-color: #f7f9fc; padding: 8px; margin-bottom: -15px;">
+                            <h3 id="match-name"><?php if (isset($_SESSION["match_name"])) echo $_SESSION["match_name"]; ?></h3>
+                            <h4 id="match-age"><?php if (isset($_SESSION["match_age"])) echo $_SESSION["match_age"]; ?></h4>
+                            <p id="match-bio" style="font-size: 14px;">
+                                <br><?php if (isset($_SESSION["match_description"])) echo $_SESSION["match_description"]; ?>
+                                <br><br></p>
+                        </div>
+                    </div>
+                    <div class="text-center d-block" id="like-dislike-buttons" style="width: 100%;text-align: center; margin-top: 20px;">
+                        <form id="dislikeform" action="sendDiscoverToDB.php" method="post">
+                            <Button name="dislike-button" class="btn btn-primary" data-bs-hover-animate="pulse" id="dislike-button" type="submit"><span id="dislike-span" style="background: url(&quot;assets/img/thumb_down-24px.svg&quot;);padding: 2px 12px;"></span></Button>
+                            <button name="like-button" class="btn btn-primary" data-bs-hover-animate="pulse" id="like-button" type="submit"><span style="background: url(&quot;assets/img/thumb_up-24px.svg&quot;);padding: 2px 12px;"></span></button>
+                            <input type="hidden" id="match_id_hidden" name="match_id" value="<?php if (isset($_SESSION['match_id'])) echo $_SESSION['match_id']; ?>"/>
+                        </form>
+                        <button class="btn btn-primary" id="report-user" type="button" data-toggle="modal" data-target="#reportModal"
+                                style="color: rgba(255,255,255,0);background-color: rgba(0,123,255,0);background-image: url(&quot;assets/img/report-24px.svg&quot;);width: 30px;height: 30px;background-size: cover;background-repeat: no-repeat;border: none;/*float: left;*/margin-top: 12px;/*margin-left: 12px;*/"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col h-100" id="discover-out-of-matches" style="background-color: rgba(221,221,221,0.19);padding: 0 !important;height: 100%;<?php if (!$out_of_matches) echo " display:none;"; ?>">
+            <div class="row h-100 justify-content-center align-items-center" style="margin: 0; padding-top: 50px;">
+                <p>No people in your area.</p>
+            </div>
+        </div>
+        <div class="search-sidebar col-xs-0" id="search-sidebar" style="padding: 0; margin-right: 1px;">
+            <div id="searching" class="container-fluid" style="padding: 0;">
+                <header id="message-header" style="background-color: #f7f9fc;">
+                    <p id="matched-users" style="margin: -0.7rem;">Advanced Search</p>
+                </header>
+                <div class="container-fluid sidebar-scrollable">
+                    <form action="sendSearchToDB.php" method="post">
+                        <div style="width:100%">
+                            <p><strong>Age</strong></p>
+                            <b>18</b> &nbsp;&nbsp; <input name="age" id="age-advanced-search" type="text" class="span2" value="" data-slider-min="18" data-slider-max="100" data-slider-step="1" data-slider-value="[18,40]"/>&nbsp;&nbsp; <b>100</b></div>
+                        <hr>
+                        <p><strong>Gender</strong></p>
+                        <label class="check-container">Male
+                            <input type="checkbox" name="male">
+                            <span class="check-checkmark"></span>
+                        </label>
+
+                        <label class="check-container">Female
+                            <input type="checkbox" name="female">
+                            <span class="check-checkmark"></span>
+                        </label>
+
+                        <label class="check-container">Other
+                            <input type="checkbox" name="other">
+                            <span class="check-checkmark"></span>
+                        </label>
+                        <hr>
+                        <div class="radio">
+                            <p><strong>Drinker</strong></p>
+                            <label class="check-container">Drinker
+                                <input type="radio" name="drinker-radio" value="drinker">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                            <label class="check-container">Non-Drinker
+                                <input type="radio" name="drinker-radio" value="non-drinker">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                            <label class="check-container">Any
+                                <input type="radio" name="drinker-radio" value="any">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <p><strong>Smoker</strong></p>
+                            <label class="check-container">Smoker
+                                <input type="radio" name="smoker-radio" value="1">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                            <label class="check-container">Non-Smoker
+                                <input type="radio" name="smoker-radio" value="0">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                            <label class="check-container">Any
+                                <input type="radio" name="smoker-radio" value="any">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                        </div>
+                        <hr>
+                        <p><strong>Hobbies</strong></p>
+                        <label class="check-container">Soccer
+                            <input type="checkbox" name="soccer">
+                            <span class="check-checkmark"></span>
+                        </label>
+
+                        <label class="check-container">Sport
+                            <input type="checkbox" name="sport">
+                            <span class="check-checkmark"></span>
+                        </label>
+
+                        <label class="check-container">Film
+                            <input type="checkbox" name="film">
+                            <span class="check-checkmark"></span>
+                        </label>
+
+                        <label class="check-container">Painting
+                            <input type="checkbox" name="painting">
+                            <span class="check-checkmark"></span>
+                        </label>
+                        <button class="btn btn-primary float-right" type="submit">Search <i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col col-xl-3 col-md-4" style="padding: 0; margin-right: 1px; margin-left: -1px; <?php if (!isset($_SESSION['advanced_search_result'])) echo " display:none;"; ?>" id="search-results-sidebar">
+            <div id="messaging" class="container-fluid" style="padding: 0;">
+                <header id="message-header" style="background-color: #f7f9fc;">
+                    <a id="close-search-results" class="nav-link" href="endSearch.php" style="float: left; margin-top: -4px; color: black;"> <i class="far fa-times-circle"></i></a>
+                    <p id="matched-users" style="margin: -0.7rem;">Search Results</p>
+                </header>
+                <div class="container-fluid sidebar-scrollable">
+                    <div class="row">
+                        <!-- Templating -->
+                        <?php if (isset($_SESSION['advanced_search_result'])) echo $twig->render('searched_users_template.html.twig', ['matched_data' => $_SESSION['advanced_search_result']]); ?>
+                    </div>
+                    <div class="row h-100 justify-content-center align-items-center" style="<?php if (!empty($_SESSION['advanced_search_result'])) echo " display:none;"; ?>">
+                        <p>No results found!</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Report Input Modal -> Gets report comment from user about match and sends it to report field in Report table -->
     <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -229,10 +290,18 @@ if (isset($_POST['submit1'])) {
                     <div class="modal-footer">
                         <button name="report-button" type="submit" class="btn btn-danger">Report</button>
                     </div>
+                    <input type="hidden" id="report_match_id_hidden" name="match_id" value="<?php if (isset($_SESSION['match_id'])) echo $_SESSION['match_id']; ?>"/>
                 </form>
             </div>
         </div>
     </div>
+
+    <?php
+    if (empty($_SESSION['advanced_search_result'])) {
+        unset($_SESSION['advanced_search_result']);
+    }
+    ?>
+
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
@@ -241,6 +310,7 @@ if (isset($_POST['submit1'])) {
     <script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
     <script src="assets/js/Profile-Edit-Form.js"></script>
     <script src="assets/js/Range-selector---slider.js"></script>
+    <script src="assets/js/discover.js"></script>
 
 </body>
 </html>

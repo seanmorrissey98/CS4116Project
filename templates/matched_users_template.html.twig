@@ -1,11 +1,11 @@
 <!-- TODO: Place image in the source -->
 {% for match in matched_data %}
-<div id="{{ match.user_id }}" class="matched-card col-lg-5 {% if loop.index is odd %}offset-lg-1{% endif %}">
-    <a href="messaging.html">
-        <div style="border: 1px solid black; border-radius: 10px;cursor: pointer; overflow: hidden;">
-            <img id="first-person-image" src="assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm.jpg">
-            <h5 id="first-person-name" style="text-align: center; margin: 0; padding-bottom: 8px;">{{ match.first_name }}</h5>
-        </div>
-    </a>
-</div>
+    <div id="{{ match.user_id }}" class="matched-card col-lg-5 {% if loop.index is odd %}offset-lg-1{% endif %}">
+        <a href="messaging.html">
+            <div style="border: 1px solid #6e6f70; border-radius: 10px;cursor: pointer; overflow: hidden;">
+                <img id="first-person-image" src="assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm.jpg">
+                <h6 id="first-person-name" style="text-align: center; margin: 0; padding: 6px 0;">{{ match.first_name }}</h6>
+            </div>
+        </a>
+    </div>
 {% endfor %}

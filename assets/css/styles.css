@@ -1,3 +1,21 @@
+.col-xs-0 {
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden;
+}
+
+.sidebar-scrollable {
+  padding-top: 15px;
+  height: calc(100vh - 134px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/*.search-sidebar {*/
+/*  transition: 0.5s;*/
+/*  -webkit-transition-duration: 0.5s;*/
+/*}*/
+
 #blocked-users {
   font-size: 20px;
   font-weight: 600;
