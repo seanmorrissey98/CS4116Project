@@ -59,4 +59,18 @@ function getAvailInterests(){
 					
 	return $array;
 }
+
+function getUserGenderPreference($id) {
+	include "connection.php";
+	$array=array();
+	$sql=("SELECT `Seeking` FROM `Profile` WHERE `user_id`=" . $id);
+	$num=0;
+		$result = $con->query($sql) or die($con->error);
+		while($row = $result->fetch_assoc()){
+			$pref = $row["Seeking"];
+			}
+		$con->close();
+					
+	return $pref;
+}
 ?>
