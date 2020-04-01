@@ -11,9 +11,9 @@ function populateUserTable() {
         $user_account_id = $row["user_id"];
         echo "<tr>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='#'>" . $row["email"] . "</a></td>
-        <td><a href='#'>" . $row["first_name"] . "</a></td>
-        <td><a href='#'>" . $row["last_name"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
         <td>" . $row["date_joined"] . "</td>
         </tr>";
     }
@@ -33,9 +33,9 @@ function searchUserTable() {
         $user_account_id = $row["user_id"];
         echo "<tr>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='#'>" . $row["email"] . "</a></td>
-        <td><a href='#'>" . $row["first_name"] . "</a></td>
-        <td><a href='#'>" . $row["last_name"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
         <td>" . $row["date_joined"] . "</td>
         </tr>";
     }

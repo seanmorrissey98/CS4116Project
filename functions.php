@@ -63,7 +63,7 @@ function getAvailInterests(){
 function getUserGenderPreference($id) {
 	include "connection.php";
 	$array=array();
-	$sql=("SELECT `Seeking` FROM `Profile` WHERE `user_id`=" . $id);
+	$sql=("SELECT * FROM `Profile` WHERE `user_id`=" . $id);
 	$num=0;
 		$result = $con->query($sql) or die($con->error);
 		while($row = $result->fetch_assoc()){
@@ -72,5 +72,19 @@ function getUserGenderPreference($id) {
 		$con->close();
 					
 	return $pref;
+}
+
+function getUserImageName($id) {
+	include "connection.php";
+	$array=array();
+	$sql=("SELECT * FROM `Profile` WHERE `user_id`=" . $id);
+	$num=0;
+		$result = $con->query($sql) or die($con->error);
+		while($row = $result->fetch_assoc()){
+			$img = $row["Photo"];
+			}
+		$con->close();
+					
+	return $img;
 }
 ?>

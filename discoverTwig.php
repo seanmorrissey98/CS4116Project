@@ -2,13 +2,19 @@
 // Include config file
 require_once "connection.php";
 
+echo __DIR__;
 // Twig for templating matched cards. Stored in templates directory
 require __DIR__ . '/vendor/autoload.php';
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+//use Twig\Environment;
+//use Twig\Loader\FilesystemLoader;
 
-//$loader = new FilesystemLoader(__DIR__ . '/templates');
+try {
+    new \Twig\Loader\FilesystemLoader('templates');
+    $twig = new Environment($loader);
+}catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+}
 //$twig = new Environment($loader);
 
 // Initialize the session
@@ -83,7 +89,7 @@ if (!$out_of_matches) {
     <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/checkbox-nice.css">
-    <link rel="stylesheet" href="/cs4116/group06/assets/css/scrollbar.css">
+    <link rel="stylesheet" href="assets/css/scrollbar.css">
 </head>
 
 <body style="background-color: rgb(255,255,255);height: 100% !important;">
@@ -150,10 +156,7 @@ if (!$out_of_matches) {
                         <form id="dislikeform" action="sendDiscoverToDB.php" method="post">
                             <Button name="dislike-button" class="btn btn-primary" data-bs-hover-animate="pulse" id="dislike-button" type="submit"><span id="dislike-span" style="background: url(&quot;assets/img/thumb_down-24px.svg&quot;);padding: 2px 12px;"></span></Button>
                             <button name="like-button" class="btn btn-primary" data-bs-hover-animate="pulse" id="like-button" type="submit"><span style="background: url(&quot;assets/img/thumb_up-24px.svg&quot;);padding: 2px 12px;"></span></button>
-                            <input type="hidden" id="match_id_hidden" name="match_id" value="<?php if(isset($_SESSION["match_name"])) {
-                                    $user_account_id=$_SESSION["match_id"];
-                                    echo "<a href='accountInfo.php?user_account_id=$user_account_id'>" . $_SESSION["match_name"] . "</a>";
-                                }?>"/>
+                            <input type="hidden" id="match_id_hidden" name="match_id" value="<?php if (isset($_SESSION['match_id'])) echo $_SESSION['match_id']; ?>"/>
                         </form>
                         <button class="btn btn-primary" id="report-user" type="button" data-toggle="modal" data-target="#reportModal"
                                 style="color: rgba(255,255,255,0);background-color: rgba(0,123,255,0);background-image: url(&quot;assets/img/report-24px.svg&quot;);width: 30px;height: 30px;background-size: cover;background-repeat: no-repeat;border: none;/*float: left;*/margin-top: 12px;/*margin-left: 12px;*/"></button>
