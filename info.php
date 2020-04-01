@@ -4,21 +4,21 @@ function logout()
 {
     $_SESSION = array();
     session_destroy();
-    header("Location: index.html");
+    header("Location: /cs4116/group06/index.html");
     exit;
 }
 ?>
 <?php
 	if (!isset($_COOKIE['email'])) {
 		setcookie("enterinfo","Please enter an email and password first.",time()+3600);
-		header("Location: signup.php");
+		header("Location: /cs4116/group06/signup.php");
 		exit;
 	}
 	function goToNextPage() {
 		setcookie("email",0,time()-3600);
 		setcookie("password",0,time()-3600);
 		setcookie("error_message",0,time()-3600);
-		header("Location: interests.php");
+		header("Location: /cs4116/group06/interests.php");
 		exit;
 	}
 	if (isset($_POST['submit-info'])) {
@@ -32,10 +32,19 @@ function logout()
 				if ( $_POST['firstname'] !== "" or $_POST['surname'] !== "" or $_POST['age'] !== "" or $_POST['description'] !== "") {
 					$check = getimagesize($_FILES["user-image"]["tmp_name"]);
 					if($check !== false) {
-						$upload_image=$_FILES["user-image"]["name"];
 						//NEED TO CHANGE THIS PATH ON EACH INDEPENDENT MACHINE AND HIVE
-						$folder="/var/www/html/cs4116/17222761/user_images/";
-						move_uploaded_file($_FILES["user-image"]["tmp_name"], "$folder".$_FILES["user-image"]["name"]);
+						$name=basename($_FILES["user-image"]["name"]);
+						$folder="user_images/";
+						$target_dir=$folder . $name;
+						$copy_dir= "/var/www/html/cs4116/group06/user_images/" . $name;
+						chmod($_FILES["user-image"]["tmp_name"], 0777); 
+						copy($_FILES["user-image"]["tmp_name"], $copy_dir);
+						if (move_uploaded_file($_FILES["user-image"]["tmp_name"], $target_dir)) {
+							echo "Uploaded";
+						} else {
+							echo "File was not uploaded";
+						}
+						//move_uploaded_file($_FILES["user-image"]["tmp_name"], "$folder".$_FILES["user-image"]["name"]);
 						include "connection.php";
 						$sql = "INSERT INTO `User` (`first_name`, `last_name`, `email`, `password`, `user_type`) VALUES ('{$_POST['firstname']}', '{$_POST['surname']}', '{$_COOKIE['email']}', '{$_COOKIE['password']}', 'user')";
 						$result = $con->query($sql);
@@ -50,7 +59,7 @@ function logout()
 						$result = $con->query($sql);
 						session_start();
 						while($row = $result->fetch_assoc()){
-							$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Photo`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '{$upload_image}', '0', '{$_POST['description']}', '{$drinker}', '{$smoker}', '0')";
+							$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Photo`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '{$name}', '0', '{$_POST['description']}', '{$drinker}', '{$smoker}', '0')";
 							$result_two = $con->query($sql);
 							setcookie("user_id",$row['user_id'],time()+3600);
 							$_SESSION["user_id"] = $row['user_id'];
@@ -124,7 +133,7 @@ function logout()
 <body>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="/cs4116/group06/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">

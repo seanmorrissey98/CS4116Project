@@ -4,7 +4,7 @@ function logout()
 {
     $_SESSION = array();
     session_destroy();
-    header("Location: index.html");
+    header("Location: /cs4116/group06/index.html");
     exit;
 }
 ?>
