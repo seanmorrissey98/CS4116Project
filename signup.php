@@ -1,8 +1,8 @@
 <?php
 	if (isset($_COOKIE['email'])) {
-		header("Location: /info.php");
-		exit;
-	}
+        header("Location: info.php");
+        exit;
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -62,12 +62,12 @@
 							print "<h4 class=\"text-center\">Please check the checkbox.</h4>";
 						}
 						if ( $_POST['email'] !== "" and isset($_POST['agreed']) and $_POST['password'] == $_POST['password-repeat']) {
-							//Need to create a cookie for password and email so we can get it from the next page
-							setcookie("email",$_POST['email'],time()+3600);
-							setcookie("password",$_POST['password'],time()+3600);
-							header("Location: /info.php");
-							exit;
-						}
+                            //Need to create a cookie for password and email so we can get it from the next page
+                            setcookie("email", $_POST['email'], time() + 3600);
+                            setcookie("password", $_POST['password'], time() + 3600);
+                            header("Location: info.php");
+                            exit;
+                        }
 					}
 				?>
                 <div class="form-group">
