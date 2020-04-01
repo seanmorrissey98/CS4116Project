@@ -4,21 +4,21 @@ function logout()
 {
     $_SESSION = array();
     session_destroy();
-    header("Location: /cs4116/group06/index.html");
+    header("Location: index.html");
     exit;
 }
 ?>
 <?php
 	if (!isset($_COOKIE['email'])) {
 		setcookie("enterinfo","Please enter an email and password first.",time()+3600);
-		header("Location: /cs4116/group06/signup.php");
+		header("Location: signup.php");
 		exit;
 	}
 	function goToNextPage() {
 		setcookie("email",0,time()-3600);
 		setcookie("password",0,time()-3600);
 		setcookie("error_message",0,time()-3600);
-		header("Location: /cs4116/group06/interests.php");
+		header("Location: interests.php");
 		exit;
 	}
 	if (isset($_POST['submit-info'])) {
@@ -36,7 +36,7 @@ function logout()
 						$name=basename($_FILES["user-image"]["name"]);
 						$folder="user_images/";
 						$target_dir=$folder . $name;
-						$copy_dir= "/var/www/html/cs4116/group06/user_images/" . $name;
+						$copy_dir= "user_images/" . $name;
 						chmod($_FILES["user-image"]["tmp_name"], 0777); 
 						copy($_FILES["user-image"]["tmp_name"], $copy_dir);
 						if (move_uploaded_file($_FILES["user-image"]["tmp_name"], $target_dir)) {
@@ -133,7 +133,7 @@ function logout()
 <body>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="/cs4116/group06/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">

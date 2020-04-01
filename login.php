@@ -3,11 +3,11 @@
 session_start();
 
 if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
-    header("Location: /cs4116/group06/adminDashboard.php");
+    header("Location: adminDashboard.php");
 }
 
 if(isset($_SESSION["loggedIn"])&& $_SESSION["loggedIn"] == true ){
-    header("location: /cs4116/group06/discover.php");
+    header("location: discover.php");
     exit;
 }
 
@@ -69,10 +69,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                             if ($user_type == "administrator") {
                                 $_SESSION["adminLoggedIn"] = true;
-                                header("Location: /cs4116/group06/adminDashboard.php");
+                                header("Location: adminDashboard.php");
                             } else {
                                 $_SESSION["loggedIn"] = true;
-                            header("location: /cs4116/group06/discover.php");
+                            header("location: discover.php");
                             }
 
                         } else{

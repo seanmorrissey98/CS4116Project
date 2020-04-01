@@ -4,7 +4,7 @@ function logout()
 {
     $_SESSION = array();
     session_destroy();
-    header("Location: /cs4116/group06/index.html");
+    header("Location: index.html");
     exit;
 }
 
@@ -67,12 +67,12 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
 ?>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="/cs4116/group06/discover.php">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="discover.php">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">
                         <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">More Links </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="/cs4116/group06/discover.php">Discover</a><a class="dropdown-item" role="presentation" href="/cs4116/group06/interests.php">My Interests</a><a class="dropdown-item" role="presentation" href="/cs4116/group06/messaging.html">Messages</a></div>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="discover.php">Discover</a><a class="dropdown-item" role="presentation" href="interests.php">My Interests</a><a class="dropdown-item" role="presentation" href="messaging.html">Messages</a></div>
                         </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
