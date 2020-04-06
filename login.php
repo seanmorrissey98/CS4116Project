@@ -7,7 +7,7 @@ if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
 }
 
 if(isset($_SESSION["loggedIn"])&& $_SESSION["loggedIn"] == true ){
-    header("location: /discover.php");
+    header("location: discover.php");
     exit;
 }
 

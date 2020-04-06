@@ -1,6 +1,6 @@
 <?php
 	if (isset($_COOKIE['email'])) {
-		header("Location: /cs4116/group06/info.php");
+		header("Location: info.php");
 		exit;
 	}
 ?>
@@ -29,14 +29,14 @@
     <div>
         <div class="header-blue">
             <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="/cs4116/group06/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="container-fluid"><a class="navbar-brand" href="index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse"
                         id="navcol-1">
                         <ul class="nav navbar-nav">
                            
                         </ul>
                         <form class="form-inline mr-auto" target="_self">
-                        </form><span class="navbar-text"> <a class="login" href="/cs4116/group06/login.php">Log In</a></span></div>
+                        </form><span class="navbar-text"> <a class="login" href="login.php">Log In</a></span></div>
                 </div>
             </nav>
         </div>
@@ -68,7 +68,7 @@
 							//Need to create a cookie for password and email so we can get it from the next page
 							setcookie("email",$_POST['email'],time()+3600);
 							setcookie("password",$_POST['password'],time()+3600);
-							header("Location: /cs4116/group06/info.php");
+							header("Location: info.php");
 							exit;
 						}
 					}
@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="agreed" <?php if(isset($_POST['agreed'])) echo 'checked="checked"';?>>I agree to the license terms.</label></div>
                 </div>
-                <div class="form-group"><input class="btn btn-primary btn-block" type="submit" value="Sign Up" name="submitted"></div><a class="already" href="/cs4116/group06/login.php">You already have an account? Login here.</a></form>
+                <div class="form-group"><input class="btn btn-primary btn-block" type="submit" value="Sign Up" name="submitted"></div><a class="already" href="login.php">You already have an account? Login here.</a></form>
         </div>
     </div>
     <div class="footer-basic">

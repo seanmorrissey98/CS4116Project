@@ -96,7 +96,20 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
             <div class="form-row profile-row">
                 <div class="col-md-4 relative">
                     <div class="avatar" style="height: 250px;">
-                        <div class="avatar-bg center" style="background-image: url(&quot;assets/img/2.jpg&quot;);"></div>
+                        <div class="avatar-bg center" style="background-image: url(
+                           <?php 
+                                if (!$other_user) {
+                                    $filename="user_images/" . getUserImageName($_SESSION["user_id"]);
+                                } else {
+                                $filename="user_images/" . getUserImageName($var_profile_user);
+                                }
+                                if (file_exists($filename)) {
+                                    echo "$filename";
+                                } else {
+                            echo"&quot;assets/img/2.jpg&quot;";
+                                }
+                           ?> 
+                            );"></div>
                         <h1>Name: <?php echo $users['first_name'];?></h1>
                     </div>
 					<div><br></div>

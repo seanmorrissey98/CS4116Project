@@ -5,11 +5,8 @@ require_once "connection.php";
 // Twig for templating matched cards. Stored in templates directory
 require __DIR__ . '/vendor/autoload.php';
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-
-$loader = new FilesystemLoader(__DIR__ . '/templates');
-$twig = new Environment($loader);
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
+$twig = new \Twig\Environment($loader);
 
 // Initialize the session
 session_start();
