@@ -46,8 +46,8 @@
             <div class="image-holder" style="background-image: url(&quot;assets/img/Photo%20of%20a%20Man%20Carrying%20His%20Partner.jpg&quot;);"></div>
             <form action="signup.php" method="post">
                 <h2 class="text-center"><strong>Create</strong> an account.</h2>
-                <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"></div>
-                <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
+                <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email" value="<?php echo (isset($_POST['email'])) ? htmlspecialchars($_POST['email']) : '';?>"></div>
+                <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password" value="<?php echo (isset($_POST['password'])) ? htmlspecialchars($_POST['password']) : '';?>"></div>
                 <div class="form-group"><input class="form-control" type="password" name="password-repeat" placeholder="Password (repeat)"></div>
 				<?php
 					if (isset($_COOKIE['enterinfo'])) {
@@ -61,6 +61,9 @@
 						if (!isset($_POST['agreed'])) {
 							print "<h4 class=\"text-center\">Please check the checkbox.</h4>";
 						}
+						if ($_POST['password'] != $_POST['password-repeat']) {
+							print "<h4 class=\"text-center\">Password doesnt match</h4>";
+						}
 						if ( $_POST['email'] !== "" and isset($_POST['agreed']) and $_POST['password'] == $_POST['password-repeat']) {
 							//Need to create a cookie for password and email so we can get it from the next page
 							setcookie("email",$_POST['email'],time()+3600);
@@ -71,7 +74,7 @@
 					}
 				?>
                 <div class="form-group">
-                    <div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="agreed">I agree to the license terms.</label></div>
+                    <div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" name="agreed" <?php if(isset($_POST['agreed'])) echo 'checked="checked"';?>>I agree to the license terms.</label></div>
                 </div>
                 <div class="form-group"><input class="btn btn-primary btn-block" type="submit" value="Sign Up" name="submitted"></div><a class="already" href="/cs4116/group06/login.php">You already have an account? Login here.</a></form>
         </div>
