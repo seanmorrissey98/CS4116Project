@@ -55,6 +55,16 @@
 						setcookie("enterinfo",0,time()-100);
 					}
 					if (isset($_POST['submitted'])) {
+						//check if email already been registered
+						include "connection.php";
+						$sql = "SELECT email FROM User WHERE email=\"{$_POST['email']}\"";
+						$result = $con->query($sql);
+						while($row = $result->fetch_assoc()){
+							if($_POST['email'] == $row['email']) {
+								header("Location: login.php");
+								exit;
+							}
+						}
 						if ( $_POST['email'] == "" or $_POST['password'] == "" or $_POST['password-repeat'] == "" ) {
 							print "<h4 class=\"text-center\">One or more fields empty, please try again.</h4>";
 						}
@@ -64,7 +74,11 @@
 						if ($_POST['password'] != $_POST['password-repeat']) {
 							print "<h4 class=\"text-center\">Password doesnt match</h4>";
 						}
-						if ( $_POST['email'] !== "" and isset($_POST['agreed']) and $_POST['password'] == $_POST['password-repeat']) {
+						//check if password length greater than 5
+						if (strlen($_POST['password']) < 6 ) {
+							print "<h4 class=\"text-center\">Password must be 6 characters or more.</h4>";
+						}
+						if ( $_POST['email'] !== "" and isset($_POST['agreed']) and $_POST['password'] == $_POST['password-repeat'] and strlen($_POST['password']) > 5) {
 							//Need to create a cookie for password and email so we can get it from the next page
 							setcookie("email",$_POST['email'],time()+3600);
 							setcookie("password",$_POST['password'],time()+3600);

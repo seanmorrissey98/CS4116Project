@@ -25,7 +25,8 @@ function logout()
 		if ( $_POST['firstname'] == "" or $_POST['surname'] == "" or !isset($_POST['age']) or $_POST['description'] == "") {
 			setcookie("error_message","One or more fields empty, please try again.",time()+60);
 			header("Refresh:0");
-		} else {
+		} 
+		else {
 			if($_FILES["user-image"]["name"] !== "")
 			{
 				//Uploading a profile picture
@@ -153,7 +154,7 @@ function logout()
         <form method="post" action="info.php" enctype="multipart/form-data">
             <h2 class="sr-only">Login Form</h2>
             <div class="illustration"><i class="icon ion-ios-person"></i></div>
-            <div class="form-group"><input class="form-control" type="text" placeholder="First Name" name="firstname"><input class="form-control" type="text" placeholder="Surname" name="surname"><input class="form-control" type="number" placeholder="Age" name="age">
+            <div class="form-group"><input class="form-control" type="text" placeholder="First Name" name="firstname"><input class="form-control" type="text" placeholder="Surname" name="surname"><input class="form-control" type="number" placeholder="Age" name="age" min="0">
 				<textarea class="form-control" name="description" placeholder="Description"></textarea>
 				<br>
 				<label class="form-check-label" for="gender-list"> Gender: </label>
