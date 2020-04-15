@@ -57,13 +57,16 @@ $var_profile_user=$_GET["user_account_id"];
     $users=getUser($var_profile_user);
     $availInterests=getAvailInterests();
     $genderPref = getUserGenderPreference($var_profile_user);
+    $interests=getInterests($var_profile_user);
 } else {
     $other_user=false;
 $usersBio=getUsersBio($_SESSION['user_id']);
 $users=getUser($_SESSION['user_id']);
 $availInterests=getAvailInterests();
+$interests=getInterests($_SESSION['user_id']);
 $genderPref=getUserGenderPreference($_SESSION["user_id"]);
 }
+
 ?>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
@@ -129,7 +132,7 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                         <div class="form-group"><label>Hobbies</label></div>
                     </div>
 					<?php  
-						foreach ($availInterests as &$value) {
+						foreach ($interests as &$value) {
 							 echo '<div class="form-check"><label class="form-check-label" for="formCheck-1"> ' . $value["interest_name"]. '</label></div>';
 						}
 					?>

@@ -60,6 +60,28 @@ function getAvailInterests(){
 	return $array;
 }
 
+function getInterests($id){
+	include "connection.php";
+	$array=array();
+	$sql=("SELECT * FROM `Interests` WHERE `user_id`=" . $id);
+	$num=0;
+		$result = $con->query($sql) or die($con->error);
+		while($row = $result->fetch_assoc()){
+			$temp =array();
+			$temp["interest_id"]=$row["interest_id"];
+			$name=array();
+			$sql1=("SELECT * FROM `Available Interests` WHERE `interest_id`=" . $row["interest_id"]);
+			$result1 = $con->query($sql1) or die($con->error);
+			while($row1 = $result1->fetch_assoc()){
+				$temp["interest_name"]=$row1["interest_name"];
+			}
+			$array[$num]=$temp;
+			$num++;
+			}
+		$con->close();	
+	return $array;
+}
+
 function getUserGenderPreference($id) {
 	include "connection.php";
 	$array=array();
