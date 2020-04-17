@@ -1,57 +1,56 @@
-<?php 
-session_start();
-function populateUserTable() {
+<?php
+function populateReportTable() {
     // include "localDBConnection.php";
     include "connection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User";
+    $sql = "SELECT Reports.user_id, Reports.reported_user_id, Reports.date, Reports.reason, User.first_name, User.last_name 
+    FROM Reports  JOIN 
+    User ON Reports.reported_user_id = User.user_id";
+    $result = mysqli_query($con, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            $user_account_id = $row["user_id"];
+            $reported_user_account_id = $row["reported_user_id"];
+            echo "<tr>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reported_user_id"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["date"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reason"] . "</a></td>
+
+            </tr>";
+        }
+        
+    }
+} 
+
+function searchReportTable() {
+    $search = $_GET["reportSearch"];
+    include "connection.php";
+    // include "localDBConnection.php";
+    $sql = "SELECT Reports.user_id, Reports.reported_user_id, Reports.date, Reports.reason, User.first_name, User.last_name 
+    FROM Reports JOIN User ON Reports.reported_user_id = User.user_id
+    WHERE Reports.reason LIKE '%$search%' OR User.first_name LIKE '%$search%' OR User.last_name LIKE '%$search%'";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
         $user_account_id = $row["user_id"];
+        $reported_user_account_id = $row["reported_user_id"];
         echo "<tr>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
-        <td>" . $row["date_joined"] . "</td>
-        </tr>";
-    }
-}
+        <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reported_user_id"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["date"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reason"] . "</a></td>
 
-
-
-}
-function searchUserTable() {
-    $search = $_GET["userSearch"];
-    include "connection.php";
-    // include "localDBConnection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
-    $result = mysqli_query($con, $sql);
-    if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while($row = mysqli_fetch_assoc($result)) {
-        $user_account_id = $row["user_id"];
-        echo "<tr>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
-        <td>" . $row["date_joined"] . "</td>
         </tr>";
     }
 }
 }
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-    exit;
-}
+
+
 
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -112,9 +111,9 @@ function logout()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">User List</h4>  
-                            <form action="userList.php" method="get">
-                                    <input type="search" name="userSearch" placeholder="Search Users">
+                            <h4 class="card-title">Reported User List</h4>  
+                            <form action="reportedList.php" method="get">
+                                    <input type="search" name="reportSearch" placeholder="Search Reported Users">
                                     <input type="submit" value="Search">
 
 
@@ -130,17 +129,17 @@ function logout()
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Email</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Date Joined</th>
+                                    <th>Reported By</th>
+                                    <th>Reported User ID</th>
+                                    <th>Reported User Name</th>
+                                    <th>Report date</th>
+                                    <th>Report Reason</th>
                                 </tr>
                             <?php                            
-                                if (isset($_GET["userSearch"])) {
-                                    searchUserTable($_GET["userSearch"]);
+                                if (isset($_GET["reportSearch"])) {
+                                    searchReportTable($_GET["reportSearch"]);
                                 } else {
-                                    populateUserTable();                                    
+                                    populateReportTable();                                    
                                 }
                              ?>
                             </thead>

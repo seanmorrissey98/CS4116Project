@@ -1,57 +1,57 @@
-<?php 
-session_start();
-function populateUserTable() {
+<?php
+function populateBannedTable() {
     // include "localDBConnection.php";
     include "connection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User";
+    $sql = "SELECT Banned.user_id, Banned.banned_by, Banned.date, Banned.reason, User.first_name, User.last_name 
+    FROM Banned  JOIN 
+    User ON Banned.user_id = User.user_id";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while($row = mysqli_fetch_assoc($result)) {
-        $user_account_id = $row["user_id"];
-        echo "<tr>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
-        <td>" . $row["date_joined"] . "</td>
-        </tr>";
+        while($row = mysqli_fetch_assoc($result)) {
+            $user_account_id = $row["user_id"];
+            $banned_by_id = $row["banned_by"];
+            echo "<tr>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$banned_by_id'>" . $row["banned_by"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["date"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
+
+            </tr>";
+        }
+        
+    }
+} 
+
+function searchBannedTable() {
+    $search = $_GET["banSearch"];
+    include "connection.php";
+    // include "localDBConnection.php";
+    $sql = "SELECT Banned.user_id, Banned.banned_by, Banned.date, Banned.reason, User.first_name, User.last_name 
+    FROM Banned  JOIN 
+    User ON Banned.user_id = User.user_id
+    WHERE User.first_name LIKE '%$search%' OR User.last_name LIKE '%$search%' OR Banned.reason LIKE '%$search%'";
+    $result = mysqli_query($con, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            $user_account_id = $row["user_id"];
+            $banned_by_id = $row["banned_by"];
+            echo "<tr>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$banned_by_id'>" . $row["banned_by"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["date"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
+
+            </tr>";
+        }
+        
     }
 }
 
 
-
-}
-function searchUserTable() {
-    $search = $_GET["userSearch"];
-    include "connection.php";
-    // include "localDBConnection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
-    $result = mysqli_query($con, $sql);
-    if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while($row = mysqli_fetch_assoc($result)) {
-        $user_account_id = $row["user_id"];
-        echo "<tr>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
-        <td>" . $row["date_joined"] . "</td>
-        </tr>";
-    }
-}
-}
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-    exit;
-}
 
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -112,9 +112,9 @@ function logout()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">User List</h4>  
-                            <form action="userList.php" method="get">
-                                    <input type="search" name="userSearch" placeholder="Search Users">
+                            <h4 class="card-title">Banned User List</h4>  
+                            <form action="bannedUserList.php" method="get">
+                                    <input type="search" name="banSearch" placeholder="Search Banned Users">
                                     <input type="submit" value="Search">
 
 
@@ -130,17 +130,17 @@ function logout()
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Email</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Date Joined</th>
+                                    <th>User ID</th>
+                                    <th>Banned User Name</th>
+                                    <th>Banned By</th>
+                                    <th>Date</th>
+                                    <th>Reason</th>
                                 </tr>
                             <?php                            
-                                if (isset($_GET["userSearch"])) {
-                                    searchUserTable($_GET["userSearch"]);
+                                if (isset($_GET["banSearch"])) {
+                                    searchBannedTable($_GET["banSearch"]);
                                 } else {
-                                    populateUserTable();                                    
+                                    populateBannedTable();                                    
                                 }
                              ?>
                             </thead>

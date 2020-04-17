@@ -1,20 +1,20 @@
-<?php 
-session_start();
-function populateUserTable() {
+<?php
+function populateConnectionTable() {
     // include "localDBConnection.php";
     include "connection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User";
+    $sql = "SELECT user_1, user_2, date from Connection";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
-        $user_account_id = $row["user_id"];
+        $user_account_id_1=$row["user_1"];
+        $user_account_id_2=$row["user_2"];
+        
         echo "<tr>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
-        <td>" . $row["date_joined"] . "</td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id_1'>" . $row["user_1"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id_2'>" . $row["user_2"] . "</a></td>
+        <td><a href=#>" . $row["date"] . "</a></td>
+
         </tr>";
     }
 }
@@ -22,36 +22,33 @@ function populateUserTable() {
 
 
 }
-function searchUserTable() {
-    $search = $_GET["userSearch"];
+
+function searchConnectionTable() {
+    $search = $_GET["banSearch"];
     include "connection.php";
     // include "localDBConnection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
+    $sql = "SELECT user_1, user_2, date from Connection";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while($row = mysqli_fetch_assoc($result)) {
-        $user_account_id = $row["user_id"];
-        echo "<tr>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
-        <td>" . $row["date_joined"] . "</td>
-        </tr>";
+        while($row = mysqli_fetch_assoc($result)) {
+            $user_account_id = $row["user_id"];
+            $banned_by_id = $row["banned_by"];
+            echo "<tr>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$banned_by_id'>" . $row["banned_by"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["date"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
+
+            </tr>";
+        }
+        
     }
 }
-}
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-    exit;
-}
+
+
 
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -112,9 +109,9 @@ function logout()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">User List</h4>  
-                            <form action="userList.php" method="get">
-                                    <input type="search" name="userSearch" placeholder="Search Users">
+                            <h4 class="card-title">User Connection List</h4>  
+                            <form action="connectionList.php" method="get">
+                                    <input type="search" name="connSearch" placeholder="Search Connections">
                                     <input type="submit" value="Search">
 
 
@@ -130,17 +127,15 @@ function logout()
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Email</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Date Joined</th>
+                                    <th>User ID 1</th>
+                                    <th>User ID 2</th>
+                                    <th>Conection Date</th>
                                 </tr>
                             <?php                            
-                                if (isset($_GET["userSearch"])) {
-                                    searchUserTable($_GET["userSearch"]);
+                                if (isset($_GET["connSearch"])) {
+                                    searchConnectionTable($_GET["connSearch"]);
                                 } else {
-                                    populateUserTable();                                    
+                                    populateConnectionTable();                                    
                                 }
                              ?>
                             </thead>

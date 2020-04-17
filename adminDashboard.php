@@ -19,6 +19,13 @@ function getTotalUserCount() {
     echo mysqli_num_rows($result);
 }
 
+function getTotalReportedUserCount() {
+    include "connection.php";
+    $sql = "SELECT * FROM Reports";
+    $result = mysqli_query($con, $sql);
+    echo mysqli_num_rows($result);
+}
+
 function getTotalBannedUserCount() {
     include "connection.php";
     $sql = "SELECT * FROM Banned";
@@ -111,7 +118,7 @@ function getTotalConnectionCount() {
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Banned Users</h4>
-                            <p class="card-text"><?php getTotalBannedUserCount()?></p><a class="card-link" href="#">Link</a><a class="card-link" href="#"></a></div>
+                            <p class="card-text"><?php getTotalBannedUserCount()?></p><a class="card-link" href="bannedUserList.php">Link</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
                 <div class="col">
@@ -119,7 +126,7 @@ function getTotalConnectionCount() {
                         <div class="card-body">
                             <h4 class="card-title">Reported Users</h4>
                             <h6 class="text-muted card-subtitle mb-2"></h6>
-                            <p class="card-text">22</p><a class="card-link" href="#">Link</a><a class="card-link" href="#"></a></div>
+                            <p class="card-text"><?php getTotalReportedUserCount()?></p><a class="card-link" href="reportedList.php">Link</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
                 <div class="col">
@@ -127,7 +134,7 @@ function getTotalConnectionCount() {
                         <div class="card-body">
                             <h4 class="card-title">Connections</h4>
                             <h6 class="text-muted card-subtitle mb-2"></h6>
-                            <p class="card-text"><?php getTotalConnectionCount()?></p><a class="card-link" href="#">Link</a><a class="card-link" href="#"></a></div>
+                            <p class="card-text"><?php getTotalConnectionCount()?></p><a class="card-link" href="connectionList.php">Link</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
             </div>
