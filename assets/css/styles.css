@@ -16,6 +16,20 @@
 /*  -webkit-transition-duration: 0.5s;*/
 /*}*/
 
+.section-header {
+  background-color: #f7f9fc;
+  padding: 10px;
+  text-align: center;
+}
+
+.section-header p {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px;
+  color: #1f2021;
+  margin: -0.7rem !important;
+}
+
 #blocked-users {
   font-size: 20px;
   font-weight: 600;
@@ -110,10 +124,10 @@
   width: 100%;
 }
 
-#message {
+#new-message {
   width: 100%;
   font-size: 25px;
-  border: 1px solid rgba(128,128,128,0.38);
+  border: 1px solid rgba(128, 128, 128, 0.38);
   padding: 10px 15px;
 }
 
@@ -121,7 +135,7 @@
   color: #fc0377;
 }
 
-#icon-span {
+.new-message-send-icon {
   position: fixed;
   right: 10px;
   font-size: 42px;
@@ -130,30 +144,28 @@
 .message-bubble {
   max-width: 60%;
   margin: 15px;
-  padding: 15px;
+  clear: both;
 }
 
-.messaging-bubble h2 {
-}
-
-.messaging h2 {
-}
-
-.message-bubble h2 {
-  padding: 8px;
+.message-bubble h5 span {
   background-color: #cccccc;
+  padding: 3px 6px 6px 6px;
   border-radius: 8px;
   font-weight: initial;
 }
 
-.message-bubble .message-bubble-right h2 {
-  float: right;
-  background-color: rgb(2,2,228);
+.message-bubble p {
+  margin-left: 8px;
+  font-size: 12px;
 }
 
-.message-bubble .message-bubble-right {
+.message-bubble .message-bubble-blue {
   background-color: #4c99f4;
   color: white;
+}
+
+.message-bubble-right {
+  float: right;
 }
 
 @media (min-width: 1200px) {
