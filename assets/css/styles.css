@@ -6,7 +6,14 @@
 
 .sidebar-scrollable {
   padding-top: 15px;
-  height: calc(100vh - 134px);
+  height: calc(100vh - 135px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.chats-sidebar-scrollable {
+  padding-top: 15px;
+  height: calc(100vh - 194px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -15,6 +22,20 @@
 /*  transition: 0.5s;*/
 /*  -webkit-transition-duration: 0.5s;*/
 /*}*/
+
+.section-header {
+  background-color: rgba(221, 221, 221, 0.19);
+  padding: 10px;
+  text-align: center;
+}
+
+.section-header p {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px;
+  color: #1f2021;
+  margin: -0.6rem !important;
+}
 
 #blocked-users {
   font-size: 20px;
@@ -38,9 +59,7 @@
 }
 
 #first-person {
-  padding: 16px;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  padding: 8px;
   border: 1px solid #1f2021;
   border-radius: 10px;
 }
@@ -51,12 +70,14 @@
 
 #first-person-name {
   text-align: left;
-  background-color: #f7f9fc;
+  color: #1f2021;
+  margin-top: 8px;
 }
 
 #latest-message {
+  font-size: 14px;
   text-align: start;
-  margin-top: 30px;
+  margin: 4px 0;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -72,10 +93,11 @@
 }
 
 #search-users {
-  padding: 16px;
+  background-color: white;
+  padding: 5px;
   bottom: 0;
   position: absolute;
-  width: calc(100% - 30px);
+  width: calc(100% - 20px);
   margin: 0 -15px 0 -15px;
 }
 
@@ -110,10 +132,10 @@
   width: 100%;
 }
 
-#message {
+#new-message {
   width: 100%;
   font-size: 25px;
-  border: 1px solid rgba(128,128,128,0.38);
+  border: 1px solid rgba(128, 128, 128, 0.38);
   padding: 10px 15px;
 }
 
@@ -121,39 +143,39 @@
   color: #fc0377;
 }
 
-#icon-span {
+.new-message-send-icon {
   position: fixed;
   right: 10px;
   font-size: 42px;
+  cursor: pointer;
 }
 
 .message-bubble {
   max-width: 60%;
-  margin: 15px;
-  padding: 15px;
+  margin: 4px 15px;
+  float: left;
+  clear: both;
 }
 
-.messaging-bubble h2 {
-}
-
-.messaging h2 {
-}
-
-.message-bubble h2 {
-  padding: 8px;
+.message-bubble h5 span {
   background-color: #cccccc;
+  padding: 3px 6px 6px 6px;
   border-radius: 8px;
   font-weight: initial;
 }
 
-.message-bubble .message-bubble-right h2 {
-  float: right;
-  background-color: rgb(2,2,228);
+.message-bubble p {
+  margin-left: 8px;
+  font-size: 12px;
 }
 
-.message-bubble .message-bubble-right {
+.message-bubble .message-bubble-blue {
   background-color: #4c99f4;
   color: white;
+}
+
+.message-bubble-right {
+  float: right;
 }
 
 @media (min-width: 1200px) {
@@ -175,6 +197,16 @@
 }
 
 .matched-card a:hover, a:visited, a:link, a:active {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
+}
+
+.message-section {
+  text-align: center;
+  padding-top: 30px;
+  background-color: rgba(221, 221, 221, 0.19);
+}
+
+.message-section > p {
+  margin-top: 50px;
 }

@@ -1,0 +1,22 @@
+<!-- TODO: Place image in the source -->
+{% for chat in chats_data %}
+    <div style="margin: 8px 16px;">
+        <a href="#" onclick="expandChat({{ chat |json_encode() }})">
+            <div id="first-person" style="background-color: rgba(143,143,143,0.1);">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-lg-3">
+                            <div id="first-person-image-name" style="padding: 0;">
+                                <img id="first-person-image" class="rounded-circle" src="assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm-profile.jpg">
+                            </div>
+                        </div>
+                        <div class="col col-lg-9">
+                            <h6 id="first-person-name">{{ chat.first_name }}</h6>
+                        </div>
+                    </div>
+                    <p id="latest-message" style="color: rgba(33,37,41,0.73);">{{ chat.latest_message }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}

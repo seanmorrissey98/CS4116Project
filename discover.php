@@ -1,37 +1,36 @@
 <?php
 // Include config file
-require_once "connection.php";
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
+require_once "DBFunctions.php";
 
 // Twig for templating matched cards. Stored in templates directory
 require __DIR__ . '/vendor/autoload.php';
 
-$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
-$twig = new \Twig\Environment($loader);
+$loader = new FilesystemLoader(__DIR__ . '/templates');
+$twig = new Environment($loader);
 
 // Initialize the session
 session_start();
-$user_id = $_SESSION["user_id"];
 
-// Iniialize array for database pull
-$matchdata = array();
+// $_SESSION["user_id"] = 53;
+
+// Initialize array for database pull
+$discoverPerson = array();
 $matched_data = array();
 
-// Pull 1 row from database from like where matches not in dislike, like and report pages
-$sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '$user_id') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '$user_id') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '$user_id') HAVING User.user_id != '$user_id' LIMIT 1";
-$matchesSql = "SELECT User.user_id, first_name, Photo FROM Likes INNER JOIN User ON Likes.liked_user_id = User.user_id LEFT JOIN Profile ON Likes.liked_user_id = Profile.user_id WHERE Likes.user_id = $user_id";
-$result = mysqli_query($con, $sql);
-$match_result = mysqli_query($con, $matchesSql);
+$discoverPerson = getDiscoverPeople($_SESSION['user_id']);
+$matched_data = getMatches($_SESSION['user_id']);
 
-$out_of_matches = mysqli_num_rows($result) === 0;
-$no_matches = mysqli_num_rows($match_result) === 0;
-
-$matched_data = $match_result->fetch_all(MYSQLI_ASSOC);
+$out_of_matches = sizeof($discoverPerson) === 0;
+$no_matches = sizeof($matched_data) === 0;
 
 $matched_cards = $twig->render('matched_users_template.html.twig', ['matched_data' => $matched_data]);
 
 // Check the array is not empty
 if (!$out_of_matches) {
-    $nextmatchDate = $result->fetch_all(MYSQLI_ASSOC)[0];
+    $nextmatchDate = $discoverPerson[0];
 
     // If no photo avaliable, set photo to NULL
     if (empty($nextmatchDate['Photo'])) {
@@ -90,7 +89,7 @@ if (!$out_of_matches) {
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav" style="padding: 0 80px;">
                 <li class="nav-item" role="presentation" id="messaging-link">
-                    <a class="nav-link" id="messaging-nav" href="messaging.html" style="color: #ffffff;">Messages</a>
+                    <a class="nav-link" id="messaging-nav" href="messaging.php" style="color: #ffffff;">Messages</a>
                 </li>
                 <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active" id="discover-nav-1" href="discover.php" style="color: #ffffff;">Discover</a>
                 </li>
@@ -107,8 +106,8 @@ if (!$out_of_matches) {
     <div class="row" style="margin-right: 0;height: 100%;">
         <div class="col col-xl-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
             <div id="messaging" class="container-fluid" style="padding-right: 0;">
-                <header id="message-header" style="background-color: #f7f9fc;">
-                    <p id="matched-users" style="margin: -0.7rem;">Matches</p>
+                <header class="section-header">
+                    <p style="margin: -0.7rem;">Matches</p>
                 </header>
                 <div class="container-fluid sidebar-scrollable">
                     <div class="row">
@@ -162,8 +161,8 @@ if (!$out_of_matches) {
         </div>
         <div class="search-sidebar col-xs-0" id="search-sidebar" style="padding: 0; margin-right: 1px;">
             <div id="searching" class="container-fluid" style="padding: 0;">
-                <header id="message-header" style="background-color: #f7f9fc;">
-                    <p id="matched-users" style="margin: -0.7rem;">Advanced Search</p>
+                <header class="section-header">
+                    <p>Advanced Search</p>
                 </header>
                 <div class="container-fluid sidebar-scrollable">
                     <form action="sendSearchToDB.php" method="post">
@@ -247,7 +246,7 @@ if (!$out_of_matches) {
             <div id="messaging" class="container-fluid" style="padding: 0;">
                 <header id="message-header" style="background-color: #f7f9fc;">
                     <a id="close-search-results" class="nav-link" href="endSearch.php" style="float: left; margin-top: -4px; color: black;"> <i class="far fa-times-circle"></i></a>
-                    <p id="matched-users" style="margin: -0.7rem;">Search Results</p>
+                    <p>Search Results</p>
                 </header>
                 <div class="container-fluid sidebar-scrollable">
                     <div class="row">
@@ -286,7 +285,7 @@ if (!$out_of_matches) {
             </div>
         </div>
     </div>
-<!--  Removes empty advanced search array from $_SESSION after displayed -->
+    <!--  Removes empty advanced search array from $_SESSION after displayed -->
     <?php
     if (empty($_SESSION['advanced_search_result'])) {
         unset($_SESSION['advanced_search_result']);
