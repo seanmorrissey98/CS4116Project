@@ -75,7 +75,7 @@ function getTotalConnectionCount() {
     <div>
         <div class="header-blue" style="background-color: rgb(195,12,23);">
             <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="">Limerick Lovers ADMIN</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="container-fluid"><a class="navbar-brand" href="adminDashboard.php">Limerick Lovers ADMIN</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse"
                          id="navcol-1">
                         <ul class="nav navbar-nav">
@@ -101,40 +101,43 @@ function getTotalConnectionCount() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Admin Dashboard</h4>
-                            <p class="card-text">Welcome <?php echo $_SESSION["first_name"];?></p><a class="card-link" href="#">Inbox</a><a class="card-link" href="#">Option 2</a></div>
+                            <h2 class="card-title text-center">Admin Dashboard</h2>
+                            <hr>
+                            <p class="card-text"><h4>Welcome <?php echo $_SESSION["first_name"];?></h4></p><a class="btn btn-outline-dark" href="#">Inbox</a></div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" >
                 <div class="col">
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Total Users</h4>
-                            <p class="card-text"><?php getTotalUserCount()?></p><a class="card-link" href="userList.php">Link</a><a class="card-link" href="#"></a></div>
+                        <div class="card-body text-center">
+                            <h2 class="card-title">Total Users</h2>
+                            <hr>
+                            <p class="card-text"><h3><?php getTotalUserCount()?></h3></p><a class="btn btn-outline-dark" href="userList.php">See More</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Banned Users</h4>
-                            <p class="card-text"><?php getTotalBannedUserCount()?></p><a class="card-link" href="bannedUserList.php">Link</a><a class="card-link" href="#"></a></div>
+                        <div class="card-body text-center">
+                            <h2 class="card-title">Banned Users</h2>
+                            <hr>
+                            <p class="card-text"><h3><?php getTotalBannedUserCount()?></h3></p><a class="btn btn-outline-dark" href="bannedUserList.php">See More</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Reported Users</h4>
-                            <h6 class="text-muted card-subtitle mb-2"></h6>
-                            <p class="card-text"><?php getTotalReportedUserCount()?></p><a class="card-link" href="reportedList.php">Link</a><a class="card-link" href="#"></a></div>
+                        <div class="card-body text-center">
+                            <h2 class="card-title">Reports</h2>
+                            <hr>
+                            <p class="card-text"><h3><?php getTotalReportedUserCount()?></h3></p><a class="btn btn-outline-dark" href="reportedList.php">See More</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Connections</h4>
-                            <h6 class="text-muted card-subtitle mb-2"></h6>
-                            <p class="card-text"><?php getTotalConnectionCount()?></p><a class="card-link" href="connectionList.php">Link</a><a class="card-link" href="#"></a></div>
+                        <div class="card-body text-center">
+                            <h2 class="card-title">Connections</h2>
+                            <hr>
+                            <p class="card-text"><h3><?php getTotalConnectionCount()?></h3></p><a class="btn btn-outline-dark" href="connectionList.php">See More</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
             </div>
