@@ -1,6 +1,7 @@
 {% for message in messages %}
-    <div data-timestamp='{{ message.message_timestamp }}' class="message-bubble{% if message.user_id_sender == user_id %} message-bubble-right{% endif %}">
-        <h5><span{% if message.user_id_sender == user_id %} class="message-bubble-blue"{% endif %}>{{ message.message }}</span></h5>
-        <p id="message-date">{{ message.message_timestamp | date("M d, H:i") }}</p>
+    {% set position = message.user_id_sender == user_id ? 'right' : 'left' %}
+    <div data-timestamp='{{ message.message_timestamp }}' class="message-bubble message-bubble-{{ position }}">
+        <h5><span class="pull-{{ position }}" style="text-align: left">{{ message.message }}</span></h5>
+        <p id="message-date" class="pull-{{ position }}">{{ message.message_timestamp | date("M d, H:i") }}</p>
     </div>
 {% endfor %}

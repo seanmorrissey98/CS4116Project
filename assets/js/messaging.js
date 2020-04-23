@@ -1,6 +1,8 @@
 let currChat;
 let latest_timestamp;
 
+let retrieving_new_messages = false;
+
 $(function () {
     $("#send-message").submit((e) => {
         e.preventDefault();
@@ -15,8 +17,11 @@ $(function () {
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
     window.setInterval(function () {
-        getNewMessages();
-    }, 5000);
+        if (!retrieving_new_messages)
+            getNewMessages();
+    }, 1000);
+
+    updateScroll();
 });
 
 function expandChat(chat) {
@@ -33,7 +38,7 @@ function expandChat(chat) {
             latest_timestamp = $("#message-section").children().last().attr('data-timestamp');
             updateScroll();
         } else {
-            $("#message-section").html('<p id="empty-chat-message">Say Hi to ' + chat.first_name + '</p>');
+            $("#message-section").html('<p id="empty-chat-message">Say Hi to ' + chat.first_name + '!</p>');
         }
     });
 }
@@ -61,7 +66,11 @@ function getNewMessages() {
     if (latest_timestamp === undefined)
         latest_timestamp = currChat.latest_message_timestamp;
 
+    retrieving_new_messages = true;
+
     $.post('chat.php', {'chat_id': currChat.chat_id, 'timestamp': latest_timestamp}, response => {
+
+        retrieving_new_messages = false;
 
         let messages = $.parseJSON(response);
 

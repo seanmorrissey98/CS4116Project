@@ -87,7 +87,7 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
             <div id="messaging" class="container-fluid" style="padding-right: 0;">
                 <header class="section-header"><p>Chats</p></header>
                 <div id="messages" class="container-fluid" style="height: calc(100vh - 135px);">
-                    <div class="row sidebar-scrollable">
+                    <div class="sidebar-scrollable" style="margin: -15px">
                         <!-- Templating -->
                         <?php echo $chat_cards; ?>
                     </div>
@@ -103,7 +103,7 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
             </header>
             <section id="message-section" class="message-section container-fluid chats-sidebar-scrollable">
                 <?php if (sizeof($chats_data) > 0) {
-                    if (!empty($first_messages_html)) echo $first_messages_html; else echo '<p id="empty-chat-message">Say Hi to ' . $chats_data[0]['first_name'] . '</p>';
+                    if (!empty($first_messages_html)) echo $first_messages_html; else echo '<p id="empty-chat-message">Say Hi to ' . $chats_data[0]['first_name'] . '!</p>';
                 } ?>
             </section>
             <footer id="messaging-footer">

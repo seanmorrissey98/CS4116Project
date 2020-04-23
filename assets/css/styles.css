@@ -5,10 +5,10 @@
 }
 
 .sidebar-scrollable {
-  padding-top: 15px;
   height: calc(100vh - 135px);
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 15px 0;
 }
 
 .chats-sidebar-scrollable {
@@ -169,7 +169,7 @@
   font-size: 12px;
 }
 
-.message-bubble .message-bubble-blue {
+.message-bubble-right > h5 > span {
   background-color: #4c99f4;
   color: white;
 }
@@ -194,6 +194,9 @@
 
 .matched-card {
   margin-bottom: 0.7rem;
+  width: 41%;
+  margin-left: 6%;
+  float: left;
 }
 
 .matched-card a:hover, a:visited, a:link, a:active {

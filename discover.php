@@ -110,10 +110,8 @@ if (!$out_of_matches) {
                     <p style="margin: -0.7rem;">Matches</p>
                 </header>
                 <div class="container-fluid sidebar-scrollable">
-                    <div class="row">
-                        <!-- Templating -->
-                        <?php echo $matched_cards; ?>
-                    </div>
+                    <!-- Templating -->
+                    <?php echo $matched_cards; ?>
                     <div class="row h-100 justify-content-center align-items-center" style="<?php if (!$no_matches) echo " display:none;"; ?>">
                         <p>Start liking to get matches!</p>
                     </div>
