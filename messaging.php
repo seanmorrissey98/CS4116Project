@@ -4,8 +4,8 @@
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require_once "connection.php";
 require_once "DBFunctions.php";
+require_once "TwigFunctions.php";
 
 // Twig for templating matched cards. Stored in templates directory
 require __DIR__ . '/vendor/autoload.php';
@@ -20,15 +20,14 @@ session_start();
 $chats_data = array();
 
 // Get all chat data for the 'Messages' Side Panel
-$chatsSql = "SELECT chat_id, IF(user_id_receiver = " . $_SESSION['user_id'] . ", `user_id_sender`, `user_id_receiver`) AS user_id_receiver, latest_message, latest_message_timestamp, first_name, Photo, Age, Description FROM Chat INNER JOIN User ON User.user_id = IF(user_id_receiver = " . $_SESSION['user_id'] . ", `user_id_sender`, `user_id_receiver`) INNER JOIN Profile ON Profile.user_id = IF(user_id_receiver = " . $_SESSION['user_id'] . ", `user_id_sender`, `user_id_receiver`) WHERE Chat.user_id_sender = " . $_SESSION['user_id'] . " OR Chat.user_id_receiver = " . $_SESSION['user_id'] . " ORDER BY Chat.latest_message_timestamp DESC";
-$result = mysqli_query($con, $chatsSql);
-$chats_data = $result->fetch_all(MYSQLI_ASSOC);
+$chats_data = getChats($_SESSION['user_id']);
 
 $first_chat = '';
 
 if (sizeof($chats_data) > 0) {
     $chat_id_1 = $chats_data[0]['chat_id'];
-    $first_chat = getMessagesForChat($chat_id_1);
+    $first_messages = getMessagesForChat($chat_id_1);
+    $first_messages_html = getTwigMessages($first_messages, $_SESSION['user_id']);
 }
 
 // Send Chat data to twig to render into cards
@@ -37,7 +36,7 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
 ?>
 
 <!DOCTYPE html>
-<html style="height: 100%;">
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -87,23 +86,25 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
         <div class="col col-lg-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
             <div id="messaging" class="container-fluid" style="padding-right: 0;">
                 <header class="section-header"><p>Chats</p></header>
-                <div id="messages" class="container-fluid sidebar-scrollable">
-                    <div class="row">
+                <div id="messages" class="container-fluid" style="height: calc(100vh - 135px);">
+                    <div class="row sidebar-scrollable">
                         <!-- Templating -->
                         <?php echo $chat_cards; ?>
                     </div>
-                    <div id="search-users"><input class="form-control-lg" type="text" id="search" placeholder="Name"><i class="material-icons submit" id="search-icon">search</i></div>
+                    <!--<div id="search-users"><input class="form-control-lg" type="text" id="search" placeholder="Name"><i class="material-icons submit" id="search-icon">search</i></div>-->
                 </div>
             </div>
         </div>
-        <div class="col col-lg-9 col-md-8 col-xs-12" id="messaging-main" style="background-color: #ffffff;padding: 0 !important;height: 100%;">
+        <div class="col col-lg-9 col-md-8 col-xs-12" id="messaging-main" style="background-color: #ffffff;padding: 0 !important; height: calc(100vh - 84px);">
             <header class="section-header">
-                <p id="matched-on" class="float-left">Matched on:&nbsp;</p>
-                <p class="float-left">DATE</p>
-                <p id="header-name">Name</p>
+                <!--<p id="matched-on" class="float-left">Matched on:&nbsp;</p>
+                <p class="float-left"><?php /*if (sizeof($chats_data) > 0) echo $chats_data[0]['latest_timestamp'];*/ ?></p>-->
+                <p id="header-name"><?php if (sizeof($chats_data) > 0) echo $chats_data[0]['first_name']; ?></p>
             </header>
-            <section id="message-section">
-                <?php echo $first_chat; ?>
+            <section id="message-section" class="message-section container-fluid chats-sidebar-scrollable">
+                <?php if (sizeof($chats_data) > 0) {
+                    if (!empty($first_messages_html)) echo $first_messages_html; else echo '<p id="empty-chat-message">Say Hi to ' . $chats_data[0]['first_name'] . '</p>';
+                } ?>
             </section>
             <footer id="messaging-footer">
                 <form id="send-message" action="#">

@@ -16,7 +16,7 @@ session_start();
 
 // $_SESSION["user_id"] = 53;
 
-// Iniialize array for database pull
+// Initialize array for database pull
 $discoverPerson = array();
 $matched_data = array();
 

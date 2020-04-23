@@ -6,7 +6,14 @@
 
 .sidebar-scrollable {
   padding-top: 15px;
-  height: calc(100vh - 134px);
+  height: calc(100vh - 135px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.chats-sidebar-scrollable {
+  padding-top: 15px;
+  height: calc(100vh - 194px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -17,7 +24,7 @@
 /*}*/
 
 .section-header {
-  background-color: #f7f9fc;
+  background-color: rgba(221, 221, 221, 0.19);
   padding: 10px;
   text-align: center;
 }
@@ -27,7 +34,7 @@
   font-weight: 600;
   padding: 10px;
   color: #1f2021;
-  margin: -0.7rem !important;
+  margin: -0.6rem !important;
 }
 
 #blocked-users {
@@ -52,9 +59,7 @@
 }
 
 #first-person {
-  padding: 16px;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  padding: 8px;
   border: 1px solid #1f2021;
   border-radius: 10px;
 }
@@ -65,12 +70,14 @@
 
 #first-person-name {
   text-align: left;
-  background-color: #f7f9fc;
+  color: #1f2021;
+  margin-top: 8px;
 }
 
 #latest-message {
+  font-size: 14px;
   text-align: start;
-  margin-top: 30px;
+  margin: 4px 0;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -86,10 +93,11 @@
 }
 
 #search-users {
-  padding: 16px;
+  background-color: white;
+  padding: 5px;
   bottom: 0;
   position: absolute;
-  width: calc(100% - 30px);
+  width: calc(100% - 20px);
   margin: 0 -15px 0 -15px;
 }
 
@@ -139,11 +147,13 @@
   position: fixed;
   right: 10px;
   font-size: 42px;
+  cursor: pointer;
 }
 
 .message-bubble {
   max-width: 60%;
-  margin: 15px;
+  margin: 4px 15px;
+  float: left;
   clear: both;
 }
 
@@ -187,6 +197,16 @@
 }
 
 .matched-card a:hover, a:visited, a:link, a:active {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
+}
+
+.message-section {
+  text-align: center;
+  padding-top: 30px;
+  background-color: rgba(221, 221, 221, 0.19);
+}
+
+.message-section > p {
+  margin-top: 50px;
 }

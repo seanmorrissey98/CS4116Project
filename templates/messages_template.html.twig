@@ -1,5 +1,5 @@
 {% for message in messages %}
-    <div class="message-bubble{% if message.user_id_sender == user_id %} message-bubble-right{% endif %}">
+    <div data-timestamp='{{ message.message_timestamp }}' class="message-bubble{% if message.user_id_sender == user_id %} message-bubble-right{% endif %}">
         <h5><span{% if message.user_id_sender == user_id %} class="message-bubble-blue"{% endif %}>{{ message.message }}</span></h5>
         <p id="message-date">{{ message.message_timestamp | date("M d, H:i") }}</p>
     </div>

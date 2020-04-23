@@ -1,16 +1,6 @@
 <?php
 
-// Include config file
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-
 require_once "connection.php";
-
-// Twig for templating matched cards. Stored in templates directory
-require __DIR__ . '/vendor/autoload.php';
-
-$loader = new FilesystemLoader(__DIR__ . '/templates');
-$twig = new Environment($loader);
 
 function getDiscoverPeople($user_id)
 {
@@ -36,9 +26,21 @@ function getMatches($user_id)
     return $matched_data;
 }
 
+function getChats($user_id)
+{
+    global $con;
+
+    // Get all chat data for the 'Messages' Side Panel
+    $chatsSql = "SELECT chat_id, IF(user_id_receiver = " . $user_id . ", `user_id_sender`, `user_id_receiver`) AS user_id_receiver, latest_message, latest_message_timestamp, first_name, Photo, Age, Description FROM Chat INNER JOIN User ON User.user_id = IF(user_id_receiver = " . $user_id . ", `user_id_sender`, `user_id_receiver`) INNER JOIN Profile ON Profile.user_id = IF(user_id_receiver = " . $user_id . ", `user_id_sender`, `user_id_receiver`) WHERE Chat.user_id_sender = " . $user_id . " OR Chat.user_id_receiver = " . $user_id . " ORDER BY Chat.latest_message_timestamp DESC";
+    $result = mysqli_query($con, $chatsSql);
+    $chats_data = $result->fetch_all(MYSQLI_ASSOC);
+
+    return $chats_data;
+}
+
 function getMessagesForChat($chat_id)
 {
-    global $con, $twig;
+    global $con;
 
     $sql = "SELECT * FROM Messages WHERE chat_id = " . $chat_id . " ORDER BY message_timestamp";
 
@@ -46,8 +48,18 @@ function getMessagesForChat($chat_id)
     //$no_result = mysqli_num_rows($result) === 0;
     $messages = $result->fetch_all(MYSQLI_ASSOC);
 
-    $message_html = $twig->render('messages_template.html.twig', ['messages' => $messages, 'user_id' => $_SESSION['user_id']]);
-    $message_html = str_replace("\n", '', $message_html);
+    return $messages;
+}
 
-    return $message_html;
+function getMessagesForChatLatest($chat_id, $timestamp, $user_id)
+{
+    global $con;
+
+    $sql = "SELECT * FROM Messages WHERE message_timestamp > '" . $timestamp . "' AND chat_id = " . $chat_id . " AND user_id_receiver = " . $user_id . " ORDER BY message_timestamp";
+
+    $result = mysqli_query($con, $sql);
+    //$no_result = mysqli_num_rows($result) === 0;
+    $messages = $result->fetch_all(MYSQLI_ASSOC);
+
+    return $messages;
 }

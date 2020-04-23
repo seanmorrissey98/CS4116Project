@@ -4,7 +4,8 @@
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require_once "connection.php";
+require_once "DBFunctions.php";
+require_once "TwigFunctions.php";
 
 // Initialize the session
 session_start();
@@ -15,13 +16,9 @@ require __DIR__ . '/vendor/autoload.php';
 $loader = new FilesystemLoader(__DIR__ . '/templates');
 $twig = new Environment($loader);
 
-$sql = "SELECT * FROM Messages WHERE chat_id = " . $_POST['chat_id'] . " ORDER BY message_timestamp";
+if (isset($_POST['timestamp'])) $messages = getMessagesForChatLatest($_POST['chat_id'], $_POST['timestamp'], $_SESSION['user_id']); else
+    $messages = getMessagesForChat($_POST['chat_id']);
 
-$result = mysqli_query($con, $sql);
-$no_result = mysqli_num_rows($result) === 0;
-$messages = $result->fetch_all(MYSQLI_ASSOC);
-
-$message_html = $twig->render('messages_template.html.twig', ['messages' => $messages, 'user_id' => $_SESSION['user_id']]);
-$message_html = str_replace("\n", '', $message_html);
+$message_html = getTwigMessages($messages, $_SESSION['user_id']);
 
 echo json_encode($message_html);
