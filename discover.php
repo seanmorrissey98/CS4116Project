@@ -48,6 +48,7 @@ if (!$out_of_matches) {
     $_SESSION["match_drinker"] = $nextmatchDate['Drinker'];
     $_SESSION["match_smoker"] = $nextmatchDate['Smoker'];
     $_SESSION["match_photo"] = $nextmatchDate['Photo'];
+    $user_account_id=$_SESSION["match_id"];
 }
 ?>
 
@@ -136,7 +137,7 @@ if (!$out_of_matches) {
                         </div>
                         <!-- Add $_SESSION match data into discover card for name, age and description -->
                         <div style="background-color: #f7f9fc; padding: 8px; margin-bottom: -15px;">
-                            <h3 id="match-name"><?php if (isset($_SESSION["match_name"])) echo $_SESSION["match_name"]; ?></h3>
+                            <h3 id="match-name"><?php if (isset($_SESSION["match_name"])) echo "<a href='accountInfo.php?user_account_id=$user_account_id'>" . $_SESSION["match_name"] . "</a>" ?></h3>
                             <h4 id="match-age"><?php if (isset($_SESSION["match_age"])) echo $_SESSION["match_age"]; ?></h4>
                             <p id="match-bio" style="font-size: 14px;">
                                 <br><?php if (isset($_SESSION["match_description"])) echo $_SESSION["match_description"]; ?>
