@@ -114,7 +114,7 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                                 }
                            ?> 
                             );"></div>
-                        <h1>Name: <?php echo $users['first_name'];?></h1>
+                        <h1><?php echo $users['first_name'] . " " . $users['last_name'];?></h1>
                     </div>
 					<div><br></div>
                     <div class="form-group"><label>Email:</label><?php echo " ".$users['email'] ?></div>

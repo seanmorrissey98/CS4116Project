@@ -109,10 +109,11 @@ function searchConnectionTable() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">User Connection List</h4>  
-                            <form action="connectionList.php" method="get">
-                                    <input type="search" name="connSearch" placeholder="Search Connections">
-                                    <input type="submit" value="Search">
+                            <h1 class="card-title text-center">User Connection List</h1>  
+                            <hr>
+                            <form class="form-inline mr-auto" action="connectionList.php" method="get">
+                                    <input class="form-control mr-sm-2" type="search" name="connSearch" placeholder="Search Connections">
+                                    <input class="btn btn-dark" type="submit" value="Search">
 
 
                             </form>
@@ -124,13 +125,15 @@ function searchConnectionTable() {
             <div class="row">
                 <div class="col">
                     <div class="table-responsive">
-                        <table class="table">
-                            <thead>
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>User ID 1</th>
                                     <th>User ID 2</th>
                                     <th>Conection Date</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                             <?php                            
                                 if (isset($_GET["connSearch"])) {
                                     searchConnectionTable($_GET["connSearch"]);
@@ -138,8 +141,7 @@ function searchConnectionTable() {
                                     populateConnectionTable();                                    
                                 }
                              ?>
-                            </thead>
-                            <tbody></tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>

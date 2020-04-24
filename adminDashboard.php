@@ -117,7 +117,7 @@ function getTotalConnectionCount() {
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card">
+                    <div class="card" >
                         <div class="card-body text-center">
                             <h2 class="card-title">Banned Users</h2>
                             <hr>

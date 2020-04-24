@@ -112,10 +112,11 @@ function searchBannedTable() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Banned User List</h4>  
-                            <form action="bannedUserList.php" method="get">
-                                    <input type="search" name="banSearch" placeholder="Search Banned Users">
-                                    <input type="submit" value="Search">
+                            <h1 class="card-title text-center">Banned User List</h1>
+                            <hr>  
+                            <form class="form-inline mr-auto"action="bannedUserList.php" method="get">
+                                    <input class="form-control mr-sm-2" type="search" name="banSearch" placeholder="Search Banned Users">
+                                    <input class="btn btn-dark" type="submit" value="Search">
 
 
                             </form>
@@ -127,8 +128,8 @@ function searchBannedTable() {
             <div class="row">
                 <div class="col">
                     <div class="table-responsive">
-                        <table class="table">
-                            <thead>
+                        <table class="table table-bordered table-hover">
+                            <thead class= "thead-dark">
                                 <tr>
                                     <th>User ID</th>
                                     <th>Banned User Name</th>
@@ -136,6 +137,8 @@ function searchBannedTable() {
                                     <th>Date</th>
                                     <th>Reason</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                             <?php                            
                                 if (isset($_GET["banSearch"])) {
                                     searchBannedTable($_GET["banSearch"]);
@@ -143,8 +146,7 @@ function searchBannedTable() {
                                     populateBannedTable();                                    
                                 }
                              ?>
-                            </thead>
-                            <tbody></tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>

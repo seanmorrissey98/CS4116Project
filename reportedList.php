@@ -111,10 +111,11 @@ function searchReportTable() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Reported User List</h4>  
-                            <form action="reportedList.php" method="get">
-                                    <input type="search" name="reportSearch" placeholder="Search Reported Users">
-                                    <input type="submit" value="Search">
+                            <h1 class="card-title text-center">Reported User List</h1>
+                            <hr>  
+                            <form class="form-inline mr-auto" action="reportedList.php" method="get">
+                                    <input class="form-control mr-sm-2" type="search" name="reportSearch" placeholder="Search Reported Users">
+                                    <input class="btn btn-dark" type="submit" value="Search">
 
 
                             </form>
@@ -126,8 +127,8 @@ function searchReportTable() {
             <div class="row">
                 <div class="col">
                     <div class="table-responsive">
-                        <table class="table">
-                            <thead>
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Reported By</th>
                                     <th>Reported User ID</th>
@@ -135,15 +136,16 @@ function searchReportTable() {
                                     <th>Report date</th>
                                     <th>Report Reason</th>
                                 </tr>
-                            <?php                            
-                                if (isset($_GET["reportSearch"])) {
-                                    searchReportTable($_GET["reportSearch"]);
-                                } else {
-                                    populateReportTable();                                    
-                                }
-                             ?>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                <?php                            
+                                    if (isset($_GET["reportSearch"])) {
+                                        searchReportTable($_GET["reportSearch"]);
+                                    } else {
+                                        populateReportTable();                                    
+                                    }
+                                ?>
+                            </tbody>
                         </table>
                     </div>
                 </div>

@@ -112,10 +112,11 @@ function logout()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">User List</h4>  
-                            <form action="userList.php" method="get">
-                                    <input type="search" name="userSearch" placeholder="Search Users">
-                                    <input type="submit" value="Search">
+                            <h1 class="card-title text-center">User List</h1>
+                            <hr>  
+                            <form class="form-inline mr-auto" action="userList.php" method="get">
+                                    <input class="form-control mr-sm-2" type="search" name="userSearch" placeholder="Search Users">
+                                    <input class="btn btn-dark" type="submit" value="Search">
 
 
                             </form>
@@ -127,8 +128,8 @@ function logout()
             <div class="row">
                 <div class="col">
                     <div class="table-responsive">
-                        <table class="table">
-                            <thead>
+                        <table class="table table-bordered table-hover">
+                            <thead class= "thead-dark">
                                 <tr>
                                     <th>ID</th>
                                     <th>Email</th>
@@ -136,6 +137,9 @@ function logout()
                                     <th>Last Name</th>
                                     <th>Date Joined</th>
                                 </tr>
+
+                            </thead>
+                            <tbody>
                             <?php                            
                                 if (isset($_GET["userSearch"])) {
                                     searchUserTable($_GET["userSearch"]);
@@ -143,8 +147,7 @@ function logout()
                                     populateUserTable();                                    
                                 }
                              ?>
-                            </thead>
-                            <tbody></tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
