@@ -3,7 +3,9 @@
     <div id="{{ match.user_id }}" class="matched-card">
         <a href="messaging.php">
             <div style="border: 1px solid #6e6f70; border-radius: 10px;cursor: pointer; overflow: hidden;">
-                <img id="first-person-image" src="assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm.jpg">
+                <div class="image-wrapper-tall">
+                    <img id="first-person-image" src="user_images/{{ match.Photo }}">
+                </div>
                 <h6 id="first-person-name" style="text-align: center; margin: 0; padding: 6px 0;">{{ match.first_name }}</h6>
             </div>
         </a>
