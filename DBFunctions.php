@@ -7,7 +7,7 @@ function getDiscoverPeople($user_id)
     global $con;
 
     // Pull 1 row from database from like where matches not in dislike, like and report pages
-    $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != '" . $user_id . "') AND (Likes.liked_user_id IS NULL OR Likes.user_id != '" . $user_id . "') AND (Reports.reported_user_id IS NULL OR Reports.user_id != '" . $user_id . "') HAVING User.user_id != '" . $user_id . "' LIMIT 1";
+    $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id Left Join (Select * from Likes where Likes.user_id = " . $user_id . ") l ON User.user_id = l.liked_user_id Left Join (Select * from Dislikes where Dislikes.user_id = " . $user_id . ") d ON User.user_id = d.disliked_user_id Left Join (Select * from Reports where Reports.user_id = " . $user_id . ") r ON User.user_id = r.reported_user_id WHERE (l.liked_user_id IS NULL OR l.user_id != " . $user_id . ") AND (d.disliked_user_id IS NULL OR d.user_id != " . $user_id . ") AND (r.reported_user_id IS NULL OR r.user_id != " . $user_id . ") AND Profile.Smoker LIKE '%' AND Profile.Drinker LIKE '%' AND user_type = 'user' AND User.user_id != " . $user_id . " ORDER BY RAND() LIMIT 1";
     $result = mysqli_query($con, $sql);
 
     $people = $result->fetch_all(MYSQLI_ASSOC);

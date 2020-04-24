@@ -52,13 +52,21 @@ if (isset($_SESSION['advanced_search_result'])) {
 function create_chat()
 {
     global $con;
+
+
     // SQL for creating new chat after like
-    $sql = "INSERT INTO `Chat`(`user_id_sender`, `user_id_receiver`, `latest_message`) VALUES( " . $_SESSION["user_id"] . "," . $_POST['match_id'] . ", 'New Match! Click to message!')";
-    if ($con->query($sql) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $con->error;
+    $chat_sql = "Select * from Chat where Chat.user_id_sender = " . $_POST['match_id'] . " AND Chat.user_id_receiver = " . $_SESSION["user_id"];
+    $chat_result = mysqli_query($con, $chat_sql);
+
+    if ($chat_result && mysqli_num_rows($chat_result) === 0) {
+        $sql = "INSERT INTO `Chat`(`user_id_sender`, `user_id_receiver`, `latest_message`) VALUES( " . $_SESSION["user_id"] . "," . $_POST['match_id'] . ", 'New Match! Click to message!')";
+        if ($con->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $con->error;
+        }
     }
+    mysqli_free_result($chat_result);
 }
 
 // Return to discover page

@@ -64,10 +64,6 @@
   border-radius: 10px;
 }
 
-#first-person-image {
-  width: 100%;
-}
-
 #first-person-name {
   text-align: left;
   color: #1f2021;
@@ -202,6 +198,39 @@
 .matched-card a:hover, a:visited, a:link, a:active {
   text-decoration: none;
   color: black;
+}
+
+.image-wrapper-tall {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding-bottom: calc(100% * 1.5);
+  background-color: #191919;
+}
+
+.image-wrapper-tall > img {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.image-wrapper-circle {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  padding-bottom: 100%;
+  background-color: #313131;
+  border: 1px solid #313131;
+}
+
+.image-wrapper-circle > img {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .message-section {

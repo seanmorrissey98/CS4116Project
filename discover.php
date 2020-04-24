@@ -47,6 +47,7 @@ if (!$out_of_matches) {
     $_SESSION["match_gender"] = $nextmatchDate['Gender'];
     $_SESSION["match_drinker"] = $nextmatchDate['Drinker'];
     $_SESSION["match_smoker"] = $nextmatchDate['Smoker'];
+    $_SESSION["match_photo"] = $nextmatchDate['Photo'];
 }
 ?>
 
@@ -124,7 +125,9 @@ if (!$out_of_matches) {
                     <div style="border: 2px solid #6e6f70; border-radius: 20px; overflow: hidden; box-shadow: 3px 4px #38373726">
                         <div class="" id="match-photos">
                             <div class="col" id="image" style="padding: 0;">
-                                <img id="match-photo" class="rounded float-left" src="assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm.jpg" width="320px" style="float: none !important;position: relative;">
+                                <div class="image-wrapper-tall">
+                                    <img id="match-photo" src="user_images/<?php echo $_SESSION["match_photo"] ?>" width="320px" style="float: none !important;">
+                                </div>
                                 <button class="btn btn-primary" id="button-left" type="button"
                                         style="background-image: url(&quot;assets/img/keyboard_arrow_left-24px.svg&quot;);width: 70px;height: 90px;background-color: rgba(255,255,255,0.1);background-size: contain;background-repeat: no-repeat;"></button>
                                 <button class="btn btn-primary" id="button-right" type="button"
