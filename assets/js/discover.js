@@ -32,3 +32,20 @@ function expandSearchedUser(match) {
     $('#match_id_hidden').val(match.user_id);
     $('#report_match_id_hidden').val(match.user_id);
 }
+
+function openChat(match_user_id) {
+    $.redirectPost("messaging.php", {match_user_id: match_user_id});
+}
+
+// jquery extend function
+$.extend(
+    {
+        redirectPost: function (location, args) {
+            let form = '';
+            $.each(args, function (key, value) {
+                value = value.split('"').join('\"')
+                form += '<input type="hidden" name="' + key + '" value="' + value + '">';
+            });
+            $('<form action="' + location + '" method="POST">' + form + '</form>').appendTo($(document.body)).submit();
+        }
+    });

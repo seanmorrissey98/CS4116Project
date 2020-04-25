@@ -1,13 +1,11 @@
 <!-- TODO: Place image in the source -->
 {% for match in matched_data %}
-    <div id="{{ match.user_id }}" class="matched-card-wrapper">
-        <a href="messaging.php">
-            <div class="matched-card">
-                <div class="image-wrapper-tall">
-                    <img id="first-person-image" src="user_images/{{ match.Photo }}" alt="{{ match.first_name }}">
-                </div>
-                <h6>{{ match.first_name }}</h6>
+    <div id="{{ match.user_id }}" class="matched-card-wrapper" onclick="openChat({{ match.user_id | json_encode() }})">
+        <div class="matched-card">
+            <div class="image-wrapper-tall">
+                <img id="first-person-image" src="user_images/{{ match.Photo }}" alt="{{ match.first_name }}">
             </div>
-        </a>
+            <h6>{{ match.first_name }}</h6>
+        </div>
     </div>
 {% endfor %}

@@ -17,16 +17,31 @@ $twig = new Environment($loader);
 session_start();
 
 // Initialize chat array for database pull
-$chats_data = array();
+$chats_data = '';
 
 // Get all chat data for the 'Messages' Side Panel
 $chats_data = getChats($_SESSION['user_id']);
 
+$chat_id_1 = array();
+
+// Find select chat in array of chats
+if (sizeof($chats_data) > 0 && isset($_POST['match_user_id'])) {
+    $match_user_id = $_POST['match_user_id'];
+    echo $match_user_id;
+
+    foreach ($chats_data as $chat) {
+        if ($chat['user_id_receiver'] === $match_user_id) {
+            $chat_id_1 = $chat;
+            break;
+        }
+    }
+}
+
 $first_chat = '';
 
 if (sizeof($chats_data) > 0) {
-    $chat_id_1 = $chats_data[0]['chat_id'];
-    $first_messages = getMessagesForChat($chat_id_1);
+    if (sizeof($chat_id_1) === 0) if (sizeof($chat_id_1) === 0) $chat_id_1 = $chats_data[0];
+    $first_messages = getMessagesForChat($chat_id_1['chat_id']);
     $first_messages_html = getTwigMessages($first_messages, $_SESSION['user_id']);
 }
 
@@ -97,13 +112,11 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
         </div>
         <div class="col col-lg-9 col-md-8 col-xs-12" id="messaging-main" style="background-color: #ffffff;padding: 0 !important; height: calc(100vh - 84px);">
             <header class="section-header">
-                <!--<p id="matched-on" class="float-left">Matched on:&nbsp;</p>
-                <p class="float-left"><?php /*if (sizeof($chats_data) > 0) echo $chats_data[0]['latest_timestamp'];*/ ?></p>-->
-                <p id="header-name"><?php if (sizeof($chats_data) > 0) echo $chats_data[0]['first_name']; ?></p>
+                <p id="header-name"><?php if (sizeof($chat_id_1) > 0) echo $chat_id_1['first_name']; ?></p>
             </header>
             <section id="message-section" class="message-section container-fluid chats-sidebar-scrollable">
                 <?php if (sizeof($chats_data) > 0) {
-                    if (!empty($first_messages_html)) echo $first_messages_html; else echo '<p id="empty-chat-message">Say Hi to ' . $chats_data[0]['first_name'] . '!</p>';
+                    if (!empty($first_messages_html)) echo $first_messages_html; else echo '<p id="empty-chat-message">Say Hi to ' . $chat_id_1['first_name'] . '!</p>';
                 } ?>
             </section>
             <footer id="messaging-footer">
@@ -122,13 +135,12 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
 <script src="assets/js/bs-init.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
-<script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
+<!--<script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>-->
 <script src="assets/js/Profile-Edit-Form.js"></script>
 <script src="assets/js/Range-selector---slider.js"></script>
 <script src="assets/js/messaging.js"></script>
-<?php if (sizeof($chats_data) > 0) {
-    $chat_id_1 = $chats_data[0]['chat_id'];
-    echo "<script>currChat = " . json_encode($chats_data[0]) . ";</script>";
+<?php if (sizeof($chat_id_1) > 0) {
+    echo "<script>currChat = " . json_encode($chat_id_1) . ";</script>";
 } ?>
 </body>
 
