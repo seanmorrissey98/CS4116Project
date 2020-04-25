@@ -69,7 +69,7 @@ if (!$out_of_matches) {
     <link rel="stylesheet" href="assets/css/Footer-Basic.css">
     <link rel="stylesheet" href="assets/css/Header-Blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
     <link rel="stylesheet" href="assets/css/Image-slider-carousel-With-arrow-buttons-1.css">
     <link rel="stylesheet" href="assets/css/Image-slider-carousel-With-arrow-buttons.css">
@@ -137,12 +137,12 @@ if (!$out_of_matches) {
                             </div>
                         </div>
                         <!-- Add $_SESSION match data into discover card for name, age and description -->
-                        <div style="background-color: #f7f9fc; padding: 8px; margin-bottom: -15px;">
+                        <div class="discover-card-info">
                             <h3 id="match-name"><?php if (isset($_SESSION["match_name"])) echo "<a href='accountInfo.php?user_account_id=$user_account_id'>" . $_SESSION["match_name"] . "</a>" ?></h3>
                             <h4 id="match-age"><?php if (isset($_SESSION["match_age"])) echo $_SESSION["match_age"]; ?></h4>
-                            <p id="match-bio" style="font-size: 14px;">
-                                <br><?php if (isset($_SESSION["match_description"])) echo $_SESSION["match_description"]; ?>
-                                <br><br></p>
+                            <p id="match-bio">
+                                <?php if (isset($_SESSION["match_description"])) echo $_SESSION["match_description"]; ?>
+                            </p>
                         </div>
                     </div>
                     <div class="text-center d-block" id="like-dislike-buttons" style="width: 100%;text-align: center; margin-top: 20px;">
@@ -385,7 +385,7 @@ if (!$out_of_matches) {
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
     <script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
     <script src="assets/js/Profile-Edit-Form.js"></script>

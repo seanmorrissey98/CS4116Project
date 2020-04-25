@@ -1,12 +1,12 @@
 <!-- TODO: Place image in the source -->
 {% for match in matched_data %}
-    <div id="{{ match.user_id }}" class="matched-card">
+    <div id="{{ match.user_id }}" class="matched-card-wrapper">
         <a href="messaging.php">
-            <div style="border: 1px solid #6e6f70; border-radius: 10px;cursor: pointer; overflow: hidden;">
+            <div class="matched-card">
                 <div class="image-wrapper-tall">
-                    <img id="first-person-image" src="user_images/{{ match.Photo }}">
+                    <img id="first-person-image" src="user_images/{{ match.Photo }}" alt="{{ match.first_name }}">
                 </div>
-                <h6 id="first-person-name" style="text-align: center; margin: 0; padding: 6px 0;">{{ match.first_name }}</h6>
+                <h6>{{ match.first_name }}</h6>
             </div>
         </a>
     </div>

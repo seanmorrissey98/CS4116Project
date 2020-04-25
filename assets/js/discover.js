@@ -28,7 +28,7 @@ function expandSearchedUser(match) {
     $('#match-name').text(match.first_name + ' ' + match.last_name);
     $('#match-age').text(match.Age);
     $('#match-bio').text(match.Description);
-    $('#match-photo').attr('src', 'assets/img/Woman%20Standing%20Infront%20On%20Man%20Hands%20Over%20Arm.jpg'); //match.Photo
+    $('#match-photo').attr('src', 'user_images/' + match.Photo); //match.Photo
     $('#match_id_hidden').val(match.user_id);
     $('#report_match_id_hidden').val(match.user_id);
 }

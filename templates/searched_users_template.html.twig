@@ -1,12 +1,12 @@
 <!-- TODO: Place image in the source -->
 {% for match in matched_data %}
-    <div id="{{ match.user_id }}" class="matched-card col-lg-5 {% if loop.index is odd %}offset-lg-1{% endif %}">
+    <div id="{{ match.user_id }}" class="matched-card-wrapper col-lg-5 {% if loop.index is odd %}offset-lg-1{% endif %}">
         <a href="#" onclick="expandSearchedUser({{ match |json_encode() }})">
-            <div style="border: 1px solid black; border-radius: 10px;cursor: pointer; overflow: hidden;">
+            <div class="matched-card">
                 <div class="image-wrapper-tall">
-                    <img id="first-person-image" src="user_images/{{ match.Photo }}">
+                    <img id="first-person-image" src="user_images/{{ match.Photo }}" alt="{{ match.first_name }}">
                 </div>
-                <h5 id="first-person-name" style="text-align: center; margin: 0; padding-bottom: 8px;">{{ match.first_name }}</h5>
+                <h6>{{ match.first_name }}</h6>
             </div>
         </a>
     </div>
