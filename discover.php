@@ -14,6 +14,7 @@ $twig = new Environment($loader);
 // Initialize the session
 session_start();
 
+// For Testing
 // $_SESSION["user_id"] = 53;
 
 // Initialize array for database pull
@@ -48,7 +49,7 @@ if (!$out_of_matches) {
     $_SESSION["match_drinker"] = $nextmatchDate['Drinker'];
     $_SESSION["match_smoker"] = $nextmatchDate['Smoker'];
     $_SESSION["match_photo"] = $nextmatchDate['Photo'];
-    $user_account_id=$_SESSION["match_id"];
+    $user_account_id = $_SESSION["match_id"];
 }
 ?>
 
@@ -220,25 +221,112 @@ if (!$out_of_matches) {
                         </div>
                         <hr>
                         <p><strong>Hobbies</strong></p>
-                        <label class="check-container">Soccer
-                            <input type="checkbox" name="soccer">
-                            <span class="check-checkmark"></span>
-                        </label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="check-container">Soccer
+                                    <input type="checkbox" name="Soccer">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
 
-                        <label class="check-container">Sport
-                            <input type="checkbox" name="sport">
-                            <span class="check-checkmark"></span>
-                        </label>
+                            <div class="col-md-4">
+                                <label class="check-container">Sport
+                                    <input type="checkbox" name="Sport">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
 
-                        <label class="check-container">Film
-                            <input type="checkbox" name="film">
-                            <span class="check-checkmark"></span>
-                        </label>
+                            <div class="col-md-4">
+                                <label class="check-container">Film
+                                    <input type="checkbox" name="Film">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
 
-                        <label class="check-container">Painting
-                            <input type="checkbox" name="painting">
-                            <span class="check-checkmark"></span>
-                        </label>
+                            <div class="col-md-4">
+                                <label class="check-container">Painting
+                                    <input type="checkbox" name="Painting">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Photography
+                                    <input type="checkbox" name="Photography">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Dance
+                                    <input type="checkbox" name="Dance">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Gardening
+                                    <input type="checkbox" name="Gardening">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Exercise
+                                    <input type="checkbox" name="Exercise">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Cooking
+                                    <input type="checkbox" name="Cooking">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Video Games
+                                    <input type="checkbox" name="Video Games">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Shopping
+                                    <input type="checkbox" name="Shopping">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Music
+                                    <input type="checkbox" name="Music">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Cycling
+                                    <input type="checkbox" name="Cycling">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Programming
+                                    <input type="checkbox" name="Programming">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="check-container">Archery
+                                    <input type="checkbox" name="Archery">
+                                    <span class="check-checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
                         <button class="btn btn-primary float-right" type="submit">Search <i class="fas fa-search"></i></button>
                     </form>
                 </div>

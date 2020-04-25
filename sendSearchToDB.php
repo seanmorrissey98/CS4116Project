@@ -78,7 +78,7 @@ $hobbies_arr = array();
 $hobbies_str = array();
 
 // Map to ints
-$interests_map = array('soccer' => 1, 'sport' => 2, 'film' => 3, 'painting' => 4);
+$interests_map = array('Soccer' => 1, 'Knitting' => 2, 'Film' => 3, 'Painting' => 4, 'Photography' => 5, 'Dance' => 6, 'Gardening' => 7, 'Exercise' => 8, 'Cooking' => 9, 'Video Games' => 10, 'Shopping' => 11, 'Music' => 12, 'Cycling' => 13, 'Programming' => 14, 'Archery' => 15);
 $interests = '';
 
 /*foreach ($key as array_keys($interests_map)) {
@@ -87,23 +87,55 @@ $interests = '';
     }
 }*/
 
-if (isset($_POST['soccer'])) {
-    $interests = add_interest($interests, $interests_map['soccer']);
+if (isset($_POST['Soccer'])) {
+    $interests = add_interest($interests, $interests_map['Soccer']);
 }
-if (isset($_POST['sport'])) {
-    $interests = add_interest($interests, $interests_map['sport']);
+if (isset($_POST['Knitting'])) {
+    $interests = add_interest($interests, $interests_map['Knitting']);
 }
-if (isset($_POST['film'])) {
-    $interests = add_interest($interests, $interests_map['film']);
+if (isset($_POST['Film'])) {
+    $interests = add_interest($interests, $interests_map['Film']);
 }
-if (isset($_POST['painting'])) {
-    $interests = add_interest($interests, $interests_map['painting']);
+if (isset($_POST['Painting'])) {
+    $interests = add_interest($interests, $interests_map['Painting']);
+}
+if (isset($_POST['Photography'])) {
+    $interests = add_interest($interests, $interests_map['Photography']);
+}
+if (isset($_POST['Dance'])) {
+    $interests = add_interest($interests, $interests_map['Dance']);
+}
+if (isset($_POST['Gardening'])) {
+    $interests = add_interest($interests, $interests_map['Gardening']);
+}
+if (isset($_POST['Exercise'])) {
+    $interests = add_interest($interests, $interests_map['Exercise']);
+}
+if (isset($_POST['Cooking'])) {
+    $interests = add_interest($interests, $interests_map['Cooking']);
+}
+if (isset($_POST['Video Games'])) {
+    $interests = add_interest($interests, $interests_map['Video Games']);
+}
+if (isset($_POST['Shopping'])) {
+    $interests = add_interest($interests, $interests_map['Shopping']);
+}
+if (isset($_POST['Music'])) {
+    $interests = add_interest($interests, $interests_map['Music']);
+}
+if (isset($_POST['Cycling'])) {
+    $interests = add_interest($interests, $interests_map['Cycling']);
+}
+if (isset($_POST['Programming'])) {
+    $interests = add_interest($interests, $interests_map['Programming']);
+}
+if (isset($_POST['Archery'])) {
+    $interests = add_interest($interests, $interests_map['Archery']);
 }
 
 if ($interests != '') $interests .= ')';
 
-function add_interest($interests, $i)
-{
+function add_interest($interests, $i) {
     if ($interests == '') $interests = "AND Interests.interest_id IN (" . $i; else
         $interests .= ', ' . $i;
     return $interests;
@@ -115,12 +147,10 @@ print_r($hobbies_arr);
 print(implode("|", $hobbies_arr));
 
 echo '\\n';
-print('we want: ' . 'min age: ' . $min_age . ' max age: ' . $max_age . ', gender: ' . $gender . ', drinker: ' . $drinker . ', smoker: ' . $smoker . ', hobbies: ' . $interests);
+//print('we want: ' . 'min age: ' . $min_age . ' max age: ' . $max_age . ', gender: ' . $gender . ', drinker: ' . $drinker . ', smoker: ' . $smoker . ', hobbies: ' . $interests);
 
 // SQL Query
-$sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker, GROUP_CONCAT(Interests.interest_id) AS interests FROM User INNER JOIN Profile ON User.user_id = Profile.user_id LEFT JOIN Interests ON User.user_id = Interests.user_id LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != 5) AND (Likes.liked_user_id IS NULL OR Likes.user_id != 5) AND (Reports.reported_user_id IS NULL OR Reports.user_id != 5) AND Age BETWEEN " . $min_age . " AND " . $max_age . " " . $drinker . " " . $gender . " " . $interests . " GROUP BY User.user_id HAVING User.user_id != 5 LIMIT 20";
-echo '<br>';
-
+$sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker, GROUP_CONCAT(Interests.interest_id) AS interests FROM User INNER JOIN Profile ON User.user_id = Profile.user_id LEFT JOIN Interests ON User.user_id = Interests.user_id LEFT JOIN Dislikes ON User.user_id = Dislikes.disliked_user_id LEFT JOIN Likes ON User.user_id = Likes.liked_user_id LEFT JOIN Reports ON User.user_id = Reports.reported_user_id WHERE (Dislikes.disliked_user_id IS NULL OR Dislikes.user_id != 5) AND (Likes.liked_user_id IS NULL OR Likes.user_id != 5) AND (Reports.reported_user_id IS NULL OR Reports.user_id != 5) AND Age BETWEEN " . $min_age . " AND " . $max_age . " " . $drinker . " " . $gender . " " . $interests . " GROUP BY User.user_id HAVING User.user_id != " . $_SESSION['user_id'] . " LIMIT 20";
 
 // Execute query to database
 $result = mysqli_query($con, $sql);
