@@ -27,7 +27,6 @@ $chat_id_1 = array();
 // Find select chat in array of chats
 if (sizeof($chats_data) > 0 && isset($_POST['match_user_id'])) {
     $match_user_id = $_POST['match_user_id'];
-    echo $match_user_id;
 
     foreach ($chats_data as $chat) {
         if ($chat['user_id_receiver'] === $match_user_id) {
