@@ -19,7 +19,7 @@ function getMatches($user_id)
 {
     global $con;
 
-    $matchesSql = "SELECT User.user_id, first_name, Photo FROM Likes INNER JOIN User ON Likes.liked_user_id = User.user_id LEFT JOIN Profile ON Likes.liked_user_id = Profile.user_id WHERE Likes.user_id = " . $user_id;
+    $matchesSql = "SELECT User.user_id, first_name, Photo FROM Likes INNER JOIN User ON Likes.liked_user_id = User.user_id LEFT JOIN Profile ON Likes.liked_user_id = Profile.user_id WHERE Likes.user_id = " . $user_id . " ORDER BY Likes.date DESC";
     $match_result = mysqli_query($con, $matchesSql);
     $matched_data = $match_result->fetch_all(MYSQLI_ASSOC);
 
