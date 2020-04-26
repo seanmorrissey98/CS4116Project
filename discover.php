@@ -15,13 +15,15 @@ $twig = new Environment($loader);
 session_start();
 
 // For Testing
-// $_SESSION["user_id"] = 53;
+// $_SESSION["user_id"] = 40;
 
 // Initialize array for database pull
 $discoverPerson = array();
 $matched_data = array();
 
-$discoverPerson = getDiscoverPeople($_SESSION['user_id']);
+if (isset($_SESSION['seeking_gender']) && isset($_SESSION['drinker']) && isset($_SESSION['smoker'])) $discoverPerson = getDiscoverPeopleSpecific($_SESSION['user_id'], $_SESSION['seeking_gender'], $_SESSION['drinker'], $_SESSION['smoker']); else
+    $discoverPerson = getDiscoverPeople($_SESSION['user_id']);
+
 $matched_data = getMatches($_SESSION['user_id']);
 
 $out_of_matches = sizeof($discoverPerson) === 0;
