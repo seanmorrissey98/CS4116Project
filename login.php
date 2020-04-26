@@ -66,7 +66,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["first_name"] = $first_name;
                             $_SESSION["last_name"] = $last_name;
                             $_SESSION["email"] = $email;
-
+							
+							$sql = "SELECT Seeking, Drinker, Smoker FROM Profile WHERE user_id=\"{$user_id}\"";
+							$result = $con->query($sql);
+							while($row = $result->fetch_assoc()){
+								$_SESSION["user_id"] = $row['user_id'];
+								$_SESSION["seeking_gender"] = $row['Seeking'];
+								$_SESSION["drinker"]=$row['Drinker'];
+								$_SESSION["smoker"]=$row['Smoker'];
+							}
                             if ($user_type == "administrator") {
                                 $_SESSION["adminLoggedIn"] = true;
                                 header("Location: adminDashboard.php");

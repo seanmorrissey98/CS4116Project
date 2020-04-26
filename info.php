@@ -69,6 +69,9 @@ function logout()
                         $_SESSION["first_name"] = $_POST['firstname'];
                         $_SESSION["last_name"] = $_POST['surname'];
                         $_SESSION["email"] = $_COOKIE['email'];
+						$_SESSION["seeking_gender"] = $_POST['seeking'];
+						$_SESSION["drinker"]=$drinker;
+						$_SESSION["smoker"]=$smoker;
 						goToNextPage();
 					} else {
 						setcookie("error_message","File is not an image or is too big.",time()+60);
@@ -99,6 +102,9 @@ function logout()
                     $_SESSION["first_name"] = $_POST['firstname'];
                     $_SESSION["last_name"] = $_POST['surname'];
                     $_SESSION["email"] = $_COOKIE['email'];
+					$_SESSION["seeking_gender"] = $_POST['seeking'];
+					$_SESSION["drinker"]=$drinker;
+					$_SESSION["smoker"]=$smoker;
 					goToNextPage();
 				}
 			}
