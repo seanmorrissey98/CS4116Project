@@ -2,8 +2,7 @@
 
 require_once "connection.php";
 
-function getDiscoverPeople($user_id)
-{
+function getDiscoverPeople($user_id) {
     global $con;
 
     // Pull 1 row from database from like where matches not in dislike, like and report pages
@@ -15,8 +14,34 @@ function getDiscoverPeople($user_id)
     return $people;
 }
 
-function getMatches($user_id)
-{
+function getDiscoverPeopleSpecific($user_id, $seeking, $drinker, $smoker) {
+    global $con;
+
+    $drinker_sql = "";
+    if (isset($drinker)) {
+        if ($drinker = 'Constantly' || $drinker = 'Most days' || $drinker = 'Social Drinker') $drinker_sql = "AND Drinker IN ('Constantly', 'Most days', 'Social Drinker')"; else
+            $drinker_sql = '';
+
+    } else {
+        $drinker_sql = '';
+    }
+
+    // Smoker
+    $smoker_sql = '';
+    if (isset($smoker)) {
+        $smoker_sql = "AND Smoker = " . $smoker;
+    }
+
+    // Pull 1 row from database from like where matches not in dislike, like and report pages
+    $sql = "SELECT User.user_id, first_name, last_name, Age, Photo, Description, Gender, Drinker, Smoker FROM User INNER JOIN Profile ON User.user_id = Profile.user_id Left Join (Select * from Likes where Likes.user_id = " . $user_id . ") l ON User.user_id = l.liked_user_id Left Join (Select * from Dislikes where Dislikes.user_id = " . $user_id . ") d ON User.user_id = d.disliked_user_id Left Join (Select * from Reports where Reports.user_id = " . $user_id . ") r ON User.user_id = r.reported_user_id WHERE (l.liked_user_id IS NULL OR l.user_id != " . $user_id . ") AND (d.disliked_user_id IS NULL OR d.user_id != " . $user_id . ") AND (r.reported_user_id IS NULL OR r.user_id != " . $user_id . ") " . $drinker_sql . " " . $smoker_sql . " AND Profile.Gender = '" . $seeking . "' AND user_type = 'user' AND User.user_id != " . $user_id . " ORDER BY RAND() LIMIT 1";
+    $result = mysqli_query($con, $sql);
+
+    $people = $result->fetch_all(MYSQLI_ASSOC);
+
+    return $people;
+}
+
+function getMatches($user_id) {
     global $con;
 
     $matchesSql = "SELECT User.user_id, first_name, Photo FROM Likes INNER JOIN User ON Likes.liked_user_id = User.user_id LEFT JOIN Profile ON Likes.liked_user_id = Profile.user_id WHERE Likes.user_id = " . $user_id . " ORDER BY Likes.date DESC";
