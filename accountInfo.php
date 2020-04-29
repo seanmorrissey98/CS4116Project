@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true && !isset($_GET["user_account_id"])) {
+    header("Location: adminDashboard.php");
+}
 function logout()
 {
     $_SESSION = array();
@@ -66,11 +69,18 @@ $availInterests=getAvailInterests();
 $interests=getInterests($_SESSION['user_id']);
 $genderPref=getUserGenderPreference($_SESSION["user_id"]);
 }
-
+// <a class="navbar-brand" href="discover.php">Limerick Lovers</a>
 ?>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="discover.php">Limerick Lovers</a>
+            <div class="container-fluid">
+            <?php 
+                if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+                    echo "<a class='navbar-brand' href='adminDashboard.php'>Limerick Lovers ADMIN</a>";
+                } else {
+                    echo "<a class='navbar-brand' href='discover.php'>Limerick Lovers</a>";
+                }
+            ?>
                 <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav">
@@ -117,26 +127,18 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                         <h1><?php echo $users['first_name'] . " " . $users['last_name'];?></h1>
                     </div>
 					<div><br></div>
-                    <div class="form-group"><label>Email:</label><?php echo " ".$users['email'] ?></div>
-					<div class="form-group"><label>Gender:</label><?php echo " ".$usersBio['Gender'] ?></div>
-                    <div class="form-group"><label>Age</label><input class="form-control" type="int" autocomplete="" required="" name="age"  value=<?php echo $usersBio['Age'] ?> ></div>
+                    <div class="form-group"><label><b>Email:</b></label><?php echo "\t".$users['email'] ?></div>
+					<div class="form-group"><label><b>Gender:</b></label><?php echo "\t".$usersBio['Gender'] ?></div>
+                    <div class="form-group"><label><b>Age:</b></label><?php echo "\t" . $usersBio['Age'] ?> </div>
 
                 </div>
                 <div class="col-md-8">
                     <h1>Profile</h1>
                     <hr>
 					<div>
-					<br>
 					</div>
-                    <div class="form-group"><label>Description</label><input class="form-control" type="text" autocomplete="" required="" name="description"  value="<?php echo $usersBio['Description'] ?>" ></div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Hobbies</label></div>
-                    </div>
-					<?php  
-						foreach ($interests as &$value) {
-							 echo '<div class="form-check"><label class="form-check-label" for="formCheck-1"> ' . $value["interest_name"]. '</label></div>';
-						}
-					?>
+                    <div><p><?php echo  $usersBio['Description'] ?></p></div>
+
 					<div>
 					<br>
 					</div>
@@ -152,10 +154,28 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                     </div>
                     <hr>
                     <div class="form-row">
+                    <div class="form-row">
+                        <div class="table">
+                        <table class="table">
+                            <thead class= "thead-dark">
+                                <tr>
+                                    <th>Hobbies</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php 
+                                foreach ($interests as &$value) {
+                                    echo '<tr><td>' . $value["interest_name"]. '</td></tr>';
+                                }
+                            ?>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
 					<div class="col-sm-12 col-md-6">
                         </div>
                         <div class="col-sm-12 col-md-6">
-						        <div class="form-group"><label>Gender Preferences: &nbsp</label><label id="labelness"></label></div>
+						        <div class="form-group"><label><h3>Gender Preferences: &nbsp</h3></label><label id="labelness"></label></div>
                             <div>
                         </div>
                         <?php 

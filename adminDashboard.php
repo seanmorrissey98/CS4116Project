@@ -103,7 +103,9 @@ function getTotalConnectionCount() {
                         <div class="card-body">
                             <h2 class="card-title text-center">Admin Dashboard</h2>
                             <hr>
-                            <p class="card-text"><h4>Welcome <?php echo $_SESSION["first_name"];?></h4></p><a class="btn btn-outline-dark" href="#">Inbox</a></div>
+                            <p class="card-text"><h4>Welcome <?php echo $_SESSION["first_name"] . "</h4>" . "\t" . $_SESSION["email"];  ?></h4></p>
+                            <hr>
+                            <a class="btn btn-outline-dark" href="messaging.php">Inbox</a></div>
                     </div>
                 </div>
             </div>

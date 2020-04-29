@@ -1,4 +1,7 @@
 <?php
+
+
+
 // Include config file
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -13,10 +16,11 @@ $twig = new Environment($loader);
 
 // Initialize the session
 session_start();
-
 // For Testing
 // $_SESSION["user_id"] = 40;
-
+if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+    header("Location: adminDashboard.php");
+}
 // Initialize array for database pull
 $discoverPerson = array();
 $matched_data = array();
@@ -132,10 +136,7 @@ if (!$out_of_matches) {
                                 <div class="image-wrapper-tall">
                                     <img id="match-photo" src="user_images/<?php echo $_SESSION["match_photo"] ?>" width="320px" style="float: none !important;">
                                 </div>
-                                <button class="btn btn-primary" id="button-left" type="button"
-                                        style="background-image: url(&quot;assets/img/keyboard_arrow_left-24px.svg&quot;);width: 70px;height: 90px;background-color: rgba(255,255,255,0.1);background-size: contain;background-repeat: no-repeat;"></button>
-                                <button class="btn btn-primary" id="button-right" type="button"
-                                        style="background-image: url(&quot;assets/img/keyboard_arrow_right-24px.svg&quot;);width: 70px;height: 90px;background-color: rgba(255,255,255,0.09);background-repeat: no-repeat;background-size: contain;"></button>
+
                             </div>
                         </div>
                         <!-- Add $_SESSION match data into discover card for name, age and description -->

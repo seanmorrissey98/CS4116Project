@@ -2,7 +2,7 @@
 function populateReportTable() {
     // include "localDBConnection.php";
     include "connection.php";
-    $sql = "SELECT Reports.user_id, Reports.reported_user_id, Reports.date, Reports.reason, User.first_name, User.last_name 
+    $sql = "SELECT Reports.Report_id, Reports.user_id, Reports.reported_user_id, Reports.date, Reports.reason, User.first_name, User.last_name 
     FROM Reports  JOIN 
     User ON Reports.reported_user_id = User.user_id";
     $result = mysqli_query($con, $sql);
@@ -10,13 +10,14 @@ function populateReportTable() {
         while($row = mysqli_fetch_assoc($result)) {
             $user_account_id = $row["user_id"];
             $reported_user_account_id = $row["reported_user_id"];
+            $report_id=$row['Report_id'];
             echo "<tr>
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
             <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reported_user_id"] . "</a></td>
             <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
             <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["date"] . "</a></td>
             <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reason"] . "</a></td>
-
+            <td><a class='btn btn-outline-dark btn-lg' href='banUser.php?banUser=$report_id'>Ban</button></td>
             </tr>";
         }
         
@@ -27,7 +28,7 @@ function searchReportTable() {
     $search = $_GET["reportSearch"];
     include "connection.php";
     // include "localDBConnection.php";
-    $sql = "SELECT Reports.user_id, Reports.reported_user_id, Reports.date, Reports.reason, User.first_name, User.last_name 
+    $sql = "SELECT Reports.Report_id, Reports.user_id, Reports.reported_user_id, Reports.date, Reports.reason, User.first_name, User.last_name 
     FROM Reports JOIN User ON Reports.reported_user_id = User.user_id
     WHERE Reports.reason LIKE '%$search%' OR User.first_name LIKE '%$search%' OR User.last_name LIKE '%$search%'";
     $result = mysqli_query($con, $sql);
@@ -42,7 +43,7 @@ function searchReportTable() {
         <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["date"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reason"] . "</a></td>
-
+        <td><a class='btn btn-outline-dark btn-lg' href='banUser.php'>Ban</button></td>
         </tr>";
     }
 }
@@ -135,6 +136,7 @@ function searchReportTable() {
                                     <th>Reported User Name</th>
                                     <th>Report date</th>
                                     <th>Report Reason</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>

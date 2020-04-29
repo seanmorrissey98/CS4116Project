@@ -1,59 +1,71 @@
 <?php
-function populateBannedTable() {
+    session_start();
+if (!isset($_GET['banUser'])) {
+    header("location: adminDashboard.php");
+}
+
+$banUserId;
+
+function populateBanUser() {
+    $report_id = $_GET['banUser'];
     // include "localDBConnection.php";
     include "connection.php";
-    $sql = "SELECT Banned.user_id, Banned.banned_by, Banned.date, Banned.reason, Banned.duration, User.first_name, User.last_name 
-    FROM Banned  JOIN 
-    User ON Banned.user_id = User.user_id";
+    $sql = "SELECT Reports.Report_id, Reports.user_id, Reports.reported_user_id, Reports.date, Reports.reason, User.first_name, User.last_name 
+    FROM Reports  JOIN 
+    User ON Reports.reported_user_id = User.user_id
+    WHERE Reports.Report_id = $report_id";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
         while($row = mysqli_fetch_assoc($result)) {
             $user_account_id = $row["user_id"];
-            $banned_by_id = $row["banned_by"];
-            $duration = $row["duration"];
-            $sDate = $row["date"];
-            $eDate = date("Y-m-d H:i:s", strtotime($sDate . ' + '.$duration.' days'));    
+            $reported_user_account_id = $row["reported_user_id"];
+            $report_id=$row['Report_id'];
+            $banUserId = $reported_user_account_id;
             echo "<tr>
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$banned_by_id'>" . $row["banned_by"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $sDate. "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $duration. "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $eDate    . "</a></td>
-            </tr>"; 
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reported_user_id"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["date"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$reported_user_account_id'>" . $row["reason"] . "</a></td>
+            </tr>";
         }
         
     }
 } 
 
-function searchBannedTable() {
-    $search = $_GET["banSearch"];
+
+if (isset($_POST['days']) && $_POST['days'] != '' && isset($_POST['reason']) && $_POST['reason'] != '') {
+    banUserInDB();
+}
+
+function banUserInDB() {
     include "connection.php";
+    $report_id = $_GET['banUser'];
     // include "localDBConnection.php";
-    $sql = "SELECT Banned.user_id, Banned.banned_by, Banned.date, Banned.reason, Banned.duration, User.first_name, User.last_name 
-    FROM Banned  JOIN 
-    User ON Banned.user_id = User.user_id
-    WHERE User.first_name LIKE '%$search%' OR User.last_name LIKE '%$search%' OR Banned.reason LIKE '%$search%'";
+    include "connection.php";
+    $sql = "SELECT reported_user_id
+    FROM Reports WHERE Reports.Report_id = $report_id";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
         while($row = mysqli_fetch_assoc($result)) {
-            $user_account_id = $row["user_id"];
-            $banned_by_id = $row["banned_by"];
-            $duration = $row["duration"];
-            $sDate = $row["date"];
-            $eDate = date("Y-m-d H:i:s", strtotime($sDate . ' + '.$duration.' days'));    
-            echo "<tr>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$banned_by_id'>" . $row["banned_by"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $sDate. "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $duration. "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $eDate    . "</a></td>
-            </tr>"; 
+            $reported_user_account_id = $row["reported_user_id"];
         }
-        
+    }
+
+    $currentId = $_SESSION['user_id'];
+
+
+    $timestamp = date('Y-m-d H:i:s');
+    $reason = $_POST['reason'];
+    $duration = $_POST['days'];
+    // $eDate = date('Y-m-d H:i:s', strtotime($timestamp . '+ '.$duration.'days'));
+    $sql = "INSERT INTO `Banned`(`user_id`, `banned_by`, `date`, `reason`, `duration`) 
+    VALUES ('$reported_user_account_id','$currentId','$timestamp','$reason', '$duration')";
+    if (mysqli_query($con, $sql)) {
+    }
+    $sqlDel = "DELETE FROM `Reports` WHERE `Reports`.`reported_user_id` = $reported_user_account_id";
+    if (mysqli_query($con, $sqlDel)) {
+        header("location: adminDashboard.php");
     }
 }
 
@@ -120,13 +132,8 @@ function searchBannedTable() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h1 class="card-title text-center">Banned User List</h1>
+                            <h1 class="card-title text-center">Ban User</h1>
                             <hr>  
-                            <form class="form-inline mr-auto"action="bannedUserList.php" method="get">
-                                    <input class="form-control mr-sm-2" type="search" name="banSearch" placeholder="Search Banned Users">
-                                    <input class="btn btn-dark" type="submit" value="Search">
-
-
                             </form>
 
                         </div>
@@ -137,27 +144,34 @@ function searchBannedTable() {
                 <div class="col">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
-                            <thead class= "thead-dark">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th>User ID</th>
-                                    <th>Banned User Name</th>
-                                    <th>Banned By</th>
-                                    <th>Date</th>
-                                    <th>Reason</th>
-                                    <th>Ban Duration (Days)</th>
-                                    <th>Ban Complete</th>
+                                    <th>Reported By</th>
+                                    <th>Reported User ID</th>
+                                    <th>Reported User Name</th>
+                                    <th>Report date</th>
+                                    <th>Report Reason</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php                            
-                                if (isset($_GET["banSearch"])) {
-                                    searchBannedTable($_GET["banSearch"]);
-                                } else {
-                                    populateBannedTable();                                    
-                                }
-                             ?>
+                                <?php                            
+                                   populateBanUser();
+                                ?>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="form-group">
+                        <form method="post" action="">
+                            <div class="form-group">
+                                <label for="daysBan">Ban Length (Days)</label>
+                                <input class="form-control" type="number" id="daysBan" name="days" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="banReason">Ban Reason</label>
+                                <input class="form-control" type="text" id="banReason" name="reason" value="">
+                            </div>
+                            <div class="form-group"><input class="btn btn-dark btn-block" type="submit" value="Ban User" name="submitted"></div></form>
+                        </form>
                     </div>
                 </div>
             </div>
