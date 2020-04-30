@@ -54,6 +54,10 @@ function logout()
 	<?php
 require('functions.php');
 if (isset($_GET["user_account_id"])) {
+$userType = getUserType($_GET["user_account_id"]);
+if ($userType != 'user') {
+    header("location: adminDashboard.php");
+}
 $other_user=true;    
 $var_profile_user=$_GET["user_account_id"];
     $usersBio = getUsersBio($var_profile_user);
@@ -123,9 +127,9 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                             echo"&quot;assets/img/2.jpg&quot;";
                                 }
                            ?> 
-                            );"></div>
+                            );"></div></div>
                         <h1><?php echo $users['first_name'] . " " . $users['last_name'];?></h1>
-                    </div>
+                    
 					<div><br></div>
                     <div class="form-group"><label><b>Email:</b></label><?php echo "\t".$users['email'] ?></div>
 					<div class="form-group"><label><b>Gender:</b></label><?php echo "\t".$usersBio['Gender'] ?></div>

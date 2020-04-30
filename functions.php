@@ -82,6 +82,20 @@ function getInterests($id){
 	return $array;
 }
 
+function getUserType($id){
+	include "connection.php";
+	$array=array();
+	$sql=("SELECT * FROM `User` WHERE `user_id`=" . $id);
+	$num=0;
+		$result = $con->query($sql) or die($con->error);
+		while($row = $result->fetch_assoc()){
+				$type = $row['user_type'];
+			}
+		$con->close();	
+	return $type;
+}
+
+
 function getUserGenderPreference($id) {
 	include "connection.php";
 	$array=array();
