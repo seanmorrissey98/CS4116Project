@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION["adminLoggedIn"])) {
+    header("Location: login.php");
+    exit;
+}
 function populateReportTable() {
     // include "localDBConnection.php";
     include "connection.php";

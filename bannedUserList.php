@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION["adminLoggedIn"])) {
+    header("Location: login.php");
+    exit;
+}
 function populateBannedTable() {
     // include "localDBConnection.php";
     include "connection.php";

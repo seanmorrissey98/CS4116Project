@@ -1,6 +1,10 @@
 <?php 
 session_start();
-function populateUserTable() {
+if (!isset($_SESSION["adminLoggedIn"])) {
+    header("Location: login.php");
+    exit;
+}
+function populateUserTable() {  
     // include "localDBConnection.php";
     include "connection.php";
     $sql = "SELECT user_id, email, first_name, last_name, date_joined from User";
