@@ -1,7 +1,5 @@
 <?php
 
-
-
 // Include config file
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -16,15 +14,19 @@ $twig = new Environment($loader);
 
 // Initialize the session
 session_start();
+
 // For Testing
-// $_SESSION["user_id"] = 40;
+//$_SESSION["user_id"] = 40;
+
 if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
     header("Location: adminDashboard.php");
 }
-if(!isset($_SESSION["loggedIn"])&& $_SESSION["loggedIn"] != true ){
+
+if (!isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] != true) {
     header("location: index.html");
     exit;
- }
+}
+
 // Initialize array for database pull
 $discoverPerson = array();
 $matched_data = array();
