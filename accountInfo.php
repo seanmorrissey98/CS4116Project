@@ -5,10 +5,7 @@ session_start();
 if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true && !isset($_GET["user_account_id"])) {
     header("Location: adminDashboard.php");
 }
-if(!isset($_SESSION["loggedIn"])&& $_SESSION["loggedIn"] != true ){
-    header("location: index.html");
-    exit;
- }
+
 function logout()
 {
     $_SESSION = array();
