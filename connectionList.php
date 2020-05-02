@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "functions.php";
 if (!isset($_SESSION["adminLoggedIn"])) {
     header("Location: login.php");
     exit;
@@ -11,13 +12,18 @@ function populateConnectionTable() {
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
+    $i = 1;
+    $arr=[];
     while($row = mysqli_fetch_assoc($result)) {
         $user_account_id_1=$row["user_1"];
         $user_account_id_2=$row["user_2"];
-        
         echo "<tr>
         <td><a href='accountInfo.php?user_account_id=$user_account_id_1'>" . $row["user_1"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id_1'>" .  "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id_1'>" .  "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id_2'>" . $row["user_2"] . "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id_2'>" .  "</a></td>
+        <td><a href='accountInfo.php?user_account_id=$user_account_id_2'>" .  "</a></td>
         <td><a href=#>" . $row["date"] . "</a></td>
 
         </tr>";
@@ -29,26 +35,7 @@ function populateConnectionTable() {
 }
 
 function searchConnectionTable() {
-    $search = $_GET["banSearch"];
-    include "connection.php";
-    // include "localDBConnection.php";
-    $sql = "SELECT user_1, user_2, date from Connection";
-    $result = mysqli_query($con, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_assoc($result)) {
-            $user_account_id = $row["user_id"];
-            $banned_by_id = $row["banned_by"];
-            echo "<tr>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . " " . $row["last_name"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$banned_by_id'>" . $row["banned_by"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["date"] . "</a></td>
-            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
-
-            </tr>";
-        }
-        
-    }
+     
 }
 
 
@@ -93,9 +80,14 @@ function searchConnectionTable() {
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav">
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
-                        </li>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Admin Data </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" role="presentation" href="userList.php">Users</a>
+                                    <a class="dropdown-item" role="presentation" href="bannedUserList.php">Banned Users</a>
+                                    <a class="dropdown-item" role="presentation" href="reportedList.php">Reports</a>
+                                    <a class="dropdown-item" role="presentation" href="connectionList.php">Connections</a>
+                            </div>
+                            </li>
                     </ul>
                     <form class="form-inline mr-auto" target="_self">
                     </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
@@ -134,8 +126,12 @@ function searchConnectionTable() {
                             <thead class="thead-dark">
                                 <tr>
                                     <th>User ID 1</th>
+                                    <th>User 1 First Name</th>
+                                    <th>User 1 Last Name</th>
                                     <th>User ID 2</th>
-                                    <th>Conection Date</th>
+                                    <th>User 2 First Name</th>
+                                    <th>User 2 Last Name</th>
+                                    <th>Connection Date</th>
                                 </tr>
                             </thead>
                             <tbody>

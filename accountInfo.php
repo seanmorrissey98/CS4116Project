@@ -87,12 +87,22 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
             ?>
                 <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">More Links </a>
-                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="discover.php">Discover</a><a class="dropdown-item" role="presentation" href="interests.php">My Interests</a><a class="dropdown-item" role="presentation"
-                                                                                                                                                                                                                                     href="messaging.php">Messages</a></div>
-                        </li>
-                    </ul>
+                    <?php
+
+                        if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+                            echo '<ul class="nav navbar-nav">
+                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Admin Data </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" role="presentation" href="userList.php">Users</a>
+                                            <a class="dropdown-item" role="presentation" href="bannedUserList.php">Banned Users</a>
+                                            <a class="dropdown-item" role="presentation" href="reportedList.php">Reports</a>
+                                            <a class="dropdown-item" role="presentation" href="connectionList.php">Connections</a>
+                                    </div>
+                                    </li>
+                            </ul>';
+                        }
+
+                    ?>
                     <form class="form-inline mr-auto" target="_self"></form>
                     <span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
 					<?php
@@ -205,6 +215,9 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                         if (!$other_user) {
                             echo '<div class="col-md-12 content-right"><button class="btn btn-primary form-btn" name="submit" type="submit">SAVE </button><button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>';
                         }
+                        if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+                            echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="banUser.php?userId=' . $var_profile_user . '">Ban User</a></div>';
+                        }
                         ?>
                         </div>
                 </div>
@@ -215,7 +228,7 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
 		if(isset($_POST['submit'])){
 		$sql = "UPDATE Profile SET Description='$_POST[description]',Age='$_POST[age]',Seeking='$_POST[GENDERPREF]' WHERE user_id=$usersBio[id]";
 		$result = $con->query($sql) or die($con->error);
-		}
+        }
 	?>
     </div>
 	<script src="assets/js/jquery.min.js"></script>
