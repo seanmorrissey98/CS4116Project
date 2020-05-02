@@ -59,29 +59,45 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     if(mysqli_stmt_fetch($stmt)){
                         if($_POST["password"] == $hashed_password){
                             // Password is correct, so start a new session
-                            session_start();
-
-                            // Store data in session variables
-                            $_SESSION["user_id"] = $user_id;
-                            $_SESSION["first_name"] = $first_name;
-                            $_SESSION["last_name"] = $last_name;
-                            $_SESSION["email"] = $email;
-							
-							$sql = "SELECT Seeking, Drinker, Smoker FROM Profile WHERE user_id=\"{$user_id}\"";
-							$result = $con->query($sql);
+							//need to check if banned first
+							//session_start();
+							include "connection.php";   
+							$sql = "SELECT user_id, date, duration FROM Banned WHERE user_id=\"{$user_id}\"";
+							$result = $con->query($sql) or die($con->error);;
+							$today = strtotime("now");
 							while($row = $result->fetch_assoc()){
-								$_SESSION["seeking_gender"] = $row['Seeking'];
-								$_SESSION["drinker"]=$row['Drinker'];
-								$_SESSION["smoker"]=$row['Smoker'];
+								$bannedDate=strtotime($row['date']);
+								$diff = $today - $bannedDate;
+								$days = floor(($diff)/ (60*60*24)); 
+								$days = $days +1;
+								if($user_id == $row['user_id'] and $row['duration'] > $days) {
+									$_SESSION["banned"] = "yes";
+									$_SESSION["banned-till"] = (int)$row['duration'] - $days;
+								}
 							}
-                            if ($user_type == "administrator") {
-                                $_SESSION["adminLoggedIn"] = true;
-                                header("Location: adminDashboard.php");
-                            } else {
-                                $_SESSION["loggedIn"] = true;
-                            header("location: discover.php");
-                            }
-
+                            //check if banned set 
+							if(!isset($_SESSION["banned"])) {
+								// Store data in session variables
+								$_SESSION["user_id"] = $user_id;
+								$_SESSION["first_name"] = $first_name;
+								$_SESSION["last_name"] = $last_name;
+								$_SESSION["email"] = $email;
+								
+								$sql = "SELECT Seeking, Drinker, Smoker FROM Profile WHERE user_id=\"{$user_id}\"";
+								$result = $con->query($sql);
+								while($row = $result->fetch_assoc()){
+									$_SESSION["seeking_gender"] = $row['Seeking'];
+									$_SESSION["drinker"]=$row['Drinker'];
+									$_SESSION["smoker"]=$row['Smoker'];
+								}
+								if ($user_type == "administrator") {
+									$_SESSION["adminLoggedIn"] = true;
+									header("Location: adminDashboard.php");
+								} else {
+									$_SESSION["loggedIn"] = true;
+								header("location: discover.php");
+								}
+							}
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -138,15 +154,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
             </nav>
     </div>
-    <div class="login-dark" style="background-image: url(&quot;assets/img/couple.jpg&quot;);">
-        <form method="post" action="login.php">
-            <h2 class="sr-only">Login Form</h2>
-            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-            <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"></div>
-            <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Log In</button></div><a class="forgot" href="#">Forgot your email or password?</a></form>
-
-    </div>
+	<?php
+		if(isset($_SESSION["banned"])) {
+			print "\n";
+			print "<h2 class=\"text-nowrap text-center\">\n</h2>";
+			print "<h2 class=\"text-nowrap text-center\">You are banned.</h2>";
+			print "<h2 class=\"text-nowrap text-center\">You will be unbanned and able to access your account in {$_SESSION['banned-till']} days.</h2>";
+			print "<h2 class=\"text-nowrap text-center\"></h2>";
+			print "\n";
+			unset($_SESSION['banned']);
+		}
+		else {
+			print "<div class=\"login-dark\" style=\"background-image: url(&quot;assets/img/couple.jpg&quot;);\">";
+				print "<form method=\"post\" action=\"login.php\">";
+					print "<h2 class=\"sr-only\">Login Form</h2>";
+					print "<div class=\"illustration\"><i class=\"icon ion-ios-locked-outline\"></i></div>";
+					print "<div class=\"form-group\"><input class=\"form-control\" type=\"email\" name=\"email\" placeholder=\"Email\"></div>";
+					print "<div class=\"form-group\"><input class=\"form-control\" type=\"password\" name=\"password\" placeholder=\"Password\"></div>";
+					print "<div class=\"form-group\"><button class=\"btn btn-primary btn-block\" type=\"submit\">Log In</button></div><a class=\"forgot\" href=\"signup.php\">Dont have an Account? Sign up here.</a></form>";
+			print "</div>";
+		}
+	?>
     <div class="footer-basic">
         <footer>
             <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
