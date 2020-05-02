@@ -1,14 +1,27 @@
 <?php
 session_start();
+include "functions.php";
 if (!isset($_SESSION["adminLoggedIn"])) {
     header("Location: login.php");
     exit;
 }
-if (!isset($_GET['banUser'])) {
+if (!isset($_GET['banUser']) && !isset($_GET['userId'])) {
     header("location: adminDashboard.php");
 }
 
 $banUserId;
+
+function PopulateWithUserDetails() {
+    $arr = getUser($_GET['userId']);
+    $user_account_id = $arr["id"];
+            echo "<tr>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $arr["id"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $arr["first_name"] . "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $arr["last_name"]. "</a></td>
+            <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $arr["email"] . "</a></td>
+            </tr>";
+}
+
 
 function populateBanUser() {
     $report_id = $_GET['banUser'];
@@ -44,17 +57,22 @@ if (isset($_POST['days']) && $_POST['days'] != '' && isset($_POST['reason']) && 
 
 function banUserInDB() {
     include "connection.php";
-    $report_id = $_GET['banUser'];
-    // include "localDBConnection.php";
-    include "connection.php";
-    $sql = "SELECT reported_user_id
-    FROM Reports WHERE Reports.Report_id = $report_id";
-    $result = mysqli_query($con, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_assoc($result)) {
-            $reported_user_account_id = $row["reported_user_id"];
+    if (isset($_GET['banUser'])) {
+        $report_id = $_GET['banUser'];
+        // include "localDBConnection.php";
+        include "connection.php";
+        $sql = "SELECT reported_user_id
+        FROM Reports WHERE Reports.Report_id = $report_id";
+        $result = mysqli_query($con, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_assoc($result)) {
+                $reported_user_account_id = $row["reported_user_id"];
+            }
         }
+    } else {
+        $reported_user_account_id = $_GET['userId'];
     }
+
 
     $currentId = $_SESSION['user_id'];
 
@@ -146,24 +164,45 @@ function banUserInDB() {
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Reported By</th>
-                                    <th>Reported User ID</th>
-                                    <th>Reported User Name</th>
-                                    <th>Report date</th>
-                                    <th>Report Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php                            
-                                   populateBanUser();
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+                    <?php
+                        if (isset($_GET['banUser'])) {
+
+                        
+                        echo '<div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Reported By</th>
+                                        <th>Reported User ID</th>
+                                        <th>Reported User Name</th>
+                                        <th>Report date</th>
+                                        <th>Report Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';               
+                                    populateBanUser();           
+                                echo '</tbody>
+                            </table>
+                        </div>';
+                        }
+                        else {
+                            echo '<div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';               
+                                    PopulateWithUserDetails();        
+                                echo '</tbody>
+                            </table>
+                        </div>';
+                        }
+                    ?>
                     <div class="form-group">
                         <form method="post" action="">
                             <div class="form-group">
