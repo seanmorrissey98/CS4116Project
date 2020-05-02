@@ -82,7 +82,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 								$_SESSION["first_name"] = $first_name;
 								$_SESSION["last_name"] = $last_name;
 								$_SESSION["email"] = $email;
-								
+                                
+                                $tmpId = $_SESSION["user_id"];
+                                 $sqlDel = "DELETE FROM `Banned` WHERE `Banned`.`user_id` = $tmpId";
+                                if (mysqli_query($con, $sqlDel)) {
+                                }
 								$sql = "SELECT Seeking, Drinker, Smoker FROM Profile WHERE user_id=\"{$user_id}\"";
 								$result = $con->query($sql);
 								while($row = $result->fetch_assoc()){
@@ -98,6 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 								header("location: discover.php");
 								}
 							}
+                        
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -144,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="/index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="container-fluid"><a class="navbar-brand" href="index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse"
                         id="navcol-1">
                         <ul class="nav navbar-nav">

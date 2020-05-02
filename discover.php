@@ -21,6 +21,10 @@ session_start();
 if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
     header("Location: adminDashboard.php");
 }
+if(!isset($_SESSION["loggedIn"])&& $_SESSION["loggedIn"] != true ){
+    header("location: index.html");
+    exit;
+ }
 // Initialize array for database pull
 $discoverPerson = array();
 $matched_data = array();
