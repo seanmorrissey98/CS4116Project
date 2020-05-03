@@ -46,6 +46,24 @@ function getDiscoverPeopleSpecific($user_id, $seeking, $drinker, $smoker) {
     return $people;
 }
 
+function checkIfConnectionMade($id) {
+    global $con;
+
+    $userId = $_SESSION['user_id'];
+    $sql = "SELECT * FROM Likes WHERE user_id = $id AND liked_user_id = $userId";
+    $result = mysqli_query($con, $sql);
+    $check = false;
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            $check = true;
+        }        
+    }
+    return $check;
+} 
+
+
+
+
 function getMatches($user_id) {
     global $con;
 
@@ -55,6 +73,19 @@ function getMatches($user_id) {
 
     return $matched_data;
 }
+
+function getConnections($user_id) {
+    global $con;
+    $sql = "SELECT Connection.user_2,Connection.user_1, User.user_id, User.first_name, Profile.Photo
+    FROM Connection JOIN User ON Connection.user_2 = User.user_id
+    JOIN Profile ON Connection.user_2 = Profile.user_id
+    WHERE Connection.user_1 = $user_id 
+    ORDER BY Connection.date DESC";
+    $match_result = mysqli_query($con, $sql);
+     $matched_data = $match_result->fetch_all(MYSQLI_ASSOC);
+     return $matched_data;
+}
+
 
 function getChats($user_id)
 {

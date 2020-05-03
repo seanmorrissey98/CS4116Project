@@ -1,13 +1,24 @@
 <?php
 // Include config file
 require_once "connection.php";
-
+include "DBFunctions.php";
 // Initialize the session
 session_start();
+
+
+
+
+
+
+
+
 
 // Create empty variable for the destination Table and Column in database
 $tableName = '';
 $columnName = '';
+
+
+
 
 // Assign correct table and column names to variables
 if (array_key_exists('dislike-button', $_POST)) {
@@ -16,7 +27,7 @@ if (array_key_exists('dislike-button', $_POST)) {
 } else if (array_key_exists('like-button', $_POST)) {
     $tableName = "Likes";
     $columnName = "liked_user_id";
-    create_chat($con);
+    // create_chat($con);
 } else if (array_key_exists('report-button', $_POST)) {
     $tableName = "Reports";
     $columnName = "reported_user_id";
@@ -30,7 +41,19 @@ if (isset($_POST['reportText']) && $tableName === 'Reports') {
     $reason = $_POST['reportText'];
     $sql = "INSERT INTO `" . $tableName . "`(`user_id`, `" . $columnName . "`, `reason`) VALUES( " . $_SESSION["user_id"] . "," . $_POST['match_id'] . ", '" . $reason . "')";
 } else {
-    $sql = "INSERT INTO `" . $tableName . "`(`user_id`, `" . $columnName . "`) VALUES( " . $_SESSION["user_id"] . "," . $_POST['match_id'] . ")";
+    if ($tableName == "Likes") {
+        $tmp = $_POST['match_id'];
+        $check = checkIfConnectionMade($tmp);
+        if ($check == true) {
+            create_chat($con);
+            $userId = $_SESSION['user_id'];
+            $id = $_POST['match_id'];
+            $date = date("Y-m-d");
+            $sql = "INSERT INTO Connection VALUES (DEFAULT,'$userId', '$id', '$date'), (DEFAULT,'$id', '$userId', '$date')"; 
+        }
+    } else {
+        $sql = "INSERT INTO `" . $tableName . "`(`user_id`, `" . $columnName . "`) VALUES( " . $_SESSION["user_id"] . "," . $_POST['match_id'] . ")";
+    }
 }
 
 // Execute query to database

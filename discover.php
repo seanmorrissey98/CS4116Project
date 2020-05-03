@@ -34,7 +34,8 @@ $matched_data = array();
 if (isset($_SESSION['seeking_gender']) && isset($_SESSION['drinker']) && isset($_SESSION['smoker'])) $discoverPerson = getDiscoverPeopleSpecific($_SESSION['user_id'], $_SESSION['seeking_gender'], $_SESSION['drinker'], $_SESSION['smoker']); else
     $discoverPerson = getDiscoverPeople($_SESSION['user_id']);
 
-$matched_data = getMatches($_SESSION['user_id']);
+// $matched_data = getMatches($_SESSION['user_id']);
+$matched_data = getConnections($_SESSION['user_id']);
 
 $out_of_matches = sizeof($discoverPerson) === 0;
 $no_matches = sizeof($matched_data) === 0;
