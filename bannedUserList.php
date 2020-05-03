@@ -4,6 +4,22 @@ if (!isset($_SESSION["adminLoggedIn"])) {
     header("Location: login.php");
     exit;
 }
+
+if (isset($_GET['unbanId'])) {
+    unbanUser($_GET['unbanId']);
+}
+
+function unbanUser($id) {
+    include "connection.php";
+    $sqlDel = "DELETE FROM `Banned` WHERE `Banned`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+        header("location: bannedUserList.php");
+    }
+}
+
+
+
+
 function populateBannedTable() {
     // include "localDBConnection.php";
     include "connection.php";
@@ -27,6 +43,7 @@ function populateBannedTable() {
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $duration. "</a></td>
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $eDate    . "</a></td>
+            <td><a class='btn btn-outline-dark btn-lg' href='bannedUserList.php?unbanId=$user_account_id'>Unban</button></td>
             </tr>"; 
         }
         
@@ -57,6 +74,7 @@ function searchBannedTable() {
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["reason"] . "</a></td>
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $duration. "</a></td>
             <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $eDate    . "</a></td>
+            <td><a class='btn btn-outline-dark btn-lg' href='bannedUserList.php?unbanId=$user_account_id'>Unban</button></td>
             </tr>"; 
         }
         
@@ -158,6 +176,7 @@ function searchBannedTable() {
                                     <th>Reason</th>
                                     <th>Ban Duration (Days)</th>
                                     <th>Ban Complete</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -6,12 +6,40 @@ if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true && !
     header("Location: adminDashboard.php");
 }
 
+if (isset($_GET['unban']) && isset($_GET['user_account_id'])) {
+    unbanUser($_GET['user_account_id']);
+}
+
+
+function unbanUser($id) {
+    include "connection.php";
+    $sqlDel = "DELETE FROM `Banned` WHERE `Banned`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+        header("location: accountInfo.php?user_account_id=$id");
+    }
+}
+
 function logout()
 {
     $_SESSION = array();
     session_destroy();
     header("Location: index.html");
     exit;
+}
+
+function getUserBanStatus($id){
+    include "connection.php";
+$array=array();
+
+$sql = "SELECT * FROM `Banned` WHERE `Banned`.`user_id` = $id";
+    $status=false;
+    $result = $con->query($sql) or die($con->error);
+    while($row = $result->fetch_assoc()){
+        $status = true;
+    }
+    $con->close();
+                
+return $status;
 }
 
 
@@ -219,7 +247,12 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                             echo '<div class="col-md-12 content-right"><button class="btn btn-primary form-btn" name="submit" type="submit">SAVE </button><button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>';
                         }
                         if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
-                            echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="banUser.php?userId=' . $var_profile_user . '">Ban User</a></div>';
+                            $banned = getUserBanStatus($var_profile_user);
+                            if ($banned == false) {
+                                echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="banUser.php?userId=' . $var_profile_user . '">Ban User</a></div>';
+                            } else {
+                                echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="accountInfo.php?user_account_id=' . $var_profile_user . '&unban=true">Unban User</a></div>';
+                            }
                         }
                         ?>
                         </div>
