@@ -19,27 +19,19 @@ function unbanUser($id) {
     }
 }
 
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: index.html");
-    exit;
-}
-
-function getUserBanStatus($id){
+function getUserBanStatus($id) {
     include "connection.php";
-$array=array();
+    $array = array();
 
-$sql = "SELECT * FROM `Banned` WHERE `Banned`.`user_id` = $id";
-    $status=false;
+    $sql = "SELECT * FROM `Banned` WHERE `Banned`.`user_id` = $id";
+    $status = false;
     $result = $con->query($sql) or die($con->error);
-    while($row = $result->fetch_assoc()){
+    while ($row = $result->fetch_assoc()) {
         $status = true;
     }
     $con->close();
-                
-return $status;
+
+    return $status;
 }
 
 
@@ -73,159 +65,118 @@ return $status;
     <link rel="stylesheet" href="assets/css/Profile-Edit-Form.css">
     <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-	<script>
-	function getPref(){
-		document.getElementById("labelness").innerHTML=(GENDERPREF.value);
-		
-	}
-	</script>
+    <script>
+        function getPref() {
+            document.getElementById("labelness").innerHTML = (GENDERPREF.value);
+
+        }
+    </script>
 </head>
 
 <body>
-	<?php
+<?php
 require('functions.php');
 if (isset($_GET["user_account_id"])) {
-$userType = getUserType($_GET["user_account_id"]);
-if ($userType != 'user') {
-    header("location: adminDashboard.php");
-}
-$other_user=true;    
-$var_profile_user=$_GET["user_account_id"];
+    $userType = getUserType($_GET["user_account_id"]);
+    if ($userType != 'user') {
+        header("location: adminDashboard.php");
+    }
+    $other_user = true;
+    $var_profile_user = $_GET["user_account_id"];
     $usersBio = getUsersBio($var_profile_user);
-    $users=getUser($var_profile_user);
-    $availInterests=getAvailInterests();
+    $users = getUser($var_profile_user);
+    $availInterests = getAvailInterests();
     $genderPref = getUserGenderPreference($var_profile_user);
-    $interests=getInterests($var_profile_user);
+    $interests = getInterests($var_profile_user);
 } else {
-    $other_user=false;
-$usersBio=getUsersBio($_SESSION['user_id']);
-$users=getUser($_SESSION['user_id']);
-$availInterests=getAvailInterests();
-$interests=getInterests($_SESSION['user_id']);
-$genderPref=getUserGenderPreference($_SESSION["user_id"]);
+    $other_user = false;
+    $usersBio = getUsersBio($_SESSION['user_id']);
+    $users = getUser($_SESSION['user_id']);
+    $availInterests = getAvailInterests();
+    $interests = getInterests($_SESSION['user_id']);
+    $genderPref = getUserGenderPreference($_SESSION["user_id"]);
 }
-// <a class="navbar-brand" href="discover.php">Limerick Lovers</a>
 ?>
-    <div class="header-blue" style="background-color: rgb(195,12,23);">
-        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid">
-            <?php 
-                if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
-                    echo "<a class='navbar-brand' href='adminDashboard.php'>Limerick Lovers ADMIN</a>";
-                } else {
-                    echo "<a class='navbar-brand' href='discover.php'>Limerick Lovers</a>";
-                }
-            ?>
-                <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navcol-1">
-                    <?php
-
-                        if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
-                            echo '<ul class="nav navbar-nav">
-                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Admin Data </a>
-                                        <div class="dropdown-menu" role="menu">
-                                            <a class="dropdown-item" role="presentation" href="userList.php">Users</a>
-                                            <a class="dropdown-item" role="presentation" href="bannedUserList.php">Banned Users</a>
-                                            <a class="dropdown-item" role="presentation" href="reportedList.php">Reports</a>
-                                            <a class="dropdown-item" role="presentation" href="connectionList.php">Connections</a>
-                                    </div>
-                                    </li>
-                            </ul>';
-                        }
-
-                    ?>
-                    <form class="form-inline mr-auto" target="_self"></form>
-                    <span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
-					<?php
-                    if (isset($_GET["logout"])) {
-                        logout();
-                    }
-                    ?>
-					</span></div>
-            </div>
-        </nav>
-    </div>
-    <div class="container profile profile-view" id="profile">
-        <div class="row">
-            <div class="col-md-12 alert-col relative">
-                <div class="alert alert-info absolue center" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span>Profile save with success</span></div>
-            </div>
+<?php include('header.php') ?>
+<div class="container profile profile-view" id="profile">
+    <div class="row">
+        <div class="col-md-12 alert-col relative">
+            <div class="alert alert-info absolue center" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <span>Profile save with success</span></div>
         </div>
-        <form method="post">
-            <div class="form-row profile-row">
-                <div class="col-md-4 relative">
-                    <div class="avatar" style="height: 250px;">
-                        <div class="avatar-bg center" style="background-image: url(
-                           <?php 
-                                if (!$other_user) {
-                                    $filename="user_images/" . getUserImageName($_SESSION["user_id"]);
-                                } else {
-                                $filename="user_images/" . getUserImageName($var_profile_user);
-                                }
-                                if (file_exists($filename)) {
-                                    echo "$filename";
-                                } else {
-                            echo"&quot;assets/img/2.jpg&quot;";
-                                }
-                           ?> 
-                            );"></div></div>
-                        <h1><?php echo $users['first_name'] . " " . $users['last_name'];?></h1>
-                    
-					<div><br></div>
-                    <div class="form-group"><label><b>Email:</b></label><?php echo "\t".$users['email'] ?></div>
-					<div class="form-group"><label><b>Gender:</b></label><?php echo "\t".$usersBio['Gender'] ?></div>
-                    <div class="form-group"><label><b>Age:</b></label><?php echo "\t" . $usersBio['Age'] ?> </div>
-
-                </div>
-                <div class="col-md-8">
-                    <h1>Profile</h1>
-                    <hr>
-					<div>
-					</div>
-                    <div><p><?php echo  $usersBio['Description'] ?></p></div>
-
-					<div>
-					<br>
-					</div>
-                    <?php if (!$other_user) {
-                    echo '<a class="btn btn-primary form-btn"  role="button" href="interests.php">Edit Hobbies</a>';
+    </div>
+    <form method="post">
+        <div class="form-row profile-row">
+            <div class="col-md-4 relative">
+                <div class="avatar" style="height: 250px;">
+                    <div class="avatar-bg center" style="background-image: url(
+                    <?php
+                    if (!$other_user) {
+                        $filename = "user_images/" . getUserImageName($_SESSION["user_id"]);
+                    } else {
+                        $filename = "user_images/" . getUserImageName($var_profile_user);
+                    }
+                    if (file_exists($filename)) {
+                        echo "$filename";
+                    } else {
+                        echo "&quot;assets/img/2.jpg&quot;";
                     }
                     ?>
-                    <div class="form-row">
-                        <div class="col-sm-12 col-md-6">
-                        </div>
-						<div class="col-sm-12 col-md-6">
-					   </div>
-                    </div>
-                    <hr>
-                    <div class="form-row">
+                            );"></div>
+                </div>
+                <h1><?php echo $users['first_name'] . " " . $users['last_name']; ?></h1>
+
+                <div><br></div>
+                <div class="form-group"><label><b>Email:</b></label><?php echo "\t" . $users['email'] ?></div>
+                <div class="form-group"><label><b>Gender:</b></label><?php echo "\t" . $usersBio['Gender'] ?></div>
+                <div class="form-group"><label><b>Age:</b></label><?php echo "\t" . $usersBio['Age'] ?> </div>
+
+            </div>
+            <div class="col-md-8">
+                <h1>Profile</h1>
+                <hr>
+                <div></div>
+                <div><p><?php echo $usersBio['Description'] ?></p></div>
+
+                <div>
+                    <br>
+                </div>
+                <?php if (!$other_user) {
+                    echo '<a class="btn btn-primary form-btn"  role="button" href="interests.php">Edit Hobbies</a>';
+                }
+                ?>
+                <div class="form-row">
+                    <div class="col-sm-12 col-md-6"></div>
+                    <div class="col-sm-12 col-md-6"></div>
+                </div>
+                <hr>
+                <div class="form-row">
                     <div class="form-row">
                         <div class="table">
-                        <table class="table">
-                            <thead class= "thead-dark">
+                            <table class="table">
+                                <thead class="thead-dark">
                                 <tr>
                                     <th>Hobbies</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                            <?php 
+                                </thead>
+                                <tbody>
+                                <?php
                                 foreach ($interests as &$value) {
-                                    echo '<tr><td>' . $value["interest_name"]. '</td></tr>';
+                                    echo '<tr><td>' . $value["interest_name"] . '</td></tr>';
                                 }
-                            ?>
-                            </tbody>
-                        </table>
+                                ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-					<div class="col-sm-12 col-md-6">
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-						        <div class="form-group"><label><h3>Gender Preferences: &nbsp</h3></label><label id="labelness"></label></div>
-                            <div>
-                        </div>
-                        <?php 
+                    <div class="col-sm-12 col-md-6"></div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group"><label><h3>Gender Preferences: &nbsp</h3></label><label id="labelness"></label></div>
+                        <div></div>
+                        <?php
                         if (!$other_user) {
-                        echo '<div>
+                            echo '<div>
                             <div>
 							<form name="formid">
 								<select id="GENDERPREF" name="GENDERPREF" onchange="getPref()">
@@ -240,41 +191,43 @@ $genderPref=getUserGenderPreference($_SESSION["user_id"]);
                         } else {
                             echo '<p>' . getUserGenderPreference($var_profile_user) . "</p>";
                         }
-                       ?>
-					   </div>
-                        <?php
-                        if (!$other_user) {
-                            echo '<div class="col-md-12 content-right"><button class="btn btn-primary form-btn" name="submit" type="submit">SAVE </button><button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>';
-                        }
-                        if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
-                            $banned = getUserBanStatus($var_profile_user);
-                            if ($banned == false) {
-                                echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="banUser.php?userId=' . $var_profile_user . '">Ban User</a></div>';
-                            } else {
-                                echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="accountInfo.php?user_account_id=' . $var_profile_user . '&unban=true">Unban User</a></div>';
-                            }
-                        }
                         ?>
-                        </div>
+                    </div>
+                    <?php
+                    if (!$other_user) {
+                        echo '<div class="col-md-12 content-right"><button class="btn btn-primary form-btn" name="submit" type="submit">SAVE </button><button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>';
+                    }
+                    if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+                        $banned = getUserBanStatus($var_profile_user);
+                        if ($banned == false) {
+                            echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="banUser.php?userId=' . $var_profile_user . '">Ban User</a></div>';
+                        } else {
+                            echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="accountInfo.php?user_account_id=' . $var_profile_user . '&unban=true">Unban User</a></div>';
+                        }
+                    }
+                    ?>
                 </div>
             </div>
-        </form>
-			<?php 
-			require("connection.php");
-		if(isset($_POST['submit'])){
-		$sql = "UPDATE Profile SET Description='$_POST[description]',Age='$_POST[age]',Seeking='$_POST[GENDERPREF]' WHERE user_id=$usersBio[id]";
-		$result = $con->query($sql) or die($con->error);
-        }
-	?>
-    </div>
-	<script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
-    <script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
-    <script src="assets/js/Profile-Edit-Form.js"></script>
-    <script src="assets/js/Range-selector---slider.js"></script>
+        </div>
+    </form>
+    <?php
+    require("connection.php");
+    if (isset($_POST['submit'])) {
+        $sql = "UPDATE Profile SET Description='$_POST[description]',Age='$_POST[age]',Seeking='$_POST[GENDERPREF]' WHERE user_id=$usersBio[id]";
+        $result = $con->query($sql) or die($con->error);
+    }
+    ?>
+</div>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/bs-init.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+<script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
+<script src="assets/js/Profile-Edit-Form.js"></script>
+<script src="assets/js/Range-selector---slider.js"></script>
+<script src="https://kit.fontawesome.com/6a9548b3b1.js" crossorigin="anonymous"></script>
+<script src="assets/js/advanced-search.js"></script>
 </body>
 
 </html>

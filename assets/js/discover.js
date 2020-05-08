@@ -2,10 +2,7 @@ $(function () {
 
     /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
     $("#advanced-search").click(function () {
-        $("#search-sidebar").removeClass("col-xs-0").addClass("col col-xl-3 col-md-4");
-        $(this).hide();
-        $("#hide-advanced-search").show();
-        $("#search-results-sidebar").hide();
+        openAdvancedSearch();
     });
 
     $("#hide-advanced-search").click(function () {
@@ -21,10 +18,21 @@ $(function () {
 // Age slider
     $("#age-advanced-search").slider({});
 
+    if (location.search === '?advanced-search')
+        openAdvancedSearch();
 });
 
+function openAdvancedSearch() {
+    $("#search-sidebar").removeClass("col-xs-0").addClass("col col-xl-3 col-md-4");
+    $("#advanced-search").hide();
+    $("#hide-advanced-search").show();
+    $("#search-results-sidebar").hide();
+}
+
 function expandSearchedUser(match) {
-    console.log(match);
+    $("#discover-out-of-matches").hide();
+    $("#discover-main").show();
+
     $('#match-name').text(match.first_name + ' ' + match.last_name);
     $('#match-age').text(match.Age);
     $('#match-bio').text(match.Description);

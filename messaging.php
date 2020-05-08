@@ -83,18 +83,7 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
 </head>
 
 <body style="background-color: rgb(255,255,255);height: 100% !important;">
-<nav class="navbar navbar-light navbar-expand-md navigation-clean" id="discover-navbar">
-    <div class="container">
-        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon" style="opacity: 1;filter: brightness(200%) hue-rotate(0deg) invert(100%);"></span></button>
-        <div class="collapse navbar-collapse" id="navcol-1">
-            <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav">
-                <li class="nav-item" role="presentation" id="messages-link"><a class="nav-link active" href="messaging.php" style="color: #ffffff;">Messages</a></li>
-                <li class="nav-item" role="presentation" id="discover-link"><a class="nav-link" id="discover-nav" href="discover.php" style="font-size: 20px;color: #ffffff;">Discover</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="accountInfo.php" style="color: #ffffff;">Profile</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include('header.php') ?>
 <div id="new-people-section" class="container-fluid" style="background-color: rgba(223,232,238,0);padding: 0;height: calc(100% - 78px);">
     <div class="row" style="margin-right: 0;height: 100%;">
         <div class="col col-lg-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
@@ -109,7 +98,7 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
                 </div>
             </div>
         </div>
-        <div class="col col-lg-9 col-md-8 col-xs-12" id="messaging-main" style="background-color: #ffffff;padding: 0 !important; height: calc(100vh - 84px);">
+        <div class="col col-lg-9 col-md-8 col-xs-12" id="messaging-main" style="background-color: #ffffff;padding: 0 !important; height: calc(100vh - 78px);">
             <header class="section-header">
                 <p id="header-name"><?php if (sizeof($chat_id_1) > 0) echo $chat_id_1['first_name']; ?></p>
             </header>
@@ -137,7 +126,9 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
 <!--<script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>-->
 <script src="assets/js/Profile-Edit-Form.js"></script>
 <script src="assets/js/Range-selector---slider.js"></script>
+<script src="https://kit.fontawesome.com/6a9548b3b1.js" crossorigin="anonymous"></script>
 <script src="assets/js/messaging.js"></script>
+<script src="assets/js/advanced-search.js"></script>
 <?php if (sizeof($chat_id_1) > 0) {
     echo "<script>currChat = " . json_encode($chat_id_1) . ";</script>";
 } ?>

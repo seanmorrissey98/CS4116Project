@@ -59,32 +59,32 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     if(mysqli_stmt_fetch($stmt)){
                         if($_POST["password"] == $hashed_password){
                             // Password is correct, so start a new session
-							//need to check if banned first
-							//session_start();
-							include "connection.php";   
-							$sql = "SELECT user_id, date, duration FROM Banned WHERE user_id=\"{$user_id}\"";
-							$result = $con->query($sql) or die($con->error);;
-							$today = strtotime("now");
-							while($row = $result->fetch_assoc()){
-								$bannedDate=strtotime($row['date']);
-								$diff = $today - $bannedDate;
-								$days = floor(($diff)/ (60*60*24)); 
-								$days = $days +1;
-								if($user_id == $row['user_id'] and $row['duration'] > $days) {
-									$_SESSION["banned"] = "yes";
-									$_SESSION["banned-till"] = (int)$row['duration'] - $days;
-								}
-							}
+                            //need to check if banned first
+                            //session_start();
+                            include "connection.php";
+                            $sql = "SELECT user_id, date, duration FROM Banned WHERE user_id=\"{$user_id}\"";
+                            $result = $con->query($sql) or die($con->error);
+                            $today = strtotime("now");
+                            while ($row = $result->fetch_assoc()) {
+                                $bannedDate = strtotime($row['date']);
+                                $diff = $today - $bannedDate;
+                                $days = floor(($diff) / (60 * 60 * 24));
+                                $days = $days + 1;
+                                if ($user_id == $row['user_id'] and $row['duration'] > $days) {
+                                    $_SESSION["banned"] = "yes";
+                                    $_SESSION["banned-till"] = (int)$row['duration'] - $days;
+                                }
+                            }
                             //check if banned set 
-							if(!isset($_SESSION["banned"])) {
-								// Store data in session variables
-								$_SESSION["user_id"] = $user_id;
-								$_SESSION["first_name"] = $first_name;
-								$_SESSION["last_name"] = $last_name;
-								$_SESSION["email"] = $email;
-                                
+                            if (!isset($_SESSION["banned"])) {
+                                // Store data in session variables
+                                $_SESSION["user_id"] = $user_id;
+                                $_SESSION["first_name"] = $first_name;
+                                $_SESSION["last_name"] = $last_name;
+                                $_SESSION["email"] = $email;
+
                                 $tmpId = $_SESSION["user_id"];
-                                 $sqlDel = "DELETE FROM `Banned` WHERE `Banned`.`user_id` = $tmpId";
+                                $sqlDel = "DELETE FROM `Banned` WHERE `Banned`.`user_id` = $tmpId";
                                 if (mysqli_query($con, $sqlDel)) {
                                 }
 								$sql = "SELECT Seeking, Drinker, Smoker FROM Profile WHERE user_id=\"{$user_id}\"";
@@ -147,29 +147,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 
 <body>
-    <div class="header-blue" style="background-color: rgb(195,12,23);">
-        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="index.html">Limerick Lovers</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse"
-                        id="navcol-1">
-                        <ul class="nav navbar-nav">
-                        </ul>
-                        <form class="form-inline mr-auto" target="_self">
-                        </form><a class="btn btn-light action-button" role="button" href="signup.php">Sign Up</a></div>
-                </div>
-            </nav>
-    </div>
-	<?php
-		if(isset($_SESSION["banned"])) {
-			print "\n";
-			print "<h2 class=\"text-nowrap text-center\">\n</h2>";
-			print "<h2 class=\"text-nowrap text-center\">You are banned.</h2>";
-			print "<h2 class=\"text-nowrap text-center\">You will be unbanned and able to access your account in {$_SESSION['banned-till']} days.</h2>";
-			print "<h2 class=\"text-nowrap text-center\"></h2>";
-			print "\n";
-			unset($_SESSION['banned']);
-		}
-		else {
+<div class="header-blue" style="background-color: rgb(195,12,23);">
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+        <div class="container-fluid"><a class="navbar-brand" href="index.php">Limerick Lovers</a>
+            <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav"></ul>
+                <form class="form-inline mr-auto" target="_self"></form>
+                <a class="btn btn-light action-button" role="button" href="signup.php">Sign Up</a></div>
+        </div>
+    </nav>
+</div>
+<?php
+if (isset($_SESSION["banned"])) {
+    print "\n";
+    print "<h2 class=\"text-nowrap text-center\">\n</h2>";
+    print "<h2 class=\"text-nowrap text-center\">You are banned.</h2>";
+    print "<h2 class=\"text-nowrap text-center\">You will be unbanned and able to access your account in {$_SESSION['banned-till']} days.</h2>";
+    print "<h2 class=\"text-nowrap text-center\"></h2>";
+    print "\n";
+    unset($_SESSION['banned']);
+} else {
 			print "<div class=\"login-dark\" style=\"background-image: url(&quot;assets/img/couple.jpg&quot;);\">";
 				print "<form method=\"post\" action=\"login.php\">";
 					print "<h2 class=\"sr-only\">Login Form</h2>";

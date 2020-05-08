@@ -75,7 +75,6 @@ if (!$out_of_matches) {
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Actor">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
-    <script src="https://kit.fontawesome.com/6a9548b3b1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/fonts/material-icons.min.css">
     <link rel="stylesheet" href="assets/css/Article-List.css">
     <link rel="stylesheet" href="assets/css/Footer-Basic.css">
@@ -98,26 +97,8 @@ if (!$out_of_matches) {
 </head>
 
 <body style="background-color: rgb(255,255,255);height: 100% !important;">
-<nav class="navbar navbar-light navbar-expand-md navigation-clean" id="discover-navbar">
-    <div class="container-fluid">
-        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon" style="opacity: 1;filter: brightness(200%) hue-rotate(0deg) invert(100%);"></span></button>
-        <div class="collapse navbar-collapse" id="navcol-1">
-            <ul class="nav navbar-nav ml-auto d-flex justify-content-between" id="discover-nav" style="padding: 0 80px;">
-                <li class="nav-item" role="presentation" id="messaging-link">
-                    <a class="nav-link" id="messaging-nav" href="messaging.php" style="color: #ffffff;">Messages</a>
-                </li>
-                <li class="nav-item" role="presentation" id="discover-link-1"><a class="nav-link active" id="discover-nav-1" href="discover.php" style="color: #ffffff;">Discover</a>
-                </li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="accountInfo.php" style="color: #ffffff;">Profile</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item" role="presentation"><a id="advanced-search" class="nav-link" href="#" style="color: #ffffff;"> <i class="fas fa-search"></i></a></li>
-                <li class="nav-item" role="presentation"><a id="hide-advanced-search" class="nav-link" href="#" style="color: #ffffff; display: none;"> <i class="fas fa-search-minus"></i></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div id="new-people-section" class="container-fluid" style="background-color: rgba(223,232,238,0);padding: 0;height: calc(100% - 84px);">
+<?php include('header.php') ?>
+<div id="new-people-section" class="container-fluid" style="background-color: rgba(223,232,238,0);padding: 0;height: calc(100% - 78px);">
     <div class="row" style="margin-right: 0;height: 100%;">
         <div class="col col-xl-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
             <div id="messaging" class="container-fluid" style="padding-right: 0;">
@@ -343,7 +324,7 @@ if (!$out_of_matches) {
         </div>
         <div class="col col-xl-3 col-md-4" style="padding: 0; margin-right: 1px; margin-left: -1px; <?php if (!isset($_SESSION['advanced_search_result'])) echo " display:none;"; ?>" id="search-results-sidebar">
             <div id="messaging" class="container-fluid" style="padding: 0;">
-                <header id="message-header" style="background-color: #f7f9fc;">
+                <header id="message-header" class="section-header">
                     <a id="close-search-results" class="nav-link" href="endSearch.php" style="float: left; margin-top: -4px; color: black;"> <i class="far fa-times-circle"></i></a>
                     <p>Search Results</p>
                 </header>
@@ -399,6 +380,7 @@ if (!$out_of_matches) {
     <script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
     <script src="assets/js/Profile-Edit-Form.js"></script>
     <script src="assets/js/Range-selector---slider.js"></script>
+    <script src="https://kit.fontawesome.com/6a9548b3b1.js" crossorigin="anonymous"></script>
     <script src="assets/js/discover.js"></script>
 
 </body>

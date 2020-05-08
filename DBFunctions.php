@@ -43,6 +43,8 @@ function getDiscoverPeopleSpecific($user_id, $seeking, $drinker, $smoker) {
 
     $people = $result->fetch_all(MYSQLI_ASSOC);
 
+    if (sizeof($people) === 0) return getDiscoverPeople($user_id);
+
     return $people;
 }
 
