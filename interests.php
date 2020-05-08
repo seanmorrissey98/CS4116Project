@@ -3,13 +3,6 @@
 	if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
 		header("Location: adminDashboard.php");
 	}
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: index.html");
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,38 +36,18 @@ function logout()
 </head>
 
 <body>
-<div class="header-blue" style="background-color: rgb(195,12,23);">
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-        <div class="container-fluid"><a class="navbar-brand" href="discover.php">Limerick Lovers</a>
-            <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav">
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">More Links </a>
-                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="discover.php">Discover</a><a class="dropdown-item" role="presentation" href="accountInfo.php">Account Info</a><a class="dropdown-item" role="presentation"
-                                                                                                                                                                                                                                   href="messaging.php">Messages</a></div>
-                    </li>
-                </ul>
-                <form class="form-inline mr-auto" target="_self"></form>
-                <span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
-					<?php
-                    if (isset($_GET["logout"])) {
-                        logout();
-                    }
-                    ?>
-					</span></div>
-            </div>
-        </nav>
-    </div>
-    <div class="article-list">
-        <div class="container">
-            <div class="intro">
-                <h2 class="text-center">Interests</h2>
-                <p class="text-center">Here you have the ability to change/update your interests or add new one's.</p>
-            </div>
-			<form method="post" action="interests.php">
-				<div class="row articles">
-					<div class="col-sm-6 col-md-4 item"><img class="img-fluid" src="assets/img/People%20Playing%20Basketball%20On%20Basketball%20Court.jpg">
-						<h3 class="name">Remove Your Current Interests</h3>
+
+<?php include('header.php') ?>
+<div class="article-list">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Interests</h2>
+            <p class="text-center">Here you have the ability to change/update your interests or add new one's.</p>
+        </div>
+        <form method="post" action="interests.php">
+            <div class="row articles">
+                <div class="col-sm-6 col-md-4 item"><img class="img-fluid" src="assets/img/People%20Playing%20Basketball%20On%20Basketball%20Court.jpg">
+                    <h3 class="name">Remove Your Current Interests</h3>
 						<?php
 							include "connection.php";
 							$sql = "SELECT interest_id FROM Interests WHERE user_id=\"{$_SESSION['user_id']}\"";
@@ -86,10 +59,10 @@ function logout()
 							} else {
 								$interest_ids=array();
 								$no_interests = false;
-								while($row = $results->fetch_assoc()){
-									$interest_ids[]=$row['interest_id'];	
-								}
-								
+								while($row = $results->fetch_assoc()) {
+                                    $interest_ids[] = $row['interest_id'];
+                                }
+
 								foreach ($interest_ids as $value)
 								{
 									$sql = "SELECT interest_name FROM `Available Interests` WHERE interest_id=\"{$value}\"";
@@ -115,16 +88,16 @@ function logout()
 										$not_selected++;
 									}
 							} else {
-								$sql = "SELECT * FROM `Available Interests`";
-									$result = $con->query($sql);
-									while($row = $result->fetch_assoc()){
-										if( !in_array($row['interest_id'],$interest_ids)) {
-											print "<div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" id=\"formCheck-1\" name=\"not-{$row['interest_id']}\" ><label class=\"form-check-label\" for=\"formCheck-1\">{$row['interest_name']}</label></div>";	
-											$interest_id2[]=$row['interest_id'];	
-											$not_selected++;
-										}
-									}
-							}
+                                $sql = "SELECT * FROM `AVAILABLE INTERESTS`";
+                                $result = $con->query($sql);
+                                while ($row = $result->fetch_assoc()) {
+                                    if (!in_array($row['interest_id'], $interest_ids)) {
+                                        print "<div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" id=\"formCheck-1\" name=\"not-{$row['interest_id']}\" ><label class=\"form-check-label\" for=\"formCheck-1\">{$row['interest_name']}</label></div>";
+                                        $interest_id2[] = $row['interest_id'];
+                                        $not_selected++;
+                                    }
+                                }
+                            }
 						?>
 					</div>
 				</div>
@@ -134,16 +107,14 @@ function logout()
 				if (isset($_POST['submit-info'])) {
 					if($no_interests==false) {
 						include "connection.php";
-						for ($i=0;$i<count($interest_ids);$i++)
-						{
-							$val = "already-";
-							$val .= (string)$interest_ids[$i];
-							if(isset($_POST[$val]))
-							{
-								$sql = "DELETE FROM Interests WHERE user_id=\"{$_SESSION['user_id']}\" AND interest_id=\"{$interest_ids[$i]}\"";
-								$results = $con->query($sql);
-							}
-						} 
+						for ($i=0;$i<count($interest_ids);$i++) {
+                            $val = "already-";
+                            $val .= (string)$interest_ids[$i];
+                            if (isset($_POST[$val])) {
+                                $sql = "DELETE FROM Interests WHERE user_id=\"{$_SESSION['user_id']}\" AND interest_id=\"{$interest_ids[$i]}\"";
+                                $results = $con->query($sql);
+                            }
+                        }
 						for ($j=0;$j<count($interest_id2);$j++)
 						{
 							$val = "not-";
@@ -188,14 +159,16 @@ function logout()
             <p class="copyright">Limerick Lovers © 2020</p>
         </footer>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
-    <script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
-    <script src="assets/js/Profile-Edit-Form.js"></script>
-    <script src="assets/js/Range-selector---slider.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/bs-init.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+<script src="assets/js/Image-slider-carousel-With-arrow-buttons.js"></script>
+<script src="assets/js/Profile-Edit-Form.js"></script>
+<script src="assets/js/Range-selector---slider.js"></script>
+<script src="https://kit.fontawesome.com/6a9548b3b1.js" crossorigin="anonymous"></script>
+<script src="assets/js/advanced-search.js"></script>
 </body>
 
 </html>
