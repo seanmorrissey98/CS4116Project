@@ -89,7 +89,7 @@ $chat_cards = $twig->render('chats_users_template.html.twig', ['chats_data' => $
         <div class="col col-lg-3 col-md-4" id="messaging-sidebar" style="padding: 0;">
             <div id="messaging" class="container-fluid" style="padding-right: 0;">
                 <header class="section-header"><p>Chats</p></header>
-                <div id="messages" class="container-fluid" style="height: calc(100vh - 135px);">
+                <div id="messages" class="container-fluid">
                     <div class="sidebar-scrollable" style="margin: -15px">
                         <!-- Templating -->
                         <?php echo $chat_cards; ?>

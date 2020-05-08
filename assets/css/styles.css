@@ -5,7 +5,7 @@
 }
 
 .sidebar-scrollable {
-  height: calc(100vh - 130px);
+  height: calc(100vh - 116px);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 15px;
@@ -13,7 +13,7 @@
 
 .chats-sidebar-scrollable {
   padding-top: 15px;
-  height: calc(100vh - 194px);
+  height: calc(100vh - 188px);
   overflow-y: auto;
   overflow-x: hidden;
 }
