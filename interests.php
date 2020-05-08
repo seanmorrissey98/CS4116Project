@@ -88,7 +88,7 @@
 										$not_selected++;
 									}
 							} else {
-                                $sql = "SELECT * FROM `AVAILABLE INTERESTS`";
+                                $sql = "SELECT * FROM `Available Interests`";
                                 $result = $con->query($sql);
                                 while ($row = $result->fetch_assoc()) {
                                     if (!in_array($row['interest_id'], $interest_ids)) {
