@@ -16,6 +16,11 @@ $twig = new Environment($loader);
 // Initialize the session
 session_start();
 
+if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+    header("Location: adminDashboard.php");
+}
+
+
 // Initialize chat array for database pull
 $chats_data = '';
 

@@ -6,12 +6,6 @@ if (!isset($_SESSION["adminLoggedIn"])) {
 }
 
 
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-}
 function getTotalUserCount() {
     include "connection.php";
     $sql = "SELECT * FROM User";
@@ -74,30 +68,7 @@ function getTotalConnectionCount() {
 <body>
     <div>
         <div class="header-blue" style="background-color: rgb(195,12,23);">
-            <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-                <div class="container-fluid"><a class="navbar-brand" href="adminDashboard.php">Limerick Lovers ADMIN</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse"
-                         id="navcol-1">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Admin Data </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" role="presentation" href="userList.php">Users</a>
-                                    <a class="dropdown-item" role="presentation" href="bannedUserList.php">Banned Users</a>
-                                    <a class="dropdown-item" role="presentation" href="reportedList.php">Reports</a>
-                                    <a class="dropdown-item" role="presentation" href="connectionList.php">Connections</a>
-                            </div>
-                            </li>
-                        </ul>
-                        <form class="form-inline mr-auto" target="_self">
-                        </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
-                    <?php
-                    if (isset($_GET["logout"])) {
-                        logout();
-                    }
-                    ?>
-                    </span></div>
-                </div>
-            </nav>
+        <?php include 'adminHeader.php'; ?>
         </div>
     </div>
     <div>
@@ -106,7 +77,7 @@ function getTotalConnectionCount() {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="card-title text-center">Admin Dashboard</h2>
+                            <h1 class="card-title text-center">Admin Dashboard</h1>
                             <hr>
                             <p class="card-text"><h4>Welcome <?php echo $_SESSION["first_name"] . "</h4>" . "\t" . $_SESSION["email"];  ?></h4></p>
                             <hr>
@@ -139,14 +110,14 @@ function getTotalConnectionCount() {
                             <p class="card-text"><h3><?php getTotalReportedUserCount()?></h3></p><a class="btn btn-outline-dark" href="reportedList.php">See More</a><a class="card-link" href="#"></a></div>
                     </div>
                 </div>
-                <div class="col">
+                <!-- <div class="col">
                     <div class="card">
                         <div class="card-body text-center">
                             <h2 class="card-title">Connections</h2>
                             <hr>
                             <p class="card-text"><h3><?php getTotalConnectionCount()?></h3></p><a class="btn btn-outline-dark" href="connectionList.php">See More</a><a class="card-link" href="#"></a></div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

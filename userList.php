@@ -7,19 +7,34 @@ if (!isset($_SESSION["adminLoggedIn"])) {
 function populateUserTable() {  
     // include "localDBConnection.php";
     include "connection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User";
+    $sql = "SELECT user_id, email, first_name, last_name, date_joined, user_type from User";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
         $user_account_id = $row["user_id"];
-        echo "<tr>
+        if ($row['user_type'] == 'administrator') {
+            echo "<tr>
+            <td>" . $row["user_id"] . "</td>
+            <td>" . $row["email"] . "</td>
+            <td>" . $row["first_name"] . "</td>
+            <td>" . $row["last_name"] . "</td>
+            <td>" . $row["date_joined"] . "</td>
+            <td>" . $row["user_type"] . "</td>
+            </tr>";
+        } else {
+            echo "<tr>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
         <td>" . $row["date_joined"] . "</td>
+        <td>" . $row["user_type"] . "</td>
         </tr>";
+
+
+
+        }
     }
 }
 
@@ -30,28 +45,37 @@ function searchUserTable() {
     $search = $_GET["userSearch"];
     include "connection.php";
     // include "localDBConnection.php";
-    $sql = "SELECT user_id, email, first_name, last_name, date_joined from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
+    $sql = "SELECT user_id, email, first_name, last_name, date_joined, user_type from User WHERE email LIKE '%$search%' OR first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
     // output data of each row
     while($row = mysqli_fetch_assoc($result)) {
         $user_account_id = $row["user_id"];
-        echo "<tr>
+        if ($row['user_type'] == 'administrator') {
+            echo "<tr>
+            <td>" . $row["user_id"] . "</td>
+            <td>" . $row["email"] . "</td>
+            <td>" . $row["first_name"] . "</td>
+            <td>" . $row["last_name"] . "</td>
+            <td>" . $row["date_joined"] . "</td>
+            <td>" . $row["user_type"] . "</td>
+            </tr>";
+        } else {
+            echo "<tr>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["user_id"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["email"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["first_name"] . "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
         <td>" . $row["date_joined"] . "</td>
+        <td>" . $row["user_type"] . "</td>
         </tr>";
+
+
+
+        }
+        
     }
 }
-}
-function logout()
-{
-    $_SESSION = array();
-    session_destroy();
-    header("Location: login.php");
-    exit;
 }
 
 ?>
@@ -90,30 +114,7 @@ function logout()
 <body>
     <div>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
-        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="adminDashboard.php">Limerick Lovers ADMIN</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                    id="navcol-1">
-                    <ul class="nav navbar-nav">
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Admin Data </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" role="presentation" href="userList.php">Users</a>
-                                    <a class="dropdown-item" role="presentation" href="bannedUserList.php">Banned Users</a>
-                                    <a class="dropdown-item" role="presentation" href="reportedList.php">Reports</a>
-                                    <a class="dropdown-item" role="presentation" href="connectionList.php">Connections</a>
-                            </div>
-                            </li>
-                    </ul>
-                    <form class="form-inline mr-auto" target="_self">
-                    </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
-                    <?php
-                    if (isset($_GET["logout"])) {
-                        logout();
-                    }
-                    ?>
-                    </span></div>
-            </div>
-        </nav>
+        <?php include "adminHeader.php";?>
     </div>
     <div>
         <div class="container">
@@ -145,6 +146,7 @@ function logout()
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Date Joined</th>
+                                    <th>User Type</th>
                                 </tr>
 
                             </thead>

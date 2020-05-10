@@ -19,11 +19,7 @@ function populateConnectionTable() {
         $user_account_id_2=$row["user_2"];
         echo "<tr>
         <td><a href='accountInfo.php?user_account_id=$user_account_id_1'>" . $row["user_1"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id_1'>" .  "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id_1'>" .  "</a></td>
         <td><a href='accountInfo.php?user_account_id=$user_account_id_2'>" . $row["user_2"] . "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id_2'>" .  "</a></td>
-        <td><a href='accountInfo.php?user_account_id=$user_account_id_2'>" .  "</a></td>
         <td><a href=#>" . $row["date"] . "</a></td>
 
         </tr>";
@@ -75,30 +71,7 @@ function searchConnectionTable() {
 <body>
     <div>
     <div class="header-blue" style="background-color: rgb(195,12,23);">
-        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-            <div class="container-fluid"><a class="navbar-brand" href="adminDashboard.php">Limerick Lovers ADMIN</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                    id="navcol-1">
-                    <ul class="nav navbar-nav">
-                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Admin Data </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" role="presentation" href="userList.php">Users</a>
-                                    <a class="dropdown-item" role="presentation" href="bannedUserList.php">Banned Users</a>
-                                    <a class="dropdown-item" role="presentation" href="reportedList.php">Reports</a>
-                                    <a class="dropdown-item" role="presentation" href="connectionList.php">Connections</a>
-                            </div>
-                            </li>
-                    </ul>
-                    <form class="form-inline mr-auto" target="_self">
-                    </form><span class="navbar-text"> <a class="login" href="?logout=true">Log Out</a>
-                    <?php
-                    if (isset($_GET["logout"])) {
-                        logout();
-                    }
-                    ?>
-                    </span></div>
-            </div>
-        </nav>
+        <?php include "adminHeader.php"; ?>
     </div>
     <div>
         <div class="container">
@@ -126,11 +99,7 @@ function searchConnectionTable() {
                             <thead class="thead-dark">
                                 <tr>
                                     <th>User ID 1</th>
-                                    <th>User 1 First Name</th>
-                                    <th>User 1 Last Name</th>
                                     <th>User ID 2</th>
-                                    <th>User 2 First Name</th>
-                                    <th>User 2 Last Name</th>
                                     <th>Connection Date</th>
                                 </tr>
                             </thead>

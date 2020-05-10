@@ -8,6 +8,9 @@ require_once "connection.php";
 
 // Initialize the session
 session_start();
+if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true) {
+    header("Location: adminDashboard.php");
+}
 
 // Twig for templating matched cards. Stored in templates directory
 require __DIR__ . '/vendor/autoload.php';
