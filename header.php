@@ -1,6 +1,6 @@
 <?php
-session_start();
 checkBan($_SESSION['user_id']);
+checkDeleted($_SESSION['user_id']);
 function logout() {
     $_SESSION = array();
     session_destroy();
@@ -12,6 +12,16 @@ function logout() {
 
 if (isset($_GET["logout"])) {
     logout();
+}
+
+function checkDeleted($id) {
+    include "connection.php";
+    $sql = "SELECT * FROM User WHERE user_id = $id";
+    $result = mysqli_query($con, $sql);
+    if (mysqli_num_rows($result) > 0) {
+    } else {
+        logout();
+    }
 }
 
 

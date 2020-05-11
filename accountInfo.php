@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true && !isset($_GET["user_account_id"])) {
     header("Location: adminDashboard.php");
 }
@@ -10,6 +9,58 @@ if (isset($_GET['unban']) && isset($_GET['user_account_id'])) {
     unbanUser($_GET['user_account_id']);
 }
 
+if (isset($_SESSION["adminLoggedIn"]) && $_SESSION["adminLoggedIn"] == true && isset($_GET["user_account_id"]) && isset($_GET['delete'])) {
+    deleteUserFromDB($_GET['user_account_id']);
+    header("location: adminDashboard.php");
+}
+
+
+function deleteUserFromDB($id) {
+	include "connection.php";
+	// DELETE FROM BANNED
+	$sqlDel = "DELETE FROM `Banned` WHERE `Banned`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+	// DELETE FROM CHAT
+	$sqlDel = "DELETE FROM `Chat` WHERE `Chat`.`user_id_sender` = $id OR `Chat`.`user_id_receiver` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM DISLIKE
+	$sqlDel = "DELETE FROM `Dislike` WHERE `Dislike`.`user_id` = $id OR `Dislike`.`disliked_user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Interests
+	$sqlDel = "DELETE FROM `Interests` WHERE `Interests`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Likes
+	$sqlDel = "DELETE FROM `Likes` WHERE `Likes`.`user_id` = $id OR `Likes`.`liked_user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Messages
+	$sqlDel = "DELETE FROM `Messages` WHERE `Messages`.`user_id_sender` = $id OR `Messages`.`user_id_receiver` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Profile
+	$sqlDel = "DELETE FROM `Profile` WHERE `Profile`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Reports
+	$sqlDel = "DELETE FROM `Reports` WHERE `Reports`.`reported_user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM User
+	$sqlDel = "DELETE FROM `User` WHERE `User`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+}
 
 function unbanUser($id) {
     include "connection.php";
@@ -226,6 +277,8 @@ if (isset($_GET["user_account_id"])) {
                         } else {
                             echo '<div class="col-md-12 content-right"><a class="btn btn-primary form-btn" href="accountInfo.php?user_account_id=' . $var_profile_user . '&unban=true">Unban User</a></div>';
                         }
+                        echo '<div class="col-md-12 mt-2 content-right"><a class="btn btn-outline-dark form-btn" href="accountInfo.php?user_account_id=' . $var_profile_user . '&delete=true">Delete User</a></div>';
+
                     }
                     ?>
                 </div>

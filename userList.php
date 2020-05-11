@@ -1,9 +1,65 @@
 <?php 
 session_start();
+include "functions.php";
 if (!isset($_SESSION["adminLoggedIn"])) {
     header("Location: login.php");
     exit;
 }
+
+if (isset($_GET['delete']) && isset($_GET['user_id'])) {
+    deleteUserFromDB($_GET['user_id']);
+    header("location: userList.php");
+}
+
+function deleteUserFromDB($id) {
+	include "connection.php";
+	// DELETE FROM BANNED
+	$sqlDel = "DELETE FROM `Banned` WHERE `Banned`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+	// DELETE FROM CHAT
+	$sqlDel = "DELETE FROM `Chat` WHERE `Chat`.`user_id_sender` = $id OR `Chat`.`user_id_receiver` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM DISLIKE
+	$sqlDel = "DELETE FROM `Dislike` WHERE `Dislike`.`user_id` = $id OR `Dislike`.`disliked_user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Interests
+	$sqlDel = "DELETE FROM `Interests` WHERE `Interests`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Likes
+	$sqlDel = "DELETE FROM `Likes` WHERE `Likes`.`user_id` = $id OR `Likes`.`liked_user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Messages
+	$sqlDel = "DELETE FROM `Messages` WHERE `Messages`.`user_id_sender` = $id OR `Messages`.`user_id_receiver` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Profile
+	$sqlDel = "DELETE FROM `Profile` WHERE `Profile`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM Reports
+	$sqlDel = "DELETE FROM `Reports` WHERE `Reports`.`reported_user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+
+	// DELETE FROM User
+	$sqlDel = "DELETE FROM `User` WHERE `User`.`user_id` = $id";
+    if (mysqli_query($con, $sqlDel)) {
+	}
+}
+
+
+
 function populateUserTable() {  
     // include "localDBConnection.php";
     include "connection.php";
@@ -30,6 +86,7 @@ function populateUserTable() {
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
         <td>" . $row["date_joined"] . "</td>
         <td>" . $row["user_type"] . "</td>
+        <td><a class='btn btn-outline-dark btn-lg' href='userList.php?user_id=$user_account_id&delete=true'>Delete User</button></td>
         </tr>";
 
 
@@ -68,6 +125,7 @@ function searchUserTable() {
         <td><a href='accountInfo.php?user_account_id=$user_account_id'>" . $row["last_name"] . "</a></td>
         <td>" . $row["date_joined"] . "</td>
         <td>" . $row["user_type"] . "</td>
+        <td><a class='btn btn-outline-dark btn-lg' href=''>Delete User</button></td>
         </tr>";
 
 
@@ -147,6 +205,7 @@ function searchUserTable() {
                                     <th>Last Name</th>
                                     <th>Date Joined</th>
                                     <th>User Type</th>
+                                    <th></th>
                                 </tr>
 
                             </thead>
