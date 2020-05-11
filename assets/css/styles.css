@@ -5,7 +5,7 @@
 }
 
 .sidebar-scrollable {
-  height: calc(100vh - 116px);
+  height: calc(100vh - 130px);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 15px;

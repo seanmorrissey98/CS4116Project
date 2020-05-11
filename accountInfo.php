@@ -179,15 +179,37 @@ if (isset($_GET["user_account_id"])) {
                             echo '<div>
                             <div>
 							<form name="formid">
-								<select id="GENDERPREF" name="GENDERPREF" onchange="getPref()">
-								<option value="None">None</option>
-								  <option value="Female">Female</option>
-								  <option value="Male">Male</option>
-								  <option value="Both" >Both</option>
-								</select>
-								</form>
-                                </div>
-                       </div>';
+								<select id="GENDERPREF" name="GENDERPREF" onchange="getPref()">';
+								if($genderPref == "Male")
+								{
+									echo '<option value="Male">Male</option>
+										  <option value="Female">Female</option>
+										  <option value="Other" >Other</option>
+										</select>
+										</form>
+										</div>
+									</div>';
+								}
+								if($genderPref == "Female")
+								{
+									echo '<option value="Female">Female</option>
+										  <option value="Male">Male</option>
+										  <option value="Other" >Other</option>
+										</select>
+										</form>
+										</div>
+									</div>';
+								}
+								if($genderPref == "Other")
+								{
+									echo '<option value="Other" >Other</option>
+										  <option value="Male">Male</option>
+										  <option value="Female">Female</option>
+										</select>
+										</form>
+										</div>
+									</div>';
+								}
                         } else {
                             echo '<p>' . getUserGenderPreference($var_profile_user) . "</p>";
                         }
