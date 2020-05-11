@@ -94,7 +94,7 @@ function logout()
 					$result = $con->query($sql);
 					session_start();
 					while($row = $result->fetch_assoc()){
-						$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', '0', '{$_POST['description']}', '{$drinker}', '{$smoker}', '0')";
+						$sql = "INSERT INTO `Profile` (`user_id`, `Age`, `Gender`, `Seeking`, `Photo`, `Banned`, `Description`, `Drinker`, `Smoker`, `Verified`) VALUES ('{$row['user_id']}', '{$_POST['age']}', '{$_POST['gender']}', '{$_POST['seeking']}', 'no_picture.jpg' ,'0', '{$_POST['description']}', '{$drinker}', '{$smoker}', '0')";
 						$result_two = $con->query($sql);
 						setcookie("user_id",$row['user_id'],time()+3600);
 						$_SESSION["user_id"] = $row['user_id'];
