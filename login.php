@@ -149,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
 <div class="header-blue" style="background-color: rgb(195,12,23);">
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
-        <div class="container-fluid"><a class="navbar-brand" href="index.php">Limerick Lovers</a>
+        <div class="container-fluid"><a class="navbar-brand" href="index.html">Limerick Lovers</a>
             <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav"></ul>
